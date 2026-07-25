@@ -3,42 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nikon Zf & NIKKOR 40mm f/2 — Cinematic Cheat Sheet</title>
+    <title>Nikon Zf Cinematic Director's Companion</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts: Inter and Mono -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Share+Tech+Mono&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=Share+Tech+Mono&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        zf: {
-                            gold: '#D4AF37',       /* Classic camera brass/gold accent */
-                            darkGold: '#AA8215',
-                            brass: '#C5A059',
-                            obsidian: '#121212',   /* Body leatherette/metal black */
-                            carbon: '#1E1E1E',     /* Panel dark grey */
-                            steel: '#2D2D2D',      /* Bezel/button grey */
-                            screen: '#0B0F12',     /* Viewfinder screen dark */
-                            red: '#E53935',        /* Recording Tally Red */
-                            amber: '#FFB300'       /* Warning Amber */
+                        retro: {
+                            bg: '#F4F1EA',        /* Warm classic paper/cream background */
+                            card: '#FCFAF5',      /* Vintage premium white cotton card */
+                            ink: '#1E1E1D',       /* Charcoal carbon lettering */
+                            brass: '#C29C47',     /* Engraved antique brass */
+                            gold: '#D4AF37',      /* Polished gold badge */
+                            silver: '#ECEBE7',    /* Brushed metal camera chassis */
+                            rim: '#A6A5A1',       /* Dial metal knurling border */
+                            red: '#C62828',       /* Mechanical record red */
+                            green: '#2E7D32',     /* Focus green */
+                            amber: '#E65100'      /* Warning amber */
                         }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['Share Tech Mono', 'monospace'],
+                        typewriter: ['Courier Prime', 'monospace'],
                         serif: ['Playfair Display', 'serif']
                     },
                     boxShadow: {
-                        'dial': 'inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -2px 4px rgba(0,0,0,0.4), 0 4px 6px rgba(0,0,0,0.5)',
-                        'gold-glow': '0 0 15px rgba(212, 175, 55, 0.2)',
-                        'red-glow': '0 0 15px rgba(229, 57, 53, 0.4)'
+                        'retro-card': '0 4px 12px rgba(30,30,29,0.04), 0 1px 3px rgba(30,30,29,0.02)',
+                        'retro-active': '0 12px 28px rgba(194,156,71,0.08), 0 2px 8px rgba(30,30,29,0.03)',
+                        'zf-dial': 'inset 0 1px 2px rgba(255,255,255,0.7), inset 0 -4px 10px rgba(0,0,0,0.18), 0 6px 12px rgba(30,30,29,0.12)',
+                        'zf-lens': 'inset 0 15px 30px rgba(0,0,0,0.3), 0 10px 20px rgba(0,0,0,0.15)'
                     }
                 }
             }
@@ -52,17 +55,17 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #121212;
+            background: #F4F1EA;
         }
         ::-webkit-scrollbar-thumb {
-            background: #2D2D2D;
+            background: #D5D2C8;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #C5A059;
+            background: #C29C47;
         }
 
-        /* Zebra overlay animation */
+        /* Viewfinder Zebra highlight animation */
         @keyframes zebraMove {
             0% { background-position: 0 0; }
             100% { background-position: 40px 0; }
@@ -70,1896 +73,1111 @@
         .zebra-stripes {
             background: repeating-linear-gradient(
                 -45deg,
-                rgba(255, 255, 255, 0.15),
-                rgba(255, 255, 255, 0.15) 10px,
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0.2) 10px,
                 rgba(0, 0, 0, 0.15) 10px,
                 rgba(0, 0, 0, 0.15) 20px
             );
             background-size: 40px 40px;
-            animation: zebraMove 1s linear infinite;
+            animation: zebraMove 0.8s linear infinite;
+        }
+
+        /* Viewfinder flicker lines */
+        @keyframes flickerShift {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.18; }
+        }
+        .flicker-overlay {
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.9),
+                rgba(0, 0, 0, 0.9) 12px,
+                transparent 12px,
+                transparent 24px
+            );
+            animation: flickerShift 0.12s infinite;
         }
 
         /* Focus peaking animation */
-        @keyframes peakPulse {
-            0%, 100% { filter: drop-shadow(0 0 1px rgba(239, 68, 68, 0.8)); }
-            50% { filter: drop-shadow(0 0 3px rgba(239, 68, 68, 1)); }
+        @keyframes peakGlow {
+            0%, 100% { filter: drop-shadow(0 0 1px rgba(198, 40, 40, 0.85)); }
+            50% { filter: drop-shadow(0 0 3px rgba(198, 40, 40, 1)); }
         }
-        .focus-peak {
-            outline: 1.5px dashed rgba(239, 68, 68, 0.85);
-            animation: peakPulse 1.5s infinite;
+        .focus-peaking-glow {
+            outline: 2px dashed #C62828;
+            animation: peakGlow 1.2s infinite;
         }
 
-        /* Dial rotation transition */
+        /* Dial knurling background pattern */
+        .knurled-edge {
+            background: repeating-linear-gradient(
+                90deg,
+                #3A3A38,
+                #3A3A38 2px,
+                #1E1E1D 2px,
+                #1E1E1D 4px
+            );
+        }
+
         .dial-turn {
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
     </style>
 </head>
-<body class="bg-zf-obsidian text-gray-100 font-sans min-h-screen">
+<body class="bg-retro-bg text-retro-ink font-sans min-h-screen selection:bg-retro-brass selection:text-white">
 
-    <!-- TOP HEADER / BRAND BAR -->
-    <header class="border-b border-zf-steel bg-black py-4 px-6 sticky top-0 z-50 shadow-lg">
-        <div class="max-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- TOP CHROME TRIM LINE -->
+    <div class="h-1.5 bg-gradient-to-r from-retro-brass via-retro-gold to-retro-brass"></div>
+
+    <!-- MAIN COMPANION HEADER -->
+    <header class="py-6 px-6 border-b border-zinc-300 bg-retro-card shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4">
-                <!-- Retro Camera Logo Design -->
-                <div class="flex items-center gap-3">
-                    <div class="relative w-12 h-12 bg-zf-carbon border-2 border-zf-gold rounded-lg flex items-center justify-center shadow-md">
-                        <span class="font-serif text-2xl font-bold text-zf-gold tracking-tighter">Zf</span>
-                        <div class="absolute -top-1 -left-1 w-2 h-2 bg-zf-steel border border-zf-gold rounded-full"></div>
-                        <div class="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-zf-red rounded-full animate-pulse"></div>
-                    </div>
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-serif font-bold text-white tracking-wide">
-                            Nikon Zf + NIKKOR Z 40mm f/2
-                        </h1>
-                        <p class="text-xs text-zf-brass tracking-wider uppercase font-mono">
-                            Cinematic No-ND Exposure Assistant & Interactive Cheat Sheet
-                        </p>
-                    </div>
+                <!-- Retro Camera Engraved Seal -->
+                <div class="relative w-14 h-14 bg-retro-ink border-2 border-retro-brass rounded-xl flex flex-col items-center justify-center shadow-md">
+                    <span class="font-serif text-2xl font-bold text-retro-brass leading-none">Zf</span>
+                    <span class="text-[7px] font-mono text-zinc-400 uppercase tracking-widest mt-1">Nikon</span>
+                    <div class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-retro-red rounded-full"></div>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-serif font-bold text-retro-ink tracking-tight">
+                        Nikon Zf Director's Companion
+                    </h1>
+                    <p class="text-xs text-retro-brass font-mono tracking-wider uppercase font-semibold">
+                        Interactive Camera Simulator, Scenario Challenges & Cinematic Cheat Sheet
+                    </p>
                 </div>
             </div>
-            
-            <!-- Quick Stats & Specs Badge -->
-            <div class="flex flex-wrap gap-2 md:gap-4 justify-center text-xs font-mono">
-                <span class="bg-zf-carbon border border-zf-steel px-3 py-1.5 rounded text-gray-300 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-green-500"></span> Camera: 24.5 MP FX (Rs. 1,76,995)
-                </span>
-                <span class="bg-zf-carbon border border-zf-steel px-3 py-1.5 rounded text-gray-300 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-zf-gold"></span> Lens: 40mm f/2 (Rs. 25,895)
-                </span>
-                <span class="bg-zf-carbon border border-zf-gold px-3 py-1.5 rounded text-zf-gold flex items-center gap-1.5 font-bold">
-                    <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> No-ND Edition
-                </span>
-            </div>
+
+            <!-- Tab Navigation Tabs -->
+            <nav class="flex p-1 bg-zinc-200/60 rounded-xl border border-zinc-300 font-mono text-xs font-bold shadow-inner">
+                <button onclick="switchTab('simulator')" id="tab-btn-simulator" class="tab-btn px-4 py-2 rounded-lg bg-retro-card text-retro-ink shadow-sm transition-all flex items-center gap-1.5 border border-zinc-200">
+                    <i data-lucide="sliders" class="w-4 h-4 text-retro-brass"></i> Zf Simulator
+                </button>
+                <button onclick="switchTab('challenges')" id="tab-btn-challenges" class="tab-btn px-4 py-2 rounded-lg text-zinc-600 hover:text-retro-ink transition-all flex items-center gap-1.5">
+                    <i data-lucide="target" class="w-4 h-4 text-retro-brass"></i> Challenges
+                </button>
+                <button onclick="switchTab('cheatsheet')" id="tab-btn-cheatsheet" class="tab-btn px-4 py-2 rounded-lg text-zinc-600 hover:text-retro-ink transition-all flex items-center gap-1.5">
+                    <i data-lucide="book-open" class="w-4 h-4 text-retro-brass"></i> Cheat Sheet
+                </button>
+            </nav>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 md:px-6 py-6 space-y-8">
+    <main class="max-w-7xl mx-auto px-4 md:px-6 py-6">
 
-        <!-- ================= SECTION 0: RETRO DIALS & Viewfinder ================= -->
-        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- ================================================================= -->
+        <!-- TAB 1: Zf SIMULATOR                                               -->
+        <!-- ================================================================= -->
+        <div id="tab-content-simulator" class="tab-pane space-y-8">
             
-            <!-- LEFT PANEL: PHYSICAL-LOOKING DIALS (5 COLS) -->
-            <div class="lg:col-span-5 bg-zf-carbon border border-zf-steel p-5 rounded-2xl flex flex-col justify-between shadow-2xl relative overflow-hidden">
-                <!-- Brass accent border at the top -->
-                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-zf-gold via-yellow-600 to-zf-gold"></div>
-                
-                <div>
-                    <div class="flex justify-between items-center mb-6">
-                        <span class="text-xs uppercase font-mono text-zf-brass tracking-widest flex items-center gap-1">
-                            <i data-lucide="sliders" class="w-4 h-4"></i> Retro Dial Control Panel
-                        </span>
-                        <span class="bg-black text-[10px] text-gray-400 font-mono px-2 py-0.5 rounded border border-zf-steel">
-                            Manual (M) Exposure Locked
-                        </span>
-                    </div>
-
-                    <!-- Visual Dials Layout -->
-                    <div class="grid grid-cols-3 gap-4 text-center py-4 mb-4">
-                        
-                        <!-- ISO DIAL -->
-                        <div class="flex flex-col items-center">
-                            <span class="text-[11px] font-mono text-gray-400 uppercase tracking-wider mb-2">ISO Dial</span>
-                            <div class="relative w-24 h-24 rounded-full bg-black border-4 border-zf-steel shadow-dial flex items-center justify-center cursor-pointer select-none dial-turn" id="iso-dial">
-                                <!-- Dial ticks and values -->
-                                <div class="absolute inset-0 rounded-full border border-dashed border-zinc-800 pointer-events-none"></div>
-                                <div class="w-1.5 h-4 bg-zf-gold absolute top-0 rounded-b"></div> <!-- Indicator notch -->
-                                <span class="font-mono text-sm text-white font-bold" id="iso-dial-val">100</span>
-                            </div>
-                            <span class="text-[10px] font-mono text-zf-brass mt-2" id="iso-dial-sub">Base SDR</span>
-                        </div>
-
-                        <!-- SHUTTER SPEED DIAL -->
-                        <div class="flex flex-col items-center">
-                            <span class="text-[11px] font-mono text-gray-400 uppercase tracking-wider mb-2">Shutter Dial</span>
-                            <div class="relative w-24 h-24 rounded-full bg-black border-4 border-zf-steel shadow-dial flex items-center justify-center cursor-pointer select-none dial-turn" id="shutter-dial">
-                                <div class="absolute inset-0 rounded-full border border-dashed border-zinc-800 pointer-events-none"></div>
-                                <div class="w-1.5 h-4 bg-zf-gold absolute top-0 rounded-b"></div>
-                                <span class="font-mono text-sm text-white font-bold" id="shutter-dial-val">1/50</span>
-                            </div>
-                            <span class="text-[10px] font-mono text-zf-brass mt-2" id="shutter-dial-sub">180° Cine</span>
-                        </div>
-
-                        <!-- EXPOSURE MODE SWITCH -->
-                        <div class="flex flex-col items-center">
-                            <span class="text-[11px] font-mono text-gray-400 uppercase tracking-wider mb-2">Tone Mode</span>
-                            <div class="bg-black border border-zf-steel rounded-lg p-1.5 w-full max-w-[110px] space-y-1">
-                                <button onclick="setToneMode('SDR')" id="tone-btn-SDR" class="w-full py-1 text-xs font-mono font-bold rounded bg-zf-gold text-black transition-all">SDR Flat</button>
-                                <button onclick="setToneMode('N-Log')" id="tone-btn-N-Log" class="w-full py-1 text-xs font-mono font-bold rounded text-gray-400 hover:text-white transition-all">N-Log</button>
-                            </div>
-                            <span class="text-[10px] font-mono text-zf-brass mt-2" id="tone-sub-info">Base ISO 100</span>
-                        </div>
-
-                    </div>
-
-                    <!-- APERTURE WINDOW (OLED MOCK) -->
-                    <div class="bg-black border-2 border-zf-steel rounded-lg p-3 flex justify-between items-center mb-6 shadow-inner">
-                        <div>
-                            <span class="text-[10px] font-mono text-zinc-500 uppercase block leading-none">Aperture</span>
-                            <span class="font-mono text-2xl font-bold text-cyan-400 tracking-tight leading-none" id="aperture-oled">f/4.0</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] font-mono text-zinc-500 uppercase block leading-none">Lens Aperture Ladder</span>
-                            <div class="flex gap-1 mt-1 justify-end">
-                                <span class="w-1.5 h-3 bg-cyan-900 rounded-full" id="ap-led-f2"></span>
-                                <span class="w-1.5 h-3 bg-cyan-900 rounded-full" id="ap-led-f2_8"></span>
-                                <span class="w-1.5 h-3 bg-cyan-900 rounded-full" id="ap-led-f4"></span>
-                                <span class="w-1.5 h-3 bg-cyan-900 rounded-full" id="ap-led-f5_6"></span>
-                                <span class="w-1.5 h-3 bg-cyan-900 rounded-full" id="ap-led-f8"></span>
-                                <span class="w-1.5 h-3 bg-cyan-900 rounded-full" id="ap-led-f11"></span>
-                                <span class="w-1.5 h-3 bg-cyan-900 rounded-full" id="ap-led-f16"></span>
-                            </div>
-                        </div>
-                    </div>
+            <!-- EXPOSURE EXPLANATION CARD -->
+            <div class="bg-retro-card border-l-4 border-retro-brass p-4 rounded-xl shadow-retro-card flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                <div class="space-y-1">
+                    <h3 class="font-serif font-bold text-base">Pure Exposure Mechanics (No-ND Filter Workflow)</h3>
+                    <p class="text-xs text-zinc-500">Since you have no physical ND filter accessories, you must govern direct daylight and low-lights using **only light levels, aperture, and shutter values**.</p>
                 </div>
-
-                <!-- Live Dial Readout Stats -->
-                <div class="border-t border-zf-steel pt-4 space-y-2.5 text-xs font-mono">
-                    <div class="flex justify-between items-center text-zinc-400">
-                        <span>Exposure Index (EV Deviation)</span>
-                        <span class="font-bold text-white" id="ev-deviation-val">±0.0 EV</span>
-                    </div>
-                    <div class="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden relative">
-                        <div class="absolute left-1/2 -translate-x-1/2 w-0.5 h-full bg-zinc-600 z-10"></div>
-                        <div class="bg-green-500 h-full w-[50%] transition-all duration-300" id="ev-bar" style="width: 50%;"></div>
-                    </div>
-                    <div class="flex justify-between text-[10px] text-zinc-500">
-                        <span>-3 Stops (Under)</span>
-                        <span>Balanced</span>
-                        <span>+3 Stops (Over)</span>
-                    </div>
-                    
-                    <div class="mt-4 p-3 rounded-lg bg-black/60 border border-zf-steel/50 text-[11px] text-gray-300 flex items-start gap-2">
-                        <i data-lucide="info" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                        <span id="dial-assistant-hint">Dials are currently linked to the active scenario. Use the Scenario Grid below to dynamically shift environment setup instantly!</span>
-                    </div>
+                <div class="flex gap-2 font-mono text-[10.5px]">
+                    <span class="bg-zinc-100 border border-zinc-200 px-2.5 py-1 rounded text-zinc-600">
+                        <strong class="text-retro-ink">SDR Flat Base:</strong> ISO 100
+                    </span>
+                    <span class="bg-zinc-100 border border-zinc-200 px-2.5 py-1 rounded text-zinc-600">
+                        <strong class="text-retro-ink">Log Base:</strong> ISO 800
+                    </span>
                 </div>
             </div>
 
-            <!-- RIGHT PANEL: HIGH-FIDELITY LCD VIEWFINDER MONITOR (7 COLS) -->
-            <div class="lg:col-span-7 bg-zf-carbon border border-zf-steel p-2 rounded-2xl shadow-2xl flex flex-col justify-between">
+            <!-- SIMULATOR BOARD -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
                 
-                <!-- CAMERA VIEW CONTAINER (MOCK SCREEN) -->
-                <div class="relative aspect-video bg-zf-screen rounded-xl overflow-hidden border border-black shadow-inner select-none" id="lcd-screen">
+                <!-- COLS 1-5: DETAILED NIKON Zf TOP PLATE CONTROL PANEL -->
+                <div class="lg:col-span-5 bg-retro-card border border-zinc-300 rounded-3xl p-6 shadow-retro-active flex flex-col justify-between relative overflow-hidden">
+                    <!-- Metal brass mechanical framing decoration -->
+                    <div class="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-retro-brass rounded-tl"></div>
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-retro-brass rounded-br"></div>
                     
-                    <!-- VIEWFINDER IMAGE LAYER -->
-                    <img id="lcd-bg-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" 
-                         class="absolute inset-0 w-full h-full object-cover opacity-85 transition-all duration-500" alt="Viewfinder Scene">
-                    
-                    <!-- EXPOSURE CLIPPING MASK (Zebra Overlays) -->
-                    <div class="absolute inset-0 pointer-events-none zebra-stripes opacity-0 transition-opacity duration-300" id="zebra-overlay"></div>
-                    
-                    <!-- GRID LAYER (3X3 Grid) -->
-                    <div class="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none" id="grid-layer">
-                        <div class="border-r border-b border-white/20"></div>
-                        <div class="border-r border-b border-white/20"></div>
-                        <div class="border-b border-white/20"></div>
-                        <div class="border-r border-b border-white/20"></div>
-                        <div class="border-r border-b border-white/20"></div>
-                        <div class="border-b border-white/20"></div>
-                        <div class="border-r border-white/20"></div>
-                        <div class="border-r border-white/20"></div>
-                        <div></div>
-                    </div>
-
-                    <!-- MOCK SUBJECT OUTLINE FOR FOCUS PEAKING -->
-                    <div class="absolute top-[25%] left-[30%] w-[35%] h-[55%] rounded-full border-2 border-red-500/0 pointer-events-none transition-all duration-300" id="focus-peak-outline"></div>
-
-                    <!-- OVERLAY: RED TALLY BORDER -->
-                    <div class="absolute inset-0 border-2 border-zf-red/80 pointer-events-none animate-pulse z-20" id="tally-border"></div>
-
-                    <!-- OVERLAY: HUD TOP BAR -->
-                    <div class="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-3 flex justify-between items-center text-xs font-mono text-white pointer-events-none z-20">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-zf-red animate-pulse" id="tally-dot"></span>
-                            <span class="font-bold tracking-widest text-[11px]" id="rec-status">REC</span>
-                            <span class="text-gray-300 text-[10px]" id="timecode">00:01:24:12</span>
+                    <div class="space-y-6 z-10">
+                        <div class="flex justify-between items-center pb-2 border-b border-zinc-200">
+                            <span class="text-[10px] uppercase font-mono tracking-widest text-zinc-400 font-bold">Nikon Zf Chassis top plate</span>
+                            <span class="bg-zinc-100 text-[9px] text-retro-brass border border-retro-brass/30 font-mono px-2 py-0.5 rounded font-bold uppercase">Manual (M) Dial Mode</span>
                         </div>
-                        <div class="flex items-center gap-3 text-[10px]">
-                            <span class="bg-black/50 px-1.5 py-0.5 rounded text-zf-gold font-bold">10-BIT MOV</span>
-                            <span class="bg-black/50 px-1.5 py-0.5 rounded text-gray-300">H.265</span>
-                            <span class="flex items-center gap-1 bg-black/50 px-1.5 py-0.5 rounded">
-                                <i data-lucide="battery" class="w-3.5 h-3.5 text-green-400"></i>
-                                89%
-                            </span>
-                        </div>
-                    </div>
 
-                    <!-- OVERLAY: HUD BOTTOM BAR -->
-                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 flex justify-between items-end text-xs font-mono text-white pointer-events-none z-20">
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-2">
-                                <span class="bg-zf-gold text-black font-bold px-1 rounded text-[10px]">M</span>
-                                <span class="text-white font-bold" id="hud-exposure">1/50</span>
-                                <span class="text-white font-bold" id="hud-aperture">f/4.0</span>
-                                <span class="text-zinc-400 font-semibold" id="hud-ev">±0.0</span>
-                            </div>
-                            <div class="flex gap-2 text-[10px] text-zinc-300">
-                                <span class="bg-black/30 px-1 rounded" id="hud-iso">ISO 100</span>
-                                <span class="bg-black/30 px-1 rounded" id="hud-wb">5600K</span>
-                                <span class="bg-black/30 px-1 rounded text-cyan-400 font-bold" id="hud-tone">SDR FLAT</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Audio Meter & Crop indicators -->
-                        <div class="flex flex-col items-end gap-1.5">
-                            <!-- Crop alert -->
-                            <div class="hidden" id="hud-crop-badge">
-                                <span class="bg-zf-amber text-black font-bold text-[9px] px-1 py-0.5 rounded uppercase flex items-center gap-1">
-                                    <i data-lucide="scaling" class="w-3 h-3"></i> 1.5x DX Crop (60mm Equiv)
-                                </span>
-                            </div>
+                        <!-- THE TOP-PLATE LAYOUT GRAPHIC (Physical dials representation) -->
+                        <div class="bg-retro-silver border border-zinc-300 rounded-2xl p-4 shadow-inner space-y-5">
                             
-                            <!-- Audio Level visualization -->
-                            <div class="bg-black/60 p-1.5 rounded border border-zinc-800 w-36">
-                                <div class="flex items-center justify-between text-[8px] text-zinc-400 mb-0.5">
-                                    <span>CH1/2</span>
-                                    <span>-12dB</span>
+                            <!-- TWO UPPER MECHANICAL DIALS AND MODE SELECTORS -->
+                            <div class="grid grid-cols-3 gap-3 text-center">
+                                
+                                <!-- LEFT ISO DIAL (Physical-like scale with silver texture and black core) -->
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-mono text-zinc-500 uppercase font-bold mb-1.5">ISO DIAL (Left)</span>
+                                    <div class="relative w-20 h-20 rounded-full border-4 border-retro-rim shadow-zf-dial flex items-center justify-center knurled-edge">
+                                        <div class="absolute inset-1 rounded-full bg-retro-ink flex items-center justify-center dial-turn" id="sim-iso-dial">
+                                            <!-- Pointer notched brass notch -->
+                                            <div class="w-1 h-3 bg-retro-brass absolute top-0 rounded-b shadow"></div>
+                                            <span class="font-mono text-[11px] text-white font-bold tracking-tight" id="sim-iso-dial-val">100</span>
+                                        </div>
+                                    </div>
+                                    <input type="range" min="0" max="8" value="0" class="w-full max-w-[80px] mt-2 h-1 bg-zinc-300 rounded accent-retro-brass" id="sim-iso-slider" oninput="changeIsoSlider(this.value)">
+                                    <span class="text-[8px] font-mono text-zinc-500 mt-1" id="sim-iso-sub">Base ISO 100</span>
                                 </div>
+
+                                <!-- CENTER SHUTTER SPEED DIAL -->
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-mono text-zinc-500 uppercase font-bold mb-1.5">SHUTTER (Right)</span>
+                                    <div class="relative w-20 h-20 rounded-full border-4 border-retro-rim shadow-zf-dial flex items-center justify-center knurled-edge">
+                                        <div class="absolute inset-1 rounded-full bg-retro-ink flex items-center justify-center dial-turn" id="sim-shutter-dial">
+                                            <div class="w-1 h-3 bg-retro-brass absolute top-0 rounded-b shadow"></div>
+                                            <span class="font-mono text-[11px] text-white font-bold tracking-tight" id="sim-shutter-dial-val">1/50</span>
+                                        </div>
+                                    </div>
+                                    <input type="range" min="0" max="10" value="1" class="w-full max-w-[80px] mt-2 h-1 bg-zinc-300 rounded accent-retro-brass" id="sim-shutter-slider" oninput="changeShutterSlider(this.value)">
+                                    <span class="text-[8px] font-mono text-zinc-500 mt-1" id="sim-shutter-sub">180° Cine Rule</span>
+                                </div>
+
+                                <!-- FAR RIGHT EXPOSURE COMPENSATION DIAL -->
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[9px] font-mono text-zinc-500 uppercase font-bold mb-1.5">EXP. COMP</span>
+                                    <div class="relative w-20 h-20 rounded-full border-4 border-retro-rim shadow-zf-dial flex items-center justify-center knurled-edge">
+                                        <div class="absolute inset-1 rounded-full bg-retro-ink flex items-center justify-center dial-turn" id="sim-ev-dial">
+                                            <div class="w-1 h-3 bg-retro-steel absolute top-0 rounded-b shadow"></div>
+                                            <span class="font-mono text-[11px] text-white font-bold tracking-tight" id="sim-ev-dial-val">±0.0</span>
+                                        </div>
+                                    </div>
+                                    <input type="range" min="-3" max="3" value="0" step="1" class="w-full max-w-[80px] mt-2 h-1 bg-zinc-300 rounded accent-retro-brass" id="sim-ev-slider" oninput="changeEvSlider(this.value)">
+                                    <span class="text-[8px] font-mono text-zinc-500 mt-1" id="sim-ev-sub">Physical stops</span>
+                                </div>
+
+                            </div>
+
+                            <!-- SMALL DIGITAL APERTURE WINDOW (Mock of the tiny LCD display window on the Zf top-plate!) -->
+                            <div class="bg-retro-ink rounded-xl p-3 flex justify-between items-center shadow-inner border border-zinc-800">
+                                <div>
+                                    <span class="text-[8px] font-mono text-zinc-400 uppercase block">Top F-LCD</span>
+                                    <span class="font-mono text-lg font-bold text-cyan-400 leading-none" id="sim-aperture-oled">F4.0</span>
+                                </div>
+                                <div class="w-1/2">
+                                    <span class="text-[8px] font-mono text-zinc-400 block text-right mb-1 uppercase">Aperture Ring</span>
+                                    <input type="range" min="1" max="7" value="3" class="w-full h-1.5 bg-zinc-800 rounded accent-cyan-400 border border-zinc-900 cursor-pointer" id="sim-aperture-slider" oninput="changeApertureSlider(this.value)">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- PHOTO / VIDEO / B&W SELECTOR SWITCH (Classic lever nested under Shutter speed dial) -->
+                        <div class="bg-zinc-100 rounded-xl p-3 border border-zinc-200 flex justify-between items-center text-xs font-mono">
+                            <span class="text-zinc-500 font-bold uppercase tracking-wider flex items-center gap-1">
+                                <i data-lucide="toggle-right" class="w-4 h-4 text-retro-brass"></i> Mode Switch
+                            </span>
+                            <div class="flex bg-zinc-200 rounded p-0.5 border border-zinc-300">
+                                <button onclick="setModeSwitch('photo')" id="mode-btn-photo" class="px-2.5 py-1 rounded text-[10px] font-bold text-zinc-500 transition-all">PHOTO</button>
+                                <button onclick="setModeSwitch('video')" id="mode-btn-video" class="px-2.5 py-1 rounded text-[10px] font-bold bg-retro-card text-retro-ink shadow-sm transition-all">VIDEO</button>
+                                <button onclick="setModeSwitch('bw')" id="mode-btn-bw" class="px-2.5 py-1 rounded text-[10px] font-bold text-zinc-500 transition-all">B&W</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- REAR METER COMPONENT: VIEW EXPOSURE VALUE SCALE -->
+                    <div class="border-t border-zinc-200 pt-4 mt-6 space-y-3 font-mono text-xs text-zinc-600 z-10">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold flex items-center gap-1"><i data-lucide="aperture" class="w-3.5 h-3.5 text-retro-brass"></i> Live Optics Exposure Match</span>
+                            <span class="font-bold text-retro-ink" id="sim-ev-deviation">±0.0 EV (Balanced)</span>
+                        </div>
+                        <div class="w-full bg-zinc-200 h-2.5 rounded-full overflow-hidden relative border border-zinc-300">
+                            <!-- Safe Zone center indicators -->
+                            <div class="absolute left-1/2 -translate-x-1/2 w-1.5 h-full bg-retro-ink z-10"></div>
+                            <div class="absolute left-[35%] right-[35%] top-0 bottom-0 bg-green-500/10 border-x border-green-500/25 pointer-events-none"></div>
+                            <div class="bg-retro-brass h-full w-[50%] transition-all duration-300 shadow-inner" id="sim-ev-bar"></div>
+                        </div>
+                        <div class="flex justify-between text-[9px] text-zinc-400">
+                            <span>-3 Stops (Under)</span>
+                            <span class="text-retro-green font-bold">Matched Zone</span>
+                            <span>+3 Stops (Over)</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLS 6-12: HIGH FIDELITY ELECTRONIC VIEWFINDER MOCK SCREEN -->
+                <div class="lg:col-span-7 bg-retro-card border border-zinc-300 rounded-3xl p-3 shadow-retro-active flex flex-col justify-between">
+                    
+                    <!-- VIEWFINDER COMPONENT FRAME -->
+                    <div class="relative aspect-video bg-black rounded-2xl overflow-hidden shadow-zf-lens border border-zinc-900" id="sim-viewfinder">
+                        
+                        <!-- SCENIC IMAGE SOURCE LAYER -->
+                        <img id="sim-vf-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" 
+                             class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-none" style="filter: brightness(1);">
+                        
+                        <!-- BRIGHTNESS OVERLAYS -->
+                        <div class="absolute inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300" id="sim-vf-underexpose-overlay"></div>
+                        <div class="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-300" id="sim-vf-overexpose-overlay"></div>
+
+                        <!-- HIGH HIGHLIGHT ZEBRA -->
+                        <div class="absolute inset-0 pointer-events-none zebra-stripes opacity-0 transition-opacity duration-300 z-10" id="sim-zebra-layer"></div>
+                        
+                        <!-- CHRONIC FLICKER LINE OVERLAY -->
+                        <div class="absolute inset-0 pointer-events-none flicker-overlay opacity-0 transition-opacity duration-300 z-10" id="sim-flicker-layer"></div>
+
+                        <!-- 3x3 GRIDLINES OVERLAY -->
+                        <div class="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none" id="sim-grid-layer">
+                            <div class="border-r border-b border-white/20"></div>
+                            <div class="border-r border-b border-white/20"></div>
+                            <div class="border-b border-white/20"></div>
+                            <div class="border-r border-b border-white/20"></div>
+                            <div class="border-r border-b border-white/20"></div>
+                            <div class="border-b border-white/20"></div>
+                            <div class="border-r border-white/20"></div>
+                            <div class="border-r border-white/20"></div>
+                            <div></div>
+                        </div>
+
+                        <!-- FOCUS PEAK OUTLINE INDICATORS -->
+                        <div class="absolute top-[28%] left-[34%] w-[33%] h-[50%] rounded-full pointer-events-none transition-all duration-300 z-10" id="sim-peak-layer"></div>
+
+                        <!-- HUD OVERLAYS -->
+                        <div class="absolute inset-0 flex flex-col justify-between p-4 pointer-events-none z-20 text-white font-mono text-[10.5px]">
+                            
+                            <!-- Top HUD Bar -->
+                            <div class="flex justify-between items-center bg-gradient-to-b from-black/75 to-transparent absolute top-0 left-0 right-0 p-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-retro-red rounded-full animate-pulse"></span>
+                                    <span class="font-bold tracking-widest text-[11px]">REC</span>
+                                    <span class="text-zinc-300" id="sim-timecode">00:02:18:14</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="bg-black/40 px-1.5 py-0.5 rounded border border-zinc-700 text-retro-brass font-bold">10-BIT MOV</span>
+                                    <span class="bg-black/40 px-1.5 py-0.5 rounded border border-zinc-700">25 FPS</span>
+                                </div>
+                            </div>
+
+                            <!-- Bottom HUD Bar -->
+                            <div class="flex justify-between items-end bg-gradient-to-t from-black/85 to-transparent absolute bottom-0 left-0 right-0 p-3 pt-6">
                                 <div class="space-y-1">
-                                    <div class="h-1 w-full bg-zinc-900 rounded overflow-hidden relative">
-                                        <div class="absolute right-[24%] top-0 bottom-0 w-0.5 bg-zinc-600"></div> <!-- -12dB marker -->
-                                        <div class="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 transition-all duration-100" id="audio-bar-1" style="width: 65%;"></div>
+                                    <div class="flex items-center gap-2 text-xs">
+                                        <span class="bg-retro-gold text-black px-1 rounded font-bold text-[9px] uppercase">M</span>
+                                        <span class="font-bold text-white" id="hud-shutter-val">1/50</span>
+                                        <span class="font-bold text-white" id="hud-ap-val">F4.0</span>
+                                        <span class="font-semibold text-zinc-300" id="hud-comp-val">±0.0</span>
                                     </div>
+                                    <div class="flex gap-1.5 text-[9px] text-zinc-400">
+                                        <span class="bg-black/50 px-1 rounded" id="hud-iso-val">ISO 100</span>
+                                        <span class="bg-black/50 px-1 rounded text-cyan-400 font-bold" id="hud-tone-val">SDR FLAT</span>
+                                        <span class="bg-black/50 px-1 rounded" id="hud-wb-val">5600K</span>
+                                    </div>
+                                </div>
+
+                                <!-- Audio level bar -->
+                                <div class="bg-black/50 border border-zinc-800 p-1.5 rounded w-32">
                                     <div class="h-1 w-full bg-zinc-900 rounded overflow-hidden relative">
-                                        <div class="absolute right-[24%] top-0 bottom-0 w-0.5 bg-zinc-600"></div> <!-- -12dB marker -->
-                                        <div class="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 transition-all duration-100" id="audio-bar-2" style="width: 60%;"></div>
+                                        <div class="absolute right-[24%] h-full w-0.5 bg-zinc-700"></div>
+                                        <div class="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500" id="sim-audio-meter-1" style="width: 50%;"></div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
+                        <!-- LIVE CANVAS WAVEFORM -->
+                        <div class="absolute bottom-14 left-4 bg-black/85 border border-zinc-800 p-1 rounded z-20 w-28 h-16 pointer-events-none hidden md:block" id="sim-waveform-container">
+                            <canvas id="sim-waveform-canvas" class="w-full h-full bg-black/90"></canvas>
+                        </div>
+
                     </div>
 
-                    <!-- LIVE WAVEFORM CANVAS OVERLAY -->
-                    <div class="absolute bottom-14 left-3 bg-black/70 border border-zinc-800 p-1 rounded z-20 w-32 h-20 pointer-events-none hidden md:block" id="waveform-box">
-                        <span class="text-[8px] font-mono text-zinc-400 block mb-0.5">WAVEFORM MONITOR</span>
-                        <canvas id="waveform-canvas" class="w-full h-[calc(100%-12px)] bg-black/90"></canvas>
+                    <!-- VIEW AID TOGGLE SWITCHES -->
+                    <div class="grid grid-cols-4 gap-2 text-xs font-mono mt-3">
+                        <button onclick="toggleVfAid('grid')" id="btn-vf-grid" class="bg-zinc-200 hover:bg-zinc-300 border border-zinc-300 py-1.5 rounded-lg text-retro-ink transition-all flex items-center justify-center gap-1.5 font-bold">
+                            <i data-lucide="grid-3x3" class="w-3.5 h-3.5"></i> Grid
+                        </button>
+                        <button onclick="toggleVfAid('waveform')" id="btn-vf-wave" class="bg-zinc-200 hover:bg-zinc-300 border border-zinc-300 py-1.5 rounded-lg text-retro-ink transition-all flex items-center justify-center gap-1.5 font-bold">
+                            <i data-lucide="activity" class="w-3.5 h-3.5"></i> Waveform
+                        </button>
+                        <button onclick="toggleVfAid('zebra')" id="btn-vf-zebra" class="bg-zinc-200 hover:bg-zinc-300 border border-zinc-300 py-1.5 rounded-lg text-retro-ink transition-all flex items-center justify-center gap-1.5 font-bold">
+                            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Zebras
+                        </button>
+                        <button onclick="toggleVfAid('peaking')" id="btn-vf-peak" class="bg-zinc-200 hover:bg-zinc-300 border border-zinc-300 py-1.5 rounded-lg text-retro-ink transition-all flex items-center justify-center gap-1.5 font-bold">
+                            <i data-lucide="focus" class="w-3.5 h-3.5 text-retro-red"></i> Peaking
+                        </button>
                     </div>
 
                 </div>
 
-                <!-- LCD CONTROLS -->
-                <div class="mt-3 grid grid-cols-4 gap-2 text-xs font-mono">
-                    <button onclick="toggleViewfinderOverlay('grid')" id="btn-overlay-grid" class="bg-zinc-800 border border-zinc-700 hover:border-zf-gold py-1.5 rounded transition text-white flex items-center justify-center gap-1">
-                        <i data-lucide="grid-3x3" class="w-3.5 h-3.5"></i> Grid
+            </section>
+
+            <!-- SCENARIO CARD QUICK SELECTOR -->
+            <section class="space-y-4">
+                <h3 class="font-serif font-bold text-lg text-retro-ink flex items-center gap-2">
+                    <span class="w-2.5 h-5 bg-retro-brass rounded"></span> Sync Viewfinder with Shooting Scenarios
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                    <button onclick="selectSimScenario('scen-shade')" class="sim-scen-btn p-3.5 rounded-xl border border-zinc-300 bg-retro-card text-left hover:border-retro-brass transition shadow-sm font-mono text-xs">
+                        <strong class="text-retro-ink block font-serif text-sm">Outdoor Shade</strong>
+                        25p · 1/50 · f/4 · ISO 100
                     </button>
-                    <button onclick="toggleViewfinderOverlay('waveform')" id="btn-overlay-waveform" class="bg-zinc-800 border border-zinc-700 hover:border-zf-gold py-1.5 rounded transition text-white flex items-center justify-center gap-1">
-                        <i data-lucide="activity" class="w-3.5 h-3.5"></i> Waveform
+                    <button onclick="selectSimScenario('scen-sun')" class="sim-scen-btn p-3.5 rounded-xl border border-zinc-300 bg-retro-card text-left hover:border-retro-brass transition shadow-sm font-mono text-xs">
+                        <strong class="text-retro-ink block font-serif text-sm">Harsh Direct Sun</strong>
+                        25p · 1/500 · f/8 · ISO 100
                     </button>
-                    <button onclick="toggleViewfinderOverlay('zebra')" id="btn-overlay-zebra" class="bg-zinc-800 border border-zinc-700 hover:border-zf-gold py-1.5 rounded transition text-white flex items-center justify-center gap-1">
-                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> Zebras (95%)
+                    <button onclick="selectSimScenario('scen-cafe')" class="sim-scen-btn p-3.5 rounded-xl border border-zinc-300 bg-retro-card text-left hover:border-retro-brass transition shadow-sm font-mono text-xs">
+                        <strong class="text-retro-ink block font-serif text-sm">Cozy Cafe Interior</strong>
+                        25p · 1/50 · f/2 · ISO 1600
                     </button>
-                    <button onclick="toggleViewfinderOverlay('peaking')" id="btn-overlay-peaking" class="bg-zinc-800 border border-zinc-700 hover:border-zf-gold py-1.5 rounded transition text-white flex items-center justify-center gap-1 animate-pulse">
-                        <i data-lucide="focus" class="w-3.5 h-3.5 text-zf-red"></i> Peaking
+                    <!-- Night Indoor scenario -->
+                    <button onclick="selectSimScenario('scen-night-indoor')" class="sim-scen-btn p-3.5 rounded-xl border border-zinc-300 bg-retro-card text-left hover:border-retro-brass transition shadow-sm font-mono text-xs">
+                        <strong class="text-retro-ink block font-serif text-sm">Night Indoor Home</strong>
+                        25p · 1/50 · f/2 · ISO 1600
+                    </button>
+                    <!-- Night Outdoor Scene scenario -->
+                    <button onclick="selectSimScenario('scen-night-scene')" class="sim-scen-btn p-3.5 rounded-xl border border-zinc-300 bg-retro-card text-left hover:border-retro-brass transition shadow-sm font-mono text-xs">
+                        <strong class="text-retro-ink block font-serif text-sm">Night Outdoor Scene</strong>
+                        25p · 1/50 · f/2 · ISO 3200
                     </button>
                 </div>
-            </div>
+            </section>
+
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 2: SCENARIO CHALLENGES                                        -->
+        <!-- ================================================================= -->
+        <div id="tab-content-challenges" class="tab-pane hidden space-y-6">
             
-        </section>
-
-        <!-- ================= SECTION 1: SCENARIO MATRIX ================= -->
-        <section class="space-y-4">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                <div>
-                    <h2 class="text-xl font-serif font-bold text-white tracking-wide flex items-center gap-2">
-                        <span class="w-2.5 h-5 bg-zf-gold rounded"></span> Scenario Quick-Table & Live Setup
-                    </h2>
-                    <p class="text-xs text-zinc-400">Click on any creative shooting scenario to instantly synchronize the camera settings on the console and preview rules.</p>
-                </div>
-                
-                <!-- Category filter tags -->
-                <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-                    <button onclick="filterScenarios('all')" class="scen-filter-btn px-2.5 py-1 rounded-full bg-zf-gold text-black font-semibold" id="filter-all">All</button>
-                    <button onclick="filterScenarios('daylight')" class="scen-filter-btn px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700" id="filter-daylight">Daylight/Shade</button>
-                    <button onclick="filterScenarios('interior')" class="scen-filter-btn px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700" id="filter-interior">Interiors/Cafe</button>
-                    <button onclick="filterScenarios('night')" class="scen-filter-btn px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700" id="filter-night">Night/Street</button>
-                    <button onclick="filterScenarios('specialty')" class="scen-filter-btn px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700" id="filter-specialty">Specialty</button>
-                </div>
-            </div>
-
-            <!-- Responsive Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="scenario-grid">
-                <!-- Javascript will inject scenario cards here -->
-            </div>
-
-            <!-- Active Scenario Details & Advisory Panel -->
-            <div class="bg-zf-carbon border border-zf-gold/30 rounded-2xl p-6 shadow-xl relative" id="scenario-advisory-panel">
-                <div class="absolute top-0 right-6 bg-zf-gold text-black font-mono text-[10px] font-bold px-3 py-1 rounded-b uppercase shadow">
-                    Active Director's Notes
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                    <div class="lg:col-span-4 space-y-3">
-                        <div class="flex items-center gap-2.5">
-                            <span class="p-2 bg-zf-gold/10 border border-zf-gold/30 rounded-xl text-zf-gold" id="advisory-icon-container">
-                                <i data-lucide="video" class="w-5 h-5"></i>
-                            </span>
-                            <div>
-                                <h3 class="font-serif text-lg font-bold text-white" id="advisory-title">Select a Scenario</h3>
-                                <p class="text-[11px] text-zinc-400 font-mono tracking-wider" id="advisory-category">OUTDOOR / SHADE</p>
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2">
-                            <div class="bg-black/40 border border-zinc-800 p-2.5 rounded-lg">
-                                <span class="text-zinc-500 block text-[10px] uppercase">Frame Rate</span>
-                                <span class="text-white font-bold text-sm" id="adv-fps">25p</span>
-                            </div>
-                            <div class="bg-black/40 border border-zinc-800 p-2.5 rounded-lg">
-                                <span class="text-zinc-500 block text-[10px] uppercase">Shutter</span>
-                                <span class="text-white font-bold text-sm text-cyan-400" id="adv-shutter">1/50</span>
-                            </div>
-                            <div class="bg-black/40 border border-zinc-800 p-2.5 rounded-lg">
-                                <span class="text-zinc-500 block text-[10px] uppercase">Aperture</span>
-                                <span class="text-white font-bold text-sm text-cyan-400" id="adv-aperture">f/4.0</span>
-                            </div>
-                            <div class="bg-black/40 border border-zinc-800 p-2.5 rounded-lg">
-                                <span class="text-zinc-500 block text-[10px] uppercase">Target ISO</span>
-                                <span class="text-white font-bold text-sm" id="adv-iso">ISO 100</span>
-                            </div>
-                        </div>
+            <div class="bg-retro-card border border-zinc-300 rounded-3xl p-6 shadow-retro-card">
+                <div class="flex justify-between items-center pb-4 border-b border-zinc-200">
+                    <div>
+                        <h2 class="font-serif text-xl font-bold">Nikon Zf Director's Practical Shooting Challenges</h2>
+                        <p class="text-xs text-zinc-500 mt-0.5">Simulate actual challenging scenarios on set. Balance your camera dials on the left and test your knowledge!</p>
                     </div>
+                    <span class="bg-retro-brass/10 border border-retro-brass text-retro-brass px-3 py-1 text-xs font-mono rounded-lg font-bold">Interactive Game Mode</span>
+                </div>
 
-                    <div class="lg:col-span-5 space-y-4 border-y lg:border-y-0 lg:border-x border-zinc-800 py-4 lg:py-0 lg:px-6">
-                        <div>
-                            <span class="text-xs uppercase font-mono text-zf-gold block mb-1 flex items-center gap-1">
-                                <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Scenario Guide & Why It Works
-                            </span>
-                            <p class="text-sm text-gray-300 leading-relaxed" id="advisory-desc">
-                                Select a shooting environment from the grid above to load exact cinematic setup data, lighting theory, and dial matching instructions.
+                <!-- CHALLENGE SELECTOR GRID -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                    <button onclick="loadChallenge('chall-sun')" id="btn-chall-sun" class="challenge-select-btn p-4 rounded-xl border border-retro-brass bg-[#FAF7F0] text-left hover:border-retro-brass transition shadow-sm space-y-1">
+                        <span class="text-[10px] font-mono font-bold text-retro-brass uppercase">CHALLENGE 01</span>
+                        <h4 class="font-serif font-bold text-sm text-retro-ink">The High Noon Interview</h4>
+                        <p class="text-xs text-zinc-500 leading-snug">Delhi high-noon direct sun. Blur out the background (f/2.8 bokeh) but prevent clipping, with no ND filter!</p>
+                    </button>
+                    
+                    <button onclick="loadChallenge('chall-flicker')" id="btn-chall-flicker" class="challenge-select-btn p-4 rounded-xl border border-zinc-200 bg-retro-card text-left hover:border-retro-brass transition shadow-sm space-y-1">
+                        <span class="text-[10px] font-mono font-bold text-zinc-400 uppercase">CHALLENGE 02</span>
+                        <h4 class="font-serif font-bold text-sm text-retro-ink">Flickering Bistro b-roll</h4>
+                        <p class="text-xs text-zinc-500 leading-snug">Cheap 50Hz LED lights indoors. Eliminate ugly horizontal rolling lines while capturing deep room details.</p>
+                    </button>
+
+                    <button onclick="loadChallenge('chall-night')" id="btn-chall-night" class="challenge-select-btn p-4 rounded-xl border border-zinc-200 bg-retro-card text-left hover:border-retro-brass transition shadow-sm space-y-1">
+                        <span class="text-[10px] font-mono font-bold text-zinc-400 uppercase">CHALLENGE 03</span>
+                        <h4 class="font-serif font-bold text-sm text-retro-ink">The Mood Light street scene</h4>
+                        <p class="text-xs text-zinc-500 leading-snug">Night low-light outdoor shooting. Capture deep clean shadow blacks without noisy grain artifacts.</p>
+                    </button>
+                </div>
+
+                <!-- CURRENT CHALLENGE GAME PANEL -->
+                <div class="mt-8 border border-zinc-300 rounded-2xl p-6 bg-[#FAF7F0] relative overflow-hidden" id="challenge-workspace">
+                    <div class="absolute top-0 right-0 bg-retro-brass text-white font-mono text-[9px] font-bold px-3 py-1 rounded-bl uppercase tracking-widest">
+                        Workspace Active
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <!-- Challenge parameters -->
+                        <div class="lg:col-span-7 space-y-4">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-retro-brass text-white font-mono text-[9px] font-bold rounded" id="chall-workspace-badge">CHALLENGE 1</span>
+                                <h3 class="font-serif text-lg font-bold" id="chall-workspace-title">The High Noon Interview</h3>
+                            </div>
+                            
+                            <p class="text-sm text-zinc-700 leading-relaxed" id="chall-workspace-desc">
+                                Delhi high-noon direct sun. Blur out the background (f/2.8 bokeh) but prevent clipping, with no ND filter!
                             </p>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-3 text-xs font-mono">
-                            <div>
-                                <span class="text-zinc-500 text-[10px] block uppercase">White Balance</span>
-                                <span class="text-white flex items-center gap-1 mt-0.5" id="adv-wb">
-                                    <i data-lucide="sun" class="w-3.5 h-3.5 text-yellow-500"></i> 6500 K (Shade)
-                                </span>
-                            </div>
-                            <div>
-                                <span class="text-zinc-500 text-[10px] block uppercase">Suggested Tone</span>
-                                <span class="text-white flex items-center gap-1 mt-0.5" id="adv-tone">
-                                    Flat SDR (Daily)
-                                </span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Tactical checklist advice -->
-                    <div class="lg:col-span-3 space-y-3">
-                        <span class="text-xs uppercase font-mono text-zf-gold block flex items-center gap-1">
-                            <i data-lucide="shield-check" class="w-4 h-4"></i> No-ND Protection Rule
-                        </span>
-                        
-                        <div class="p-3 bg-black/60 rounded-xl border border-zinc-800 text-xs text-gray-300 space-y-2" id="adv-no-nd-rules">
-                            <div class="flex items-start gap-2">
-                                <i data-lucide="alert-triangle" class="w-4 h-4 text-zf-amber flex-shrink-0 mt-0.5"></i>
-                                <span>No ND available. Expose carefully using the physical shutter speeds.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= SECTION 2: INTERACTIVE NO-ND DAYLIGHT LADDER ================= -->
-        <section class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl space-y-6">
-            <div>
-                <h2 class="text-xl font-serif font-bold text-white tracking-wide flex items-center gap-2">
-                    <span class="w-2.5 h-5 bg-zf-gold rounded"></span> The Direct Sun Exposure Ladder (ISO 100)
-                </h2>
-                <p class="text-xs text-zinc-400">Since you cannot filter sunlight with an ND filter, use this visual tool to select a direct sun "exposure rung" and understand the look tradeoffs instantly.</p>
-            </div>
-
-            <!-- APERTURE SLIDER -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-black/50 p-6 rounded-xl border border-zinc-800">
-                
-                <!-- Slide Control (5 cols) -->
-                <div class="lg:col-span-5 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-mono text-zinc-300">Set Aperture Target:</span>
-                        <span class="font-mono text-2xl font-bold text-zf-gold" id="ladder-aperture-display">f/8.0</span>
-                    </div>
-                    
-                    <!-- Custom styled slider -->
-                    <div class="relative pt-2">
-                        <input type="range" min="1" max="6" value="4" step="1" 
-                               class="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-zf-gold border border-zinc-700" 
-                               id="ladder-slider" oninput="updateLadderFromSlider(this.value)">
-                        <div class="flex justify-between text-[10px] font-mono text-zinc-500 px-1 mt-2">
-                            <span>f/2.8</span>
-                            <span>f/4</span>
-                            <span>f/5.6</span>
-                            <span class="text-zf-gold font-bold">f/8 (Best)</span>
-                            <span>f/11</span>
-                            <span>f/16</span>
-                        </div>
-                    </div>
-                    
-                    <div class="p-3 bg-zinc-900/80 rounded-lg border border-zinc-800 text-xs text-gray-300 space-y-2">
-                        <span class="text-[10px] font-mono text-zinc-500 uppercase block">Daylight Rule of Thumb</span>
-                        <p id="ladder-rule-text">f/8 balanced aperture provides the best optical daylight sweet spot for locking a 1/500 shutter with natural handheld moves.</p>
-                    </div>
-                </div>
-
-                <!-- Outputs: Required Shutter Speed & Visual Look (7 cols) -->
-                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    
-                    <!-- Required Shutter Speed -->
-                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-mono text-zinc-500 uppercase block leading-none mb-1">Required Shutter</span>
-                            <span class="font-mono text-3xl font-extrabold text-cyan-400 tracking-tight" id="ladder-shutter-val">1/500</span>
-                        </div>
-                        <div class="text-[10px] font-mono mt-3 text-zinc-400 border-t border-zinc-800 pt-2" id="ladder-shutter-status">
-                            Safe from camera flicker
-                        </div>
-                    </div>
-
-                    <!-- Motion Signature -->
-                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex flex-col justify-between relative overflow-hidden">
-                        <div>
-                            <span class="text-[10px] font-mono text-zinc-500 uppercase block leading-none mb-1">Motion Signature</span>
-                            <span class="font-bold text-white text-base block mt-1" id="ladder-motion-title">Balanced</span>
-                        </div>
-                        
-                        <!-- Mini animated visual judder indicator -->
-                        <div class="h-8 bg-black/60 rounded border border-zinc-800 flex items-center justify-center relative mt-3">
-                            <span class="text-[9px] text-zinc-500 uppercase tracking-widest absolute left-2 font-mono">Judder</span>
-                            <div class="w-3.5 h-3.5 rounded-full bg-zf-red" id="judder-ball"></div>
-                        </div>
-                    </div>
-
-                    <!-- Optical Blur (Bokeh) and Diffraction -->
-                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-mono text-zinc-500 uppercase block leading-none mb-1">Optical Quality</span>
-                            <span class="font-bold text-white text-base block mt-1" id="ladder-optical-title">Tac-Sharp Sweet Spot</span>
-                        </div>
-                        
-                        <div class="space-y-1.5 mt-3 text-xs">
-                            <div class="flex justify-between items-center text-[10px] text-zinc-400">
-                                <span>Background Blur:</span>
-                                <span class="font-bold text-zf-gold font-mono" id="ladder-blur-stars">★★★☆☆</span>
-                            </div>
-                            <div class="flex justify-between items-center text-[10px] text-zinc-400">
-                                <span>Diffraction risk:</span>
-                                <span class="font-mono" id="ladder-diffraction-val">None (Sharpest)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- High Shutter Rules Checklist -->
-            <div class="bg-black/20 border border-zf-steel p-4 rounded-xl">
-                <span class="text-xs font-mono uppercase text-zf-gold block mb-3 flex items-center gap-1">
-                    <i data-lucide="shield-check" class="w-4 h-4"></i> Rules for Shooting at High Shutter Speeds
-                </span>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-gray-300">
-                    <div class="flex gap-2">
-                        <span class="w-5 h-5 rounded-full bg-zf-gold/10 border border-zf-gold/30 flex items-center justify-center font-mono text-[10px] text-zf-gold font-bold flex-shrink-0">1</span>
-                        <p><strong>Move VERY slowly:</strong> Lock the camera off or slide gently. Sharp pans trigger severe judder above 1/125.</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <span class="w-5 h-5 rounded-full bg-zf-gold/10 border border-zf-gold/30 flex items-center justify-center font-mono text-[10px] text-zf-gold font-bold flex-shrink-0">2</span>
-                        <p><strong>Gentle Subject Action:</strong> Avoid rapid cross-frame walks; they look artificial and choppy.</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <span class="w-5 h-5 rounded-full bg-zf-gold/10 border border-zf-gold/30 flex items-center justify-center font-mono text-[10px] text-zf-gold font-bold flex-shrink-0">3</span>
-                        <p><strong>The Slow-Mo Hack:</strong> Record 50p at 1/1000. Slowing it down to 25p in post entirely hides high-shutter stutter!</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <span class="w-5 h-5 rounded-full bg-zf-gold/10 border border-zf-gold/30 flex items-center justify-center font-mono text-[10px] text-zf-gold font-bold flex-shrink-0">4</span>
-                        <p><strong>Maintain Match:</strong> Keep shutter consistent within a scene. Don't mix 1/50 and 1/1000 in cuts.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= SECTION 3: DEPTH-OF-FIELD CALCULATOR & VISUALIZER ================= -->
-        <section class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl space-y-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                <div>
-                    <h2 class="text-xl font-serif font-bold text-white tracking-wide flex items-center gap-2">
-                        <span class="w-2.5 h-5 bg-zf-gold rounded"></span> Focus & Depth-of-Field Visualizer
-                    </h2>
-                    <p class="text-xs text-zinc-400">Calculate focus range, near/far limits, and subject depth tolerances for the standard 40mm lens dynamically.</p>
-                </div>
-                
-                <!-- Crop factor indicator (automatic or user toggle) -->
-                <div class="flex items-center gap-2 bg-black border border-zinc-800 px-3 py-1 rounded-lg">
-                    <span class="text-xs font-mono text-zinc-400">Crop Factor:</span>
-                    <button onclick="toggleDofCrop()" id="dof-crop-btn" class="text-xs font-mono bg-zf-carbon border border-zf-steel text-white px-2 py-0.5 rounded flex items-center gap-1 hover:border-zf-gold transition">
-                        <span class="w-2 h-2 rounded-full bg-green-500" id="dof-crop-dot"></span> FX Full Frame (40mm)
-                    </button>
-                </div>
-            </div>
-
-            <!-- CONTROLS + VISUAL GRAPHIC -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                
-                <!-- Calculator Inputs (5 cols) -->
-                <div class="lg:col-span-5 bg-black/40 border border-zinc-800 p-5 rounded-xl space-y-5 flex flex-col justify-between">
-                    
-                    <!-- Subject Distance Slider -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-zinc-400">Subject Distance:</span>
-                            <span class="font-bold text-white" id="dof-dist-display">1.50 m</span>
-                        </div>
-                        <input type="range" min="0.3" max="6.0" value="1.5" step="0.1" 
-                               class="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-zf-gold border border-zinc-700" 
-                               id="dof-dist-slider" oninput="calculateDof()">
-                        <div class="flex justify-between text-[10px] font-mono text-zinc-500">
-                            <span>0.29m (Min Limit)</span>
-                            <span>2.0m</span>
-                            <span>4.0m</span>
-                            <span>6.0m+</span>
-                        </div>
-                    </div>
-
-                    <!-- Aperture Slider -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-zinc-400">Aperture Size:</span>
-                            <span class="font-bold text-white" id="dof-aperture-display">f/2.8</span>
-                        </div>
-                        <input type="range" min="1" max="7" value="2" step="1" 
-                               class="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-zf-gold border border-zinc-700" 
-                               id="dof-ap-slider" oninput="calculateDof()">
-                        <div class="flex justify-between text-[10px] font-mono text-zinc-500">
-                            <span>f/2.0</span>
-                            <span>f/2.8</span>
-                            <span>f/4.0</span>
-                            <span>f/5.6</span>
-                            <span>f/8.0</span>
-                            <span>f/11</span>
-                            <span>f/16</span>
-                        </div>
-                    </div>
-
-                    <!-- Math details readout -->
-                    <div class="border-t border-zinc-800 pt-4 space-y-3 font-mono text-xs text-gray-300">
-                        <div class="flex justify-between">
-                            <span class="text-zinc-500">Focus Near Limit:</span>
-                            <span class="text-white" id="dof-near">1.42 m</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-zinc-500">Focus Far Limit:</span>
-                            <span class="text-white" id="dof-far">1.59 m</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-zinc-500">Total Focus Zone (DoF):</span>
-                            <span class="text-cyan-400 font-bold text-sm" id="dof-total">~ 17 cm</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-zinc-500">Hyperfocal Distance:</span>
-                            <span class="text-white" id="dof-hyper">13.37 m</span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Graphic Focus Range Visualizer (7 cols) -->
-                <div class="lg:col-span-7 bg-zinc-950/80 border border-zinc-800 rounded-xl p-5 flex flex-col justify-between relative overflow-hidden min-h-[250px]">
-                    <span class="text-[10px] font-mono text-zinc-500 uppercase absolute top-4 left-4">Visual Focus Tolerance Map</span>
-                    
-                    <!-- DYNAMIC 2D PLOT -->
-                    <div class="flex-1 flex flex-col justify-center py-6 relative">
-                        
-                        <!-- CAMERA ICON (Static Left) -->
-                        <div class="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 text-center">
-                            <div class="p-2.5 bg-zinc-900 border border-zinc-700 rounded-lg text-zf-gold">
-                                <i data-lucide="camera" class="w-6 h-6"></i>
-                            </div>
-                            <span class="text-[9px] font-mono text-zinc-500">Nikon Zf</span>
-                        </div>
-
-                        <!-- FOCUS RANGE LANE -->
-                        <div class="ml-24 mr-8 h-12 bg-zinc-900 border-y border-zinc-800 rounded-full flex items-center relative overflow-hidden">
-                            <!-- Out of Focus overlay Left -->
-                            <div class="absolute left-0 top-0 bottom-0 bg-red-950/20 border-r border-red-500/30" id="visual-oof-left"></div>
-                            
-                            <!-- IN FOCUS ZONE (Dynamic Width & Position) -->
-                            <div class="absolute bg-green-500/20 border-x-2 border-green-500 h-full flex items-center justify-center transition-all duration-300" id="visual-focus-zone" style="left: 40%; width: 25%;">
-                                <div class="w-full text-center text-[9px] font-mono text-green-400 uppercase font-bold tracking-widest hidden sm:block">
-                                    Focus Zone
+                            <!-- Objective Criteria lists -->
+                            <div class="p-3 bg-retro-card border border-zinc-200 rounded-xl space-y-2 text-xs">
+                                <span class="text-[10px] font-mono uppercase text-zinc-400 block font-bold">Objectives to Meet:</span>
+                                <div id="chall-objectives" class="space-y-1 text-zinc-600">
+                                    <!-- Dynamic elements injected here -->
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- User dials matching checker -->
+                        <div class="lg:col-span-5 bg-retro-card border border-zinc-300 p-5 rounded-2xl text-center space-y-5 shadow-sm">
+                            <span class="text-xs uppercase font-mono tracking-widest text-zinc-400 block">Your Live Simulator Settings</span>
                             
-                            <!-- SUBJECT ICON (Dynamic position along the line) -->
-                            <div class="absolute top-1/2 -translate-y-1/2 flex flex-col items-center z-10 transition-all duration-300" id="visual-subject-pin" style="left: 50%;">
-                                <div class="p-1 bg-zf-gold rounded-full border border-black text-black">
-                                    <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                            <div class="grid grid-cols-3 gap-2 text-xs font-mono">
+                                <div class="bg-zinc-100 p-2.5 rounded-lg border border-zinc-200">
+                                    <span class="text-[9px] text-zinc-400 block">ISO</span>
+                                    <strong class="text-retro-ink text-sm block mt-0.5" id="game-readout-iso">100</strong>
                                 </div>
-                                <span class="text-[8px] font-mono text-white absolute -bottom-5 whitespace-nowrap bg-zinc-900 px-1 border border-zinc-800 rounded">
-                                    Subject
-                                </span>
+                                <div class="bg-zinc-100 p-2.5 rounded-lg border border-zinc-200">
+                                    <span class="text-[9px] text-zinc-400 block">Shutter</span>
+                                    <strong class="text-retro-ink text-sm block mt-0.5" id="game-readout-shutter">1/50</strong>
+                                </div>
+                                <div class="bg-zinc-100 p-2.5 rounded-lg border border-zinc-200">
+                                    <span class="text-[9px] text-zinc-400 block">Aperture</span>
+                                    <strong class="text-retro-ink text-sm block mt-0.5" id="game-readout-aperture">f/4.0</strong>
+                                </div>
+                            </div>
+
+                            <button onclick="submitChallengeSolution()" class="w-full bg-retro-ink text-white py-3 rounded-xl font-mono font-bold text-xs hover:bg-retro-brass transition-all flex items-center justify-center gap-2 shadow shadow-zinc-800/20">
+                                <i data-lucide="check-square" class="w-4 h-4"></i> Submit Settings to Director
+                            </button>
+
+                            <div class="hidden p-4 rounded-xl border text-xs leading-relaxed" id="game-result-box">
+                                <!-- Solution response -->
                             </div>
                         </div>
-
                     </div>
-
-                    <!-- Tactical Advisory Note based on DoF -->
-                    <div class="bg-black/40 border border-zinc-800/80 p-3 rounded-lg text-xs" id="dof-advisory-card">
-                        <div class="flex items-start gap-2">
-                            <i data-lucide="info" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                            <div>
-                                <span class="font-mono text-white font-bold block" id="dof-advisory-title">Focus Sweet Spot</span>
-                                <p class="text-zinc-400 mt-0.5" id="dof-advisory-text">At f/2.8, your focal depth is around 35cm, great for close interviews. Subtle swaying back and forth is acceptable, but lock the AF-C to "People" detection.</p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
-        </section>
 
-        <!-- ================= SECTION 4: INTERACTIVE "SET-ONCE" SETUP CHECKLIST ================= -->
-        <section class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl space-y-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-serif font-bold text-white tracking-wide flex items-center gap-2">
-                        <span class="w-2.5 h-5 bg-zf-gold rounded"></span> Set-Once Camera Setup Checklist
-                    </h2>
-                    <p class="text-xs text-zinc-400">Configure these recommended settings in your Nikon Zf menu today, tick them off, and focus purely on your art. Saves automatically!</p>
-                </div>
-                
-                <!-- Setup Completion Tracker -->
-                <div class="flex items-center gap-3 bg-black border border-zinc-800 px-4 py-2 rounded-xl">
-                    <div class="text-right">
-                        <span class="text-[10px] font-mono text-zinc-500 uppercase block">Camera Readiness</span>
-                        <span class="text-sm font-mono font-bold text-zf-gold" id="completion-ratio">0/15 Completed (0%)</span>
-                    </div>
-                    <!-- Small progress ring or bar -->
-                    <div class="w-12 bg-zinc-900 h-2.5 rounded-full overflow-hidden border border-zinc-800">
-                        <div class="bg-zf-gold h-full transition-all duration-500" id="completion-bar" style="width: 0%;"></div>
-                    </div>
-                </div>
-            </div>
+        </div>
 
-            <!-- MENU SETTINGS TABLE (Responsive grid representation) -->
-            <div class="border border-zinc-800 rounded-xl overflow-hidden bg-black/30">
-                <div class="grid grid-cols-12 bg-zinc-900/80 p-3 border-b border-zinc-800 text-xs font-mono text-zinc-400 font-bold uppercase tracking-wider hidden md:grid">
-                    <div class="col-span-1 text-center">Done</div>
-                    <div class="col-span-3">Nikon Menu Item</div>
-                    <div class="col-span-3">Set To</div>
-                    <div class="col-span-5">Filmmaker "Why" & Protection Purpose</div>
-                </div>
-                
-                <div class="divide-y divide-zinc-800" id="checklist-items-container">
-                    <!-- Javascript will load the 15 checklist items here for responsiveness -->
-                </div>
-            </div>
-
-            <!-- Reset Checklist trigger -->
-            <div class="flex justify-end">
-                <button onclick="resetChecklist()" class="text-xs font-mono text-zinc-500 hover:text-zf-red flex items-center gap-1.5 transition">
-                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Setup Progress
-                </button>
-            </div>
-        </section>
-
-        <!-- ================= SECTION 5: CALCULATORS & TECHNICAL TOOLS ================= -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- ================================================================= -->
+        <!-- TAB 3: INTERACTIVE CHEAT SHEET                                    -->
+        <!-- ================================================================= -->
+        <div id="tab-content-cheatsheet" class="tab-pane hidden space-y-6">
             
-            <!-- TOOL 1: 180-DEGREE SHUTTER & FLICKER COHERENCE -->
-            <div class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl flex flex-col justify-between space-y-4">
-                <div>
-                    <h3 class="text-base font-serif font-bold text-white mb-1 flex items-center gap-2">
-                        <i data-lucide="hourglass" class="text-zf-gold w-4 h-4"></i> 180° Shutter & Flicker solver
-                    </h3>
-                    <p class="text-xs text-zinc-400">Match frame rates to shutter speeds, and lock safety indices for India's 50Hz mains standard.</p>
-                </div>
+            <div class="bg-retro-card border border-zinc-300 rounded-3xl p-6 shadow-retro-card space-y-6">
                 
-                <div class="space-y-4 bg-black/40 p-4 rounded-xl border border-zinc-800">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-mono text-zinc-500 uppercase block">Target Frame Rate</label>
-                            <select id="tool-fps" onchange="calculateToolCine()" class="bg-zinc-900 border border-zinc-700 rounded px-2.5 py-1.5 text-xs text-white w-full focus:outline-none focus:border-zf-gold">
-                                <option value="24">24p (Cine standard)</option>
-                                <option value="25" selected>25p (India Standard)</option>
-                                <option value="30">30p (Digital Standard)</option>
-                                <option value="50">50p (2x Slow Motion)</option>
-                                <option value="60">60p (2.4x Slow Motion)</option>
-                                <option value="100">100p (4x Slow Motion)</option>
-                                <option value="120">120p (4.8x Slow Motion)</option>
-                            </select>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-mono text-zinc-500 uppercase block">Mains Light Freq.</label>
-                            <select id="tool-freq" onchange="calculateToolCine()" class="bg-zinc-900 border border-zinc-700 rounded px-2.5 py-1.5 text-xs text-white w-full focus:outline-none focus:border-zf-gold">
-                                <option value="50" selected>50 Hz (India/Europe)</option>
-                                <option value="60">60 Hz (US/Canada)</option>
-                            </select>
-                        </div>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-zinc-200">
+                    <div>
+                        <h2 class="font-serif text-xl font-bold">Nikon Zf + NIKKOR 40mm f/2 Interactive Manual</h2>
+                        <p class="text-xs text-zinc-500 mt-0.5">Explore the comprehensive camera configurations, rules of thumb, and focus distances.</p>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 text-xs font-mono pt-2 border-t border-zinc-800">
-                        <div>
-                            <span class="text-zinc-500 text-[10px] uppercase block">Ideal Shutter Speed</span>
-                            <span class="text-cyan-400 font-bold text-sm block mt-0.5" id="tool-ideal-shutter">1/50</span>
-                        </div>
-                        <div>
-                            <span class="text-zinc-500 text-[10px] uppercase block">Slow-Mo Factor</span>
-                            <span class="text-white font-bold block mt-0.5" id="tool-crop">1x (Normal Speed)</span>
-                        </div>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <input type="text" id="sheet-search" oninput="searchCheatSheet()" placeholder="Search configs..." 
+                               class="bg-zinc-100 border border-zinc-300 rounded-xl px-4 py-2 text-xs text-retro-ink focus:outline-none focus:border-retro-brass w-full md:w-56 font-mono shadow-inner">
                     </div>
                 </div>
 
-                <div class="p-3 bg-zinc-900/40 rounded border border-zinc-800/80 text-xs text-gray-300 flex items-start gap-2" id="tool-safety-warning">
-                    <i data-lucide="shield-check" class="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5"></i>
-                    <span><strong>1/50</strong> is fully flicker-free under 50Hz LED lights. Ideal motion blur signature locked.</span>
+                <!-- CATEGORY NAVIGATION TABS -->
+                <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+                    <button onclick="filterSheet('all')" id="sheet-f-all" class="sheet-f bg-retro-brass text-white font-bold px-3 py-1.5 rounded-lg transition-all">All</button>
+                    <button onclick="filterSheet('video')" id="sheet-f-video" class="sheet-f bg-zinc-200/60 text-zinc-600 hover:text-retro-ink px-3 py-1.5 rounded-lg transition-all">Video Engine</button>
+                    <button onclick="filterSheet('exposure')" id="sheet-f-exposure" class="sheet-f bg-zinc-200/60 text-zinc-600 hover:text-retro-ink px-3 py-1.5 rounded-lg transition-all">Exposure Dials</button>
+                    <button onclick="filterSheet('focus')" id="sheet-f-focus" class="sheet-f bg-zinc-200/60 text-zinc-600 hover:text-retro-ink px-3 py-1.5 rounded-lg transition-all">Focus Core</button>
+                    <button onclick="filterSheet('audio')" id="sheet-f-audio" class="sheet-f bg-zinc-200/60 text-zinc-600 hover:text-retro-ink px-3 py-1.5 rounded-lg transition-all">Audio Setup</button>
+                    <button onclick="filterSheet('stabilization')" id="sheet-f-stabilization" class="sheet-f bg-zinc-200/60 text-zinc-600 hover:text-retro-ink px-3 py-1.5 rounded-lg transition-all">Stabilization</button>
                 </div>
+
+                <!-- TABLE GRID LAYOUT -->
+                <div class="border border-zinc-200 rounded-2xl overflow-hidden bg-[#FAF7F0]">
+                    <div class="grid grid-cols-12 bg-zinc-100 p-3.5 border-b border-zinc-200 text-xs font-mono font-bold text-zinc-500 uppercase hidden md:grid">
+                        <div class="col-span-3">Menu Component</div>
+                        <div class="col-span-3">Target Setting</div>
+                        <div class="col-span-6">Filmmaker's "Why" & Protection Logic</div>
+                    </div>
+
+                    <div class="divide-y divide-zinc-200" id="sheet-container">
+                        <!-- Javascript will inject list elements here -->
+                    </div>
+                </div>
+
             </div>
 
-            <!-- TOOL 2: INTERACTIVE AUDIO DEVIATION MOCK -->
-            <div class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl flex flex-col justify-between space-y-4">
-                <div>
-                    <h3 class="text-base font-serif font-bold text-white mb-1 flex items-center gap-2">
-                        <i data-lucide="mic" class="text-zf-gold w-4 h-4"></i> Interactive Audio Gain Monitor
-                    </h3>
-                    <p class="text-xs text-zinc-400">See how custom manual sensitivities preserve dialog, avoiding auto-gain white-noise "pumping".</p>
-                </div>
-                
-                <div class="space-y-3 bg-black/40 p-4 rounded-xl border border-zinc-800">
-                    <div class="flex justify-between text-xs font-mono">
-                        <span class="text-zinc-400">Mic Sensitivity Mode:</span>
-                        <div class="flex gap-1.5">
-                            <button onclick="setAudioMode('auto')" id="audio-btn-auto" class="px-2 py-0.5 rounded text-[10px] bg-zinc-800 text-zinc-400 font-bold hover:text-white transition">Auto</button>
-                            <button onclick="setAudioMode('manual')" id="audio-btn-manual" class="px-2 py-0.5 rounded text-[10px] bg-zf-gold text-black font-bold transition">Manual (-12dB)</button>
-                        </div>
-                    </div>
-
-                    <!-- Decibel Gauge with warnings -->
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-[10px] text-zinc-500 font-mono">
-                            <span>-30 dB</span>
-                            <span>-12 dB (Target)</span>
-                            <span>0 dB (Clipping!)</span>
-                        </div>
-                        <div class="h-3 w-full bg-zinc-950 rounded overflow-hidden relative border border-zinc-800">
-                            <!-- Target sweet spot range green -->
-                            <div class="absolute left-[50%] right-[20%] top-0 bottom-0 bg-green-500/10"></div>
-                            <!-- Danger red zone -->
-                            <div class="absolute right-0 w-[15%] top-0 bottom-0 bg-red-500/20"></div>
-                            <!-- Level bar -->
-                            <div class="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 transition-all duration-700" id="tool-audio-bar" style="width: 60%;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-3 bg-zinc-900/40 rounded border border-zinc-800/80 text-xs text-gray-300 flex items-start gap-2" id="tool-audio-advice">
-                    <i data-lucide="volume-2" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                    <span>In manual gain, the camera floor noise drops dramatically. Target voices peaks cleanly near <strong>−12 dB</strong> to avoid clipping.</span>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- ================= SECTION 6: THE STABILIZATION & CREATIVE CORES ================= -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- STABILIZATION RULES -->
-            <div class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl space-y-4">
-                <h3 class="text-base font-serif font-bold text-white flex items-center gap-2">
-                    <i data-lucide="shield" class="text-zf-gold w-4 h-4"></i> Stabilization Protocols
-                </h3>
-                
-                <div class="space-y-3.5 text-xs">
-                    <div class="flex items-start gap-3 border-b border-zinc-800/60 pb-3">
-                        <span class="p-1 bg-zinc-900 border border-zinc-700 rounded text-cyan-400 font-mono text-[10px] font-bold">IBIS ON</span>
-                        <div>
-                            <strong class="text-white block">Handheld Static Moves</strong>
-                            <p class="text-zinc-400 mt-0.5">Two hands, elbows in, exhale, hold 8–10 seconds. Enjoy full-frame 5-axis sensor stabilization.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start gap-3 border-b border-zinc-800/60 pb-3">
-                        <span class="p-1 bg-zinc-900 border border-zinc-700 rounded text-amber-500 font-mono text-[10px] font-bold">e-VR ON</span>
-                        <div>
-                            <strong class="text-white block">Walking & Tracking Shots</strong>
-                            <p class="text-zinc-400 mt-0.5">Enables advanced digital stabilization. Adds a minor <strong>1.1× crop</strong>, so walk with bent knees.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-3">
-                        <span class="p-1 bg-zinc-900 border border-zinc-700 rounded text-red-400 font-mono text-[10px] font-bold">IBIS OFF</span>
-                        <div>
-                            <strong class="text-white block">Tripod / Locked-Off Work</strong>
-                            <p class="text-zinc-400 mt-0.5">Always turn stabilization OFF on stable tripods. Sensor can drift in place trying to stabilize static air.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- EXPOSURE DISCIPLINE (SDR vs LOG) -->
-            <div class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl space-y-4">
-                <h3 class="text-base font-serif font-bold text-white flex items-center gap-2">
-                    <i data-lucide="aperture" class="text-zf-gold w-4 h-4"></i> Color Exposure Discipline
-                </h3>
-                
-                <div class="space-y-4 text-xs">
-                    <div class="bg-black/40 border border-zinc-800 p-3 rounded-lg space-y-1.5">
-                        <strong class="text-cyan-400 flex items-center justify-between">
-                            <span>SDR / Flat (Daily Sun)</span>
-                            <span class="bg-cyan-950 text-cyan-400 px-1.5 py-0.5 rounded text-[9px] uppercase font-mono">Base ISO 100</span>
-                        </strong>
-                        <p class="text-zinc-400">Set Contrast −2, Saturation −1, Sharpening +1. Expose so skin is 60–70 IRE on the waveform, zebras trigger at 95% highlight clipping.</p>
-                    </div>
-
-                    <div class="bg-black/40 border border-zinc-800 p-3 rounded-lg space-y-1.5">
-                        <strong class="text-zf-gold flex items-center justify-between">
-                            <span>N-Log (Controlled Interiors)</span>
-                            <span class="bg-yellow-950 text-zf-gold px-1.5 py-0.5 rounded text-[9px] uppercase font-mono">Base ISO 800</span>
-                        </strong>
-                        <p class="text-zinc-400">Expose to the Right (ETTR) by 1 to 1.5 stops to keep shadows noise-free. Avoid N-Log outdoors in direct sun without heavy ND filters.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CREATIVE "CINEMATIC" PROTOCOLS -->
-            <div class="bg-zf-carbon border border-zf-steel p-6 rounded-2xl shadow-xl space-y-4">
-                <h3 class="text-base font-serif font-bold text-white flex items-center gap-2">
-                    <i data-lucide="sparkles" class="text-zf-gold w-4 h-4"></i> Pro Cinematic Habits
-                </h3>
-                
-                <div class="space-y-2.5 text-xs text-gray-300">
-                    <div class="flex gap-2">
-                        <i data-lucide="clock" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                        <span><strong>10-Second Handles:</strong> Record for 10s minimum per shot. Editors need ample pad room.</span>
-                    </div>
-                    <div class="flex gap-2">
-                        <i data-lucide="move" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                        <span><strong>One Move rule:</strong> Pan OR slide in, never blend complex wild directions in one frame.</span>
-                    </div>
-                    <div class="flex gap-2">
-                        <i data-lucide="layers" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                        <span><strong>Foreground Layers:</strong> Shoot through glass, leaves, arches to add dimensional depth.</span>
-                    </div>
-                    <div class="flex gap-2">
-                        <i data-lucide="sun-dim" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                        <span><strong>Backlight Strategy:</strong> Frame sun/windows behind subject. Free negative fill and high dynamic protection.</span>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- ================= SECTION 7: SPECIFICATIONS & WARNINGS ================= -->
-        <section class="bg-black border border-zf-steel p-6 rounded-2xl shadow-xl">
-            <h2 class="text-sm font-mono uppercase tracking-widest text-zinc-500 mb-4 flex items-center gap-2">
-                <i data-lucide="info" class="w-4 h-4"></i> Zf Hardware Constraints & Warnings
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono text-zinc-400">
-                <div class="bg-zf-carbon/50 p-4 rounded border border-zinc-900 space-y-1.5">
-                    <span class="text-white font-bold block flex items-center gap-1">
-                        <i data-lucide="credit-card" class="w-4 h-4 text-zf-amber"></i> Micro-SD Card Warning
-                    </span>
-                    <p>The MicroSD slot 2 is strictly too slow for 4K video recording. Keep all 4K files bound to full-size UHS-II SD cards in slot 1 only.</p>
-                </div>
-                <div class="bg-zf-carbon/50 p-4 rounded border border-zinc-900 space-y-1.5">
-                    <span class="text-white font-bold block flex items-center gap-1">
-                        <i data-lucide="cable" class="w-4 h-4 text-zf-amber"></i> Micro-HDMI Fragility
-                    </span>
-                    <p>Type-D micro-HDMI output ports are delicate on set. Strongly recommend a custom rig cage or clamps if using external field monitors.</p>
-                </div>
-                <div class="bg-zf-carbon/50 p-4 rounded border border-zinc-900 space-y-1.5">
-                    <span class="text-white font-bold block flex items-center gap-1">
-                        <i data-lucide="zap" class="w-4 h-4 text-zf-gold"></i> Rolling Shutter Notice
-                    </span>
-                    <p>Avoid lightning-fast whip-pans and hard vertical lines during fast lateral slides. Zf oversampled 6K sensor is superb but prone to minor rolling lag.</p>
-                </div>
-                <div class="bg-zf-carbon/50 p-4 rounded border border-zinc-900 space-y-1.5">
-                    <span class="text-white font-bold block flex items-center gap-1">
-                        <i data-lucide="battery-charging" class="w-4 h-4 text-zf-gold"></i> Power Management
-                    </span>
-                    <p>Zf EN-EL15c batteries deplete fast in 4K. Plan for 3+ spares on-set, or utilize USB-C Power Delivery banks for static setups.</p>
-                </div>
-            </div>
-        </section>
+        </div>
 
     </main>
 
-    <footer class="bg-black py-8 border-t border-zf-steel text-center text-xs font-mono text-zinc-500 mt-12">
-        <p>© 2026 Nikon Zf Cinematic Assistant. Built specifically for Nikon Zf & NIKKOR 40mm f/2 owners in India.</p>
-        <p class="mt-2 text-zinc-600">This guide represents a pure, zero-compromise mechanical exposure workflow without optical filter accessories.</p>
+    <!-- FOOTER -->
+    <footer class="bg-retro-card py-10 border-t border-zinc-300 text-center text-xs font-mono text-zinc-400 mt-12">
+        <div class="max-w-7xl mx-auto space-y-2">
+            <p>© 2026 Nikon Zf Director's Companion. Custom calibrated for NIKKOR Z 40mm f/2 owners in India (50 Hz mains).</p>
+            <p class="text-[10px] text-zinc-400 font-mono">Retro Cream & Silver Minimalism Chassis - Zero Bloat Setup.</p>
+        </div>
     </footer>
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // ================= SPECIFICATIONS & STATE DATA =================
-        const scenarios = [
-            {
-                id: "scen-shade",
-                title: "Outdoor interview in shade",
-                category: "Daylight Shade",
-                icon: "user-check",
+        // ================= STATE & CONFIGS =================
+        const activeSimulatorState = {
+            iso: "100",
+            shutter: "1/50",
+            aperture: "f/4.0",
+            apertureNum: 4.0,
+            evComp: 0.0,
+            toneMode: "SDR",
+            cameraMode: "video" // photo, video, bw
+        };
+
+        const simulatorScenarios = {
+            "scen-shade": {
+                title: "Outdoor Shade Interview",
                 image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
+                iso: "100",
                 shutter: "1/50",
                 aperture: "f/4.0",
                 apertureNum: 4.0,
-                iso: "100",
-                wb: "6500 K (Shade)",
-                tone: "SDR Flat",
-                desc: "Best-case daylight setup! Shade drops illumination by 3-4 stops, letting you keep the cinematic 180° shutter of 1/50 at f/4. Gives rich bokeh and reliable subject focus.",
-                rules: [
-                    "Excellent 180° motion signature",
-                    "Add warm white bounce to light skin shadows",
-                    "AF-C people detection handles movement cleanly"
-                ],
-                bgBrightness: 120 // SDR balanced
+                brightness: 120,
+                wb: "6500",
+                toneMode: "SDR"
             },
-            {
-                id: "scen-sun-direct",
-                title: "Outdoor interview in direct sun",
-                category: "Harsh Sunlight",
-                icon: "sun",
+            "scen-sun": {
+                title: "Harsh Midday Direct Sun",
                 image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
+                iso: "100",
                 shutter: "1/500",
                 aperture: "f/8.0",
                 apertureNum: 8.0,
-                iso: "100",
-                wb: "5600 K (Sun)",
-                tone: "SDR Flat",
-                desc: "Severe daylight overload with no ND! You must balance exposure by shifting Shutter to 1/500 and dropping Aperture to f/8. Static setups only - motion will judder slightly.",
-                rules: [
-                    "Shutter raised to 1/500 to protect highlights",
-                    "Aperture f/8 keeps deep focus and limits clipping",
-                    "Warning: Lock camera on tripod - avoid sudden pans!"
-                ],
-                bgBrightness: 230 // clipped highlight
+                brightness: 235,
+                wb: "5600",
+                toneMode: "SDR"
             },
-            {
-                id: "scen-golden",
-                title: "Golden-hour portrait",
-                category: "Daylight Shade",
-                icon: "palette",
-                image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
-                shutter: "1/50",
-                aperture: "f/2.8",
-                apertureNum: 2.8,
-                iso: "100",
-                wb: "7000 K (Warm)",
-                tone: "SDR Flat",
-                desc: "Gorgeous natural separation! Shoot with the sun directly behind your subject. Backlighting provides beautiful negative fill and lets you shoot open at f/2.8 without blowing highlights.",
-                rules: [
-                    "Aperture at f/2.8-4 for creamy separation",
-                    "Use 7000K WB to capture rich crimson tones",
-                    "Use a simple white reflector to fill the face shadows"
-                ],
-                bgBrightness: 150
-            },
-            {
-                id: "scen-broll-midday",
-                title: "Midday b-roll, open ground",
-                category: "Harsh Sunlight",
-                icon: "mountain",
-                image: "https://images.unsplash.com/photo-1542224566-6e85f2e6772f?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
-                shutter: "1/500",
-                aperture: "f/8.0",
-                apertureNum: 8.0,
-                iso: "100",
-                wb: "5600 K (Sun)",
-                desc: "Wide daylight shots with deep focus. Keeping the lens closed at f/8 allows a shutter of 1/500 under bright direct light. Lock-off shots or move the camera very slowly.",
-                rules: [
-                    "Aperture f/8 offers peak sharpness",
-                    "Shutter speed is forced high to prevent clip",
-                    "Ideal for landscape and architectural establishing"
-                ],
-                bgBrightness: 240
-            },
-            {
-                id: "scen-midday-bokeh",
-                title: "Midday, want bokeh",
-                category: "Specialty",
-                icon: "sparkles",
-                image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
-                fps: "50p",
-                shutter: "1/1000",
-                aperture: "f/2.8",
-                apertureNum: 2.8,
-                iso: "100",
-                wb: "5600 K (Sun)",
-                tone: "SDR Flat",
-                desc: "Filmmaker's clever daylight hack! If you want creamy f/2.8 bokeh in harsh direct sun, change FPS to 50p, dial Shutter to 1/1000, and conform to 25p slow motion. Slow-mo hides all high-shutter judder!",
-                rules: [
-                    "Shutter 1/1000 allows wide f/2.8 bokeh in sun",
-                    "Slowing down in post hides fast shutter stutter",
-                    "Warning: Forces 1.5x DX crop in 4K. Your 40mm becomes 60mm!"
-                ],
-                bgBrightness: 200
-            },
-            {
-                id: "scen-overcast",
-                title: "Overcast street",
-                category: "Daylight Shade",
-                icon: "cloud",
-                image: "https://images.unsplash.com/photo-1514924013587-c4a43448dbbb?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
-                shutter: "1/50",
-                aperture: "f/8.0",
-                apertureNum: 8.0,
-                iso: "100",
-                wb: "6500 K (Overcast)",
-                tone: "SDR Flat",
-                desc: "Nature's giant softbox! Overcast days are a filmmaker's absolute dream. Light levels drop perfectly so you can shoot the 180° shutter limit at f/8, obtaining crisp, cinematic footage easily.",
-                rules: [
-                    "Flicker-free cinematic 1/50 is easily achieved",
-                    "No risk of blowing highlights on faces",
-                    "Provides excellent color saturation and deep shadows"
-                ],
-                bgBrightness: 110
-            },
-            {
-                id: "scen-indoor-interview",
-                title: "Indoor interview",
-                category: "Interiors/Cafe",
-                icon: "home",
-                image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
-                shutter: "1/50",
-                aperture: "f/2.8",
-                apertureNum: 2.8,
-                iso: "800",
-                wb: "4000 K (Custom)",
-                tone: "N-Log",
-                desc: "A perfect scenario for high dynamic N-Log! Place your subject near a large window at 45 degrees. Raise base ISO to 800 and set f/2.8 for creamy professional background separation.",
-                rules: [
-                    "N-Log is highly usable here with base ISO 800",
-                    "Expose skin slightly to the right (ETTR) to minimize noise",
-                    "Ideal focus zone (~35cm depth) - AF-C is safe"
-                ],
-                bgBrightness: 95
-            },
-            {
-                id: "scen-cafe-broll",
-                title: "Café / restaurant b-roll",
-                category: "Interiors/Cafe",
-                icon: "coffee",
+            "scen-cafe": {
+                title: "Cozy Café Interior b-roll",
                 image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
-                shutter: "1/50",
-                aperture: "f/2.0",
-                apertureNum: 2.0,
                 iso: "1600",
-                wb: "3800 K (Tungsten)",
-                tone: "SDR Flat",
-                desc: "Moody candle/lamp lit interior. Dial the 40mm lens completely open to f/2.0 to capture every photon of soft ambient light. Raise ISO to 1600 and brace your elbows to engage sensor stabilization.",
-                rules: [
-                    "f/2.0 allows high shutter speed holding in dark rooms",
-                    "Focus depth is extremely shallow (17cm) - manual focus aided by peaking",
-                    "Turn on IBIS to absorb handheld shakes"
-                ],
-                bgBrightness: 70
-            },
-            {
-                id: "scen-street-walking",
-                title: "Street walking shots",
-                category: "Specialty",
-                icon: "footprints",
-                image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
-                shutter: "1/50",
-                aperture: "f/4.0",
-                apertureNum: 4.0,
-                iso: "400",
-                wb: "5600 K (Sun)",
-                tone: "SDR Flat",
-                desc: "Dynamic walking, tracking, or following shots. Set Electronic VR (e-VR) to ON in the menu to stabilize heavy footfalls. Maintain f/4 to give the tracking focus algorithm a bit of forgiving room.",
-                rules: [
-                    "e-VR adds a 1.1x crop factor - frame slightly wider",
-                    "Walk with soft, bent knees (heel-to-toe style)",
-                    "Set Movie AF speed slow (-3 to -5) for natural tracking"
-                ],
-                bgBrightness: 130
-            },
-            {
-                id: "scen-night-city",
-                title: "Night city / neon",
-                category: "Night/Street",
-                icon: "moon",
-                image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
                 shutter: "1/50",
                 aperture: "f/2.0",
                 apertureNum: 2.0,
+                brightness: 75,
+                wb: "3800",
+                toneMode: "SDR"
+            },
+            "scen-night-indoor": {
+                title: "Night Indoor with Home Lights",
+                image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
+                iso: "1600",
+                shutter: "1/50",
+                aperture: "f/2.0",
+                apertureNum: 2.0,
+                brightness: 80,
+                wb: "3200",
+                toneMode: "SDR"
+            },
+            "scen-night-scene": {
+                title: "Night Outdoor Scene Study",
+                image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
                 iso: "3200",
-                wb: "3600 K (Cool)",
-                tone: "SDR Flat",
-                desc: "Capturing bright neon signs against dark alleys. Open the lens fully to f/2.0 and let ISO hover around 3200-6400. The SDR Flat picture profile maintains black depth without adding Log noise.",
-                rules: [
-                    "Protect neon highlights above all - do not overexpose",
-                    "AWB is forbidden here - lock 3600K for cold night looks",
-                    "Denoise slightly in editing software if shadows look grainy"
-                ],
-                bgBrightness: 50
-            },
-            {
-                id: "scen-macro-food",
-                title: "Product / food macro",
-                category: "Specialty",
-                icon: "utensils",
-                image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
                 shutter: "1/50",
-                aperture: "f/5.6",
-                apertureNum: 5.6,
-                iso: "200",
-                wb: "5000 K (Studio)",
-                tone: "SDR Flat",
-                desc: "Close-up detail shots of products or gourmet dishes. Move within the lens minimum focus boundary (0.29m). Close aperture to f/5.6 so details of food elements stay inside the focal range.",
-                rules: [
-                    "Minimum focus distance is exactly 0.29 m (0.96 ft)",
-                    "Use f/5.6 - wider apertures will leave details fuzzy",
-                    "Record on a solid table/tripod with IBIS turned off"
-                ],
-                bgBrightness: 120
-            },
-            {
-                id: "scen-landscape",
-                title: "Landscape / establishing",
-                category: "Specialty",
-                icon: "globe",
-                image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-                fps: "25p",
-                shutter: "1/50",
-                aperture: "f/8.0",
-                apertureNum: 8.0,
-                iso: "100",
-                wb: "5600 K (Sun)",
-                tone: "SDR Flat",
-                desc: "Wide architectural, street, or nature establishing shots. Close the lens to the sweet spot of f/8 to f/11 for maximum corner-to-corner sharpness. Put the camera on a solid tripod and disable IBIS.",
-                rules: [
-                    "Aperture f/8-f/11 provides maximum corner resolution",
-                    "Disable IBIS on tripods to prevent automatic micro-drifts",
-                    "Manual focus on infinity - do not let autofocus hunt"
-                ],
-                bgBrightness: 140
-            },
-            {
-                id: "scen-slowmo",
-                title: "Slow-mo hero shot",
-                category: "Specialty",
-                icon: "shield-alert",
-                image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=800&q=80",
-                fps: "100p",
-                shutter: "1/200",
-                aperture: "f/4.0",
-                apertureNum: 4.0,
-                iso: "400",
-                wb: "5600 K (Sun)",
-                tone: "SDR Flat",
-                desc: "High frame rate action filming! 100p or 120p slow-motion stretches time by 4x. Shutter speed must match the 180° rule of 1/200. Ideal outdoors or under highly-controlled studio light.",
-                rules: [
-                    "Requires 1/200 shutter - needs 2 stops more illumination",
-                    "Perfect for high action, running water, and hair flips",
-                    "Warning: 100p is 1080p only. 4K 50p forces a 1.5x DX crop!"
-                ],
-                bgBrightness: 110
+                aperture: "f/2.0",
+                apertureNum: 2.0,
+                brightness: 60,
+                wb: "4000",
+                toneMode: "SDR"
             }
+        };
+
+        const listConfigs = [
+            { id: "cfg-type", category: "video", title: "Movie file type", setting: "H.265 10-bit (MOV)", why: "Provides massive color depth overhead for grading, especially useful when recovering shadow files." },
+            { id: "cfg-fps", category: "video", title: "Frame size/rate", setting: "3840×2160 25p", why: "India's mains standard is 50Hz. Shooting 25p guarantees safe shutter multipliers (1/50) against AC light flickers." },
+            { id: "cfg-tone", category: "exposure", title: "Tone mode", setting: "SDR + Flat Profile", why: "Your daylight workhorse. N-Log locks base ISO to 800, which behaves horribly under daylight without ND filters." },
+            { id: "cfg-mode", category: "exposure", title: "Exposure mode", setting: "M (Manual)", why: "Prevents ugly exposure shifts and flickering of shadows when light shifts." },
+            { id: "cfg-reduction", category: "exposure", title: "Flicker reduction", setting: "50 Hz", why: "Flicker algorithm calibrated specifically for Indian municipal electrical mains." },
+            { id: "cfg-evr", category: "stabilization", title: "Electronic VR", setting: "OFF (ON only for walks)", why: "Saves you from a 1.1x crop overlay. Engage only when physically walking alongside subjects." },
+            { id: "cfg-switch", category: "video", title: "Photo/Video Switch", setting: "Separate exposure & WB", why: "Secures video settings from bleeding back into high-speed shutter snapshot states." },
+            { id: "cfg-zebra", category: "exposure", title: "Zebra pattern", setting: "ON, threshold 95%", why: "Your physical highlight clipping guard on set. Crucial warning signal in heavy sun." },
+            { id: "cfg-peaking", category: "focus", title: "Peaking highlight", setting: "ON, red, level 2", why: "Instantly overlays high-contrast sharp guidelines around manual-focus boundaries." },
+            { id: "cfg-waveform", category: "exposure", title: "Waveform display", setting: "ON (Assign to Fn button)", why: "The only truly honest exposure visualizer. Maps spatial light levels across frames." },
+            { id: "cfg-mic", category: "audio", title: "Mic sensitivity", setting: "Manual, peak −12 dB", why: "Preserves crisp dialogues while keeping the camera's internal pre-amp floor noise completely silent." },
+            { id: "cfg-wind", category: "audio", title: "Wind reduction", setting: "ON (Outdoors only)", why: "Filters low-end microphone wind rumble frequencies on field days." },
+            { id: "cfg-speed", category: "focus", title: "Movie AF speed", setting: "−3 to −5", why: "Slows the motor drive shift for organic, smooth focus pulls instead of erratic web-camera snap behaviors." },
+            { id: "cfg-tracking", category: "focus", title: "AF tracking sensitivity", setting: "4–5 (Slow)", why: "Prevents immediate focal hunting if background bodies momentarily cross your active subjects." },
+            { id: "cfg-card", category: "video", title: "SD Slot 1", setting: "UHS-II V60 / V90", why: "The Zf MicroSD slot 2 is heavily speed throttled. Large 4K 10-bit files must stay on high-speed cards." }
         ];
 
-        const checklistItems = [
-            { id: "chk-type", category: "video", title: "Movie file type", setting: "H.265 10-bit (MOV)", why: "Captures 1024 depth values per channel rather than 256. Vital for grading and highlight preservation." },
-            { id: "chk-size", category: "video", title: "Frame size/rate", setting: "3840×2160 25p", why: "India's mains power matches 50Hz, avoiding lighting frequency flicker. Oversampled from 6K, tack-sharp." },
-            { id: "chk-tone", category: "exposure", title: "Tone mode", setting: "SDR + Flat Picture Control", why: "Daily daylight workhorse. N-Log's base ISO 800 wastes 3 stops of exposure you cannot spare without ND filters." },
-            { id: "chk-mode", category: "exposure", title: "Exposure mode", setting: "M (Manual)", why: "Manual exposure is absolute law for cinema. Auto modes will trigger ugly, jittery exposure shifts." },
-            { id: "chk-flicker", category: "exposure", title: "Flicker reduction", setting: "50 Hz", why: "Matches local Indian power grid grids, neutralizing severe LED or fluorescent banding." },
-            { id: "chk-evr", category: "stabilization", title: "Electronic VR", setting: "OFF (ON for walks)", why: "Saves you from a 1.1x digital zoom crop. Turn ON only when tracking walking subjects." },
-            { id: "chk-separate", category: "video", title: "Photo/Video Switch", setting: "Separate Exposure & WB", why: "Ensures custom shutter and balance configurations do not bleed into high-speed photography settings." },
-            { id: "chk-zebra", category: "exposure", title: "Zebra pattern", setting: "ON, Threshold 95%", why: "Flashes active diagonal warning stripes on clipped sections, telling you exactly when to stop down." },
-            { id: "chk-peaking", category: "focus", title: "Peaking highlight", setting: "ON, Red, Level 2", why: "Critical helper overlay highlighting sharp edge boundaries for manual focusing on the fly." },
-            { id: "chk-waveform", category: "exposure", title: "Waveform display", setting: "ON (Assign to Fn Button)", why: "Unlike a standard simple histogram, the waveform maps lighting exposure left-to-right across your composition." },
-            { id: "chk-mic", category: "audio", title: "Mic sensitivity", setting: "Manual, peaks around −12 dB", why: "Prevents automatic sound processors from pumping up empty white noise and camera lens motors." },
-            { id: "chk-wind", category: "audio", title: "Wind noise reduction", setting: "ON (Outdoors only)", why: "Reduces low-end rumble frequencies on windy sets without distorting dialog." },
-            { id: "chk-speed", category: "focus", title: "Movie AF speed", setting: "−3 to −5", why: "Slows autofocus shifts, giving them a natural, cinematic rack-focus glide instead of robotic webcam snaps." },
-            { id: "chk-track", category: "focus", title: "AF tracking sensitivity", setting: "4 to 5 (Slow)", why: "Avoids immediate lens hunting and refocusing if an actor or passerby momentarily crosses your frame." },
-            { id: "chk-card", category: "system", title: "SD Card Slot 1", setting: "UHS-II V60/V90 SD", why: "Slot 2 (MicroSD) speeds are heavily throttled. Heavy 4K 10-bit files require reliable high-speed slot 1." }
-        ];
+        const gameChallenges = {
+            "chall-sun": {
+                id: "chall-sun",
+                badge: "Challenge 01",
+                title: "The High Noon Interview",
+                desc: "You are shooting an interview outside in direct sunlight in Delhi. You have no ND filter. The director insists on blur background separation (at f/2.8) to separate the subject, but the viewfinder is totally clipped white! Lock your dials properly to save the shot.",
+                objectives: [
+                    "Aperture must be exactly f/2.8 (separation criteria)",
+                    "ISO must be set at minimum possible (100) to combat sun intensity",
+                    "Shutter speed must be raised very high (1/2000 or 1/4000) to balance the f/2.8 sun capture",
+                    "Tone mode must be set to SDR (base 100) because N-Log's base 800 is impossible to balance"
+                ],
+                validate: (state) => {
+                    if (state.apertureNum !== 2.8) return { success: false, msg: "Aperture is not at f/2.8! The director wants shallow depth separation." };
+                    if (state.iso !== "100") return { success: false, msg: "ISO is too high! Keep it at Base ISO 100 to reduce light gathering." };
+                    if (state.toneMode !== "SDR") return { success: false, msg: "Log Mode (base ISO 800) is letting in way too much light. Switch to SDR!" };
+                    if (state.shutter !== "1/2000" && state.shutter !== "1/4000") return { success: false, msg: "Shutter speed is too slow! Speed up to 1/2000 or 1/4000 to drop the sunlight exposure levels." };
+                    return { success: true, msg: "Excellent decision, director! High shutter speed (1/2000 or 1/4000) and base ISO 100 allow you to shoot at f/2.8 under extreme sun. Remind the crew to keep camera pans extremely slow to prevent staccato frame judder!" };
+                }
+            },
+            "chall-flicker": {
+                id: "chall-flicker",
+                badge: "Challenge 02",
+                title: "Flickering Bistro B-Roll",
+                desc: "You are filming b-roll of a coffee machine inside a Bangalore cafe under cheap fluorescent LED bulbs. Your viewfinder is experiencing severe rolling black bands. How do you lock the motion rule and maintain clean exposures?",
+                objectives: [
+                    "Shutter speed must be exactly 1/50 (this perfectly matches India's 50Hz AC current grids to eliminate bands)",
+                    "Aperture must be open (f/2.0 or f/2.8) for interior light gathering",
+                    "ISO must be set at 1600 or 3200 to lift shadows inside the cafe"
+                ],
+                validate: (state) => {
+                    if (state.shutter !== "1/50") return { success: false, msg: "Rolling black bands remain! Shutter speed must match the local 50Hz grid divisor. Switch to 1/50." };
+                    if (state.apertureNum > 2.8) return { success: false, msg: "Lens is stopped down too much! Open up to f/2.0 or f/2.8 to gather light indoors." };
+                    if (state.iso !== "1600" && state.iso !== "3200") return { success: false, msg: "Exposure levels are wrong inside. Set ISO to 1600 or 3200 to clear the shadows." };
+                    return { success: true, msg: "Spot on! Lock-in shutter to 1/50 to kill electrical rolling flicker. By keeping the NIKKOR prime wide open at f/2.0 or f/2.8, you gather ample light without noisy gain." };
+                }
+            },
+            "chall-night": {
+                id: "chall-night",
+                badge: "Challenge 03",
+                title: "Night Scene low-light narrative",
+                desc: "You are shooting a run-and-gun street action scene under weak yellow streetlights. You have zero professional lighting crew. How do you configure the camera to maximize low light and keep noise grain out of dark shadow corners?",
+                objectives: [
+                    "Aperture must be wide open (f/2.0) for maximum mechanical light gathering",
+                    "Shutter must stay at 1/50 to preserve fluid motion blur",
+                    "ISO must be set to 3200 or 6400 to match low-light sensitivity",
+                    "Tone mode must be set to SDR Flat (Log base 800 without proper key lights causes massive shadow noise)"
+                ],
+                validate: (state) => {
+                    if (state.apertureNum !== 2.0) return { success: false, msg: "Open the aperture fully to f/2.0 to catch every available photon!" };
+                    if (state.shutter !== "1/50") return { success: false, msg: "Keep shutter at 1/50 to preserve the natural 180° cinematic motion blur." };
+                    if (state.toneMode !== "SDR") return { success: false, msg: "Do not shoot N-Log in unlit darkness! Base ISO 800 Log shadow profiles will look muddy and horribly noisy. Switch to SDR Flat." };
+                    if (state.iso !== "3200" && state.iso !== "6400") return { success: false, msg: "Match light levels. Boost ISO dial to 3200 or 6400." };
+                    return { success: true, msg: "Masterclass complete! Shooting SDR Flat at ISO 3200 / f/2.0 with a cinematic 1/50 shutter keeps shadows clean, black levels deep, and lets you capture dark cinematic narrative scenes with zero setup hassle!" };
+                }
+            }
+        };
 
-        // Active State variables
-        let activeScenarioId = "scen-shade";
-        let activeToneMode = "SDR";
-        let activeFilter = "all";
-        let isOverlayGrid = true;
-        let isOverlayWaveform = true;
-        let isOverlayZebra = true;
-        let isOverlayPeaking = true;
-        let isDofCropDx = false;
+        let currentActiveChallengeId = "chall-sun";
+        let viewGridActive = true;
+        let viewWaveActive = true;
+        let viewZebraActive = true;
+        let viewPeakActive = true;
 
-        // ================= WINDOW LOAD INITIALIZATION =================
+        // ================= LIFECYCLE MOUNT =================
         window.addEventListener('DOMContentLoaded', () => {
-            initScenarios();
-            initChecklist();
-            selectScenario("scen-shade");
-            calculateDof();
-            calculateToolCine();
-            startAudioMeterAnimation();
-            renderWaveform();
-            
-            // Re-render Lucide icons
+            initCheatSheet();
+            selectSimScenario('scen-shade');
+            loadChallenge('chall-sun');
+            startHUDAnimations();
             lucide.createIcons();
         });
 
-        // ================= RENDERING SCENARIOS =================
-        function initScenarios() {
-            const grid = document.getElementById('scenario-grid');
-            grid.innerHTML = "";
-            
-            scenarios.forEach(scen => {
-                const card = document.createElement('div');
-                card.id = scen.id;
-                card.className = `scenario-card p-4 rounded-xl border border-zinc-800 bg-zf-carbon/40 hover:bg-zf-carbon cursor-pointer transition-all duration-300 relative group flex flex-col justify-between h-44 overflow-hidden [content-visibility:auto]`;
-                card.setAttribute('data-category', scen.category.toLowerCase());
-                card.onclick = () => selectScenario(scen.id);
-                
-                card.innerHTML = `
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-0 opacity-40 group-hover:opacity-10 transition-opacity"></div>
-                    <div class="z-10">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-[10px] font-mono text-zf-brass uppercase tracking-wider">${scen.category}</span>
-                            <span class="p-1.5 bg-black/60 rounded border border-zinc-850 text-zinc-400 group-hover:text-zf-gold transition">
-                                <i data-lucide="${scen.icon}" class="w-4 h-4"></i>
-                            </span>
-                        </div>
-                        <h4 class="font-serif font-bold text-white text-sm group-hover:text-zf-gold transition leading-snug line-clamp-2">${scen.title}</h4>
-                    </div>
-                    <div class="z-10 flex gap-1.5 pt-2 border-t border-zinc-850 text-[10px] font-mono text-zinc-300">
-                        <span class="bg-black/50 px-1 py-0.5 rounded">${scen.fps}</span>
-                        <span class="bg-black/50 px-1 py-0.5 rounded text-cyan-400 font-bold">${scen.shutter}</span>
-                        <span class="bg-black/50 px-1 py-0.5 rounded text-cyan-400">${scen.aperture}</span>
-                    </div>
-                `;
-                grid.appendChild(card);
+        // ================= NAVIGATION =================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-lg text-zinc-600 hover:text-retro-ink transition-all flex items-center gap-1.5";
             });
+
+            document.getElementById('tab-content-' + tabId).classList.remove('hidden');
+            const targetBtn = document.getElementById('tab-btn-' + tabId);
+            if (targetBtn) {
+                targetBtn.className = "tab-btn px-4 py-2 rounded-lg bg-retro-card text-retro-ink shadow-sm transition-all flex items-center gap-1.5 border border-zinc-200";
+            }
+
+            if (tabId === 'simulator') {
+                setTimeout(renderWaveform, 100);
+            }
         }
 
-        function filterScenarios(category) {
-            activeFilter = category;
-            
-            // Update filter tabs
-            document.querySelectorAll('.scen-filter-btn').forEach(btn => {
-                btn.className = "scen-filter-btn px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition";
-            });
-            const activeBtn = document.getElementById(`filter-${category}`);
-            if (activeBtn) {
-                activeBtn.className = "scen-filter-btn px-2.5 py-1 rounded-full bg-zf-gold text-black font-semibold transition";
-            }
-
-            // Filter cards
-            scenarios.forEach(scen => {
-                const card = document.getElementById(scen.id);
-                if (!card) return;
-                
-                if (category === 'all') {
-                    card.classList.remove('hidden');
-                } else if (category === 'daylight' && scen.category.toLowerCase().includes('daylight')) {
-                    card.classList.remove('hidden');
-                } else if (category === 'interior' && scen.category.toLowerCase().includes('interior')) {
-                    card.classList.remove('hidden');
-                } else if (category === 'night' && scen.category.toLowerCase().includes('night')) {
-                    card.classList.remove('hidden');
-                } else if (category === 'specialty' && scen.category.toLowerCase().includes('specialty')) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
+        // ================= DIAL SLIDER BINDINGS =================
+        function changeIsoSlider(val) {
+            const isoMap = ["100", "200", "400", "800", "1600", "3200", "6400", "12800", "Auto"];
+            activeSimulatorState.iso = isoMap[val];
+            recalculateOpticsExposure();
         }
 
-        // ================= SELECT SCENARIO & ROTATE DIALS =================
-        function selectScenario(id) {
-            activeScenarioId = id;
-            const scen = scenarios.find(s => s.id === id);
-            if (!scen) return;
+        function changeShutterSlider(val) {
+            const shutterMap = ["1/30", "1/50", "1/60", "1/100", "1/125", "1/200", "1/250", "1/500", "1/1000", "1/2000", "1/4000"];
+            activeSimulatorState.shutter = shutterMap[val];
+            recalculateOpticsExposure();
+        }
 
-            // Highlight active card
-            document.querySelectorAll('.scenario-card').forEach(card => {
-                card.classList.remove('border-zf-gold', 'shadow-gold-glow', 'bg-zf-carbon');
-                card.classList.add('border-zinc-800', 'bg-zf-carbon/40');
+        function changeApertureSlider(val) {
+            const apMap = [2.0, 2.8, 4.0, 5.6, 8.0, 11.0, 16.0];
+            activeSimulatorState.apertureNum = apMap[val - 1];
+            activeSimulatorState.aperture = "f/" + activeSimulatorState.apertureNum.toFixed(1);
+            recalculateOpticsExposure();
+        }
+
+        function changeEvSlider(val) {
+            activeSimulatorState.evComp = parseFloat(val);
+            recalculateOpticsExposure();
+        }
+
+        function setModeSwitch(mode) {
+            activeSimulatorState.cameraMode = mode;
+            document.querySelectorAll('#mode-btn-photo, #mode-btn-video, #mode-btn-bw').forEach(btn => {
+                btn.className = "px-2.5 py-1 rounded text-[10px] font-bold text-zinc-500 transition-all";
             });
-            const activeCard = document.getElementById(id);
-            if (activeCard) {
-                activeCard.classList.remove('border-zinc-800', 'bg-zf-carbon/40');
-                activeCard.classList.add('border-zf-gold', 'shadow-gold-glow', 'bg-zf-carbon');
-            }
+            document.getElementById('mode-btn-' + mode).className = "px-2.5 py-1 rounded text-[10px] font-bold bg-retro-card text-retro-ink shadow-sm transition-all";
 
-            // 1. Update Dial Rotations and visual text
-            rotateDial('iso-dial', scen.iso);
-            rotateDial('shutter-dial', scen.shutter);
-            
-            // 2. Update LCD Viewfinder image & values
-            document.getElementById('lcd-bg-image').src = scen.image;
-            document.getElementById('hud-exposure').textContent = scen.shutter;
-            document.getElementById('hud-aperture').textContent = scen.aperture;
-            document.getElementById('hud-iso').textContent = "ISO " + scen.iso;
-            document.getElementById('hud-wb').textContent = scen.wb.split(' ')[0] + "K";
-            document.getElementById('aperture-oled').textContent = scen.aperture;
-            
-            // Update crop factors in HUD if frame rate slowmo
-            const cropBadge = document.getElementById('hud-crop-badge');
-            if (scen.fps === '50p' || scen.fps === '60p') {
-                cropBadge.classList.remove('hidden');
+            const screen = document.getElementById('sim-vf-image');
+            if (mode === 'bw') {
+                screen.style.filter = "grayscale(1) contrast(1.15)";
             } else {
-                cropBadge.classList.add('hidden');
+                screen.style.filter = "grayscale(0) contrast(1)";
             }
+            recalculateOpticsExposure();
+        }
 
-            // Sync Tone mode button & metadata
-            setToneMode(scen.tone && scen.tone.includes('Log') ? 'N-Log' : 'SDR', false);
+        // ================= SCENARIOS & RE-CALCULATORS =================
+        function selectSimScenario(scenKey) {
+            const data = simulatorScenarios[scenKey];
+            if (!data) return;
 
-            // 3. Update Zebra overlay opacity based on brightness and zebra toggle
-            const zebraOverlay = document.getElementById('zebra-overlay');
-            if (isOverlayZebra && scen.bgBrightness >= 200) {
-                zebraOverlay.classList.remove('opacity-0');
-                zebraOverlay.classList.add('opacity-100');
-            } else {
-                zebraOverlay.classList.remove('opacity-100');
-                zebraOverlay.classList.add('opacity-0');
-            }
-
-            // 4. Update Focus Peaking Overlay
-            const peakOutline = document.getElementById('focus-peak-outline');
-            if (isOverlayPeaking) {
-                peakOutline.className = "absolute top-[30%] left-[32%] w-[33%] h-[50%] rounded-full border border-red-500/70 pointer-events-none focus-peak";
-            } else {
-                peakOutline.className = "absolute top-[30%] left-[32%] w-[33%] h-[50%] rounded-full pointer-events-none";
-            }
-
-            // 5. Update Advisory Panel
-            document.getElementById('advisory-title').textContent = scen.title;
-            document.getElementById('advisory-category').textContent = scen.category.toUpperCase();
-            document.getElementById('advisory-desc').textContent = scen.desc;
-            document.getElementById('adv-fps').textContent = scen.fps;
-            document.getElementById('adv-shutter').textContent = scen.shutter;
-            document.getElementById('adv-aperture').textContent = scen.aperture;
-            document.getElementById('adv-iso').textContent = "ISO " + scen.iso;
-            document.getElementById('adv-wb').innerHTML = `<i data-lucide="sun" class="w-3.5 h-3.5 text-yellow-500"></i> ` + scen.wb;
-            document.getElementById('adv-tone').textContent = scen.tone || "SDR Flat";
-
-            // Populate tactical No-ND advice
-            const rulesBox = document.getElementById('adv-no-nd-rules');
-            rulesBox.innerHTML = "";
-            scen.rules.forEach(rule => {
-                const li = document.createElement('div');
-                li.className = "flex items-start gap-2";
-                li.innerHTML = `
-                    <i data-lucide="check-circle-2" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                    <span>${rule}</span>
-                `;
-                rulesBox.appendChild(li);
+            document.querySelectorAll('.sim-scen-btn').forEach(btn => {
+                btn.classList.remove('border-retro-brass', 'bg-[#FAF7F0]');
+                btn.classList.add('border-zinc-300', 'bg-retro-card');
             });
 
-            // Highlight Active Aperture LED
-            highlightApertureLed(scen.aperture);
+            activeSimulatorState.iso = data.iso;
+            activeSimulatorState.shutter = data.shutter;
+            activeSimulatorState.aperture = data.aperture;
+            activeSimulatorState.apertureNum = data.apertureNum;
+            activeSimulatorState.toneMode = data.toneMode;
 
-            // Trigger canvas redraw for waveform
+            // Update viewfinder backdrop image
+            document.getElementById('sim-vf-image').src = data.image;
+
+            syncSlidersFromLocalState();
+            recalculateOpticsExposure(data.brightness);
+        }
+
+        function syncSlidersFromLocalState() {
+            const isoMap = ["100", "200", "400", "800", "1600", "3200", "6400", "12800", "Auto"];
+            const isoIdx = isoMap.indexOf(activeSimulatorState.iso);
+            document.getElementById('sim-iso-slider').value = isoIdx >= 0 ? isoIdx : 0;
+            
+            const shutterMap = ["1/30", "1/50", "1/60", "1/100", "1/125", "1/200", "1/250", "1/500", "1/1000", "1/2000", "1/4000"];
+            const shutIdx = shutterMap.indexOf(activeSimulatorState.shutter);
+            document.getElementById('sim-shutter-slider').value = shutIdx >= 0 ? shutIdx : 1;
+
+            const apMap = [2.0, 2.8, 4.0, 5.6, 8.0, 11.0, 16.0];
+            const apIdx = apMap.indexOf(activeSimulatorState.apertureNum);
+            document.getElementById('sim-aperture-slider').value = apIdx >= 0 ? apIdx + 1 : 3;
+
+            document.getElementById('sim-ev-slider').value = activeSimulatorState.evComp;
+        }
+
+        // ================= MATHEMATICAL EXPOSURE SIMULATOR =================
+        function recalculateOpticsExposure(forcedSceneBrightness = null) {
+            const state = activeSimulatorState;
+            const iso = state.iso === "Auto" ? 100 : parseFloat(state.iso);
+            
+            const shutterFrac = state.shutter.split('/');
+            const shutterVal = parseFloat(shutterFrac[1] ? 1 / parseFloat(shutterFrac[1]) : parseFloat(shutterFrac[0]));
+
+            // EV formula standard: EV = log2(N^2 / t)
+            const evFactor = Math.log2((state.apertureNum * state.apertureNum) / shutterVal);
+            
+            let baseBrightness = 120;
+            const matchingScen = Object.values(simulatorScenarios).find(s => s.iso === state.iso && s.shutter === state.shutter && s.apertureNum === state.apertureNum);
+            if (matchingScen) {
+                baseBrightness = matchingScen.brightness;
+            } else if (forcedSceneBrightness !== null) {
+                baseBrightness = forcedSceneBrightness;
+            }
+
+            const isoFactor = Math.log2(iso / 100);
+            const lvFactor = isoFactor + (baseBrightness / 35);
+
+            let deviation = (lvFactor - evFactor) + state.evComp;
+            deviation = Math.max(-3.0, Math.min(3.0, deviation));
+
+            const evDisplay = document.getElementById('sim-ev-deviation');
+            const evBar = document.getElementById('sim-ev-bar');
+            
+            const pct = ((deviation + 3) / 6) * 100;
+            evBar.style.width = pct + "%";
+
+            let evText = deviation.toFixed(1) + " EV";
+            if (deviation > 0.3) {
+                evText = "+" + evText + " (Overexposed)";
+                evDisplay.className = "font-bold text-retro-amber";
+            } else if (deviation < -0.3) {
+                evText = evText + " (Underexposed)";
+                evDisplay.className = "font-bold text-red-500";
+            } else {
+                evText = "±0.0 EV (Balanced)";
+                evDisplay.className = "font-bold text-retro-green";
+            }
+            evDisplay.textContent = evText;
+
+            rotateChassisDial('sim-iso-dial', state.iso);
+            rotateChassisDial('sim-shutter-dial', state.shutter);
+            rotateChassisDial('sim-ev-dial', state.evComp.toFixed(1));
+
+            // Viewfinder over/underexpose blending
+            const underexposeOverlay = document.getElementById('sim-vf-underexpose-overlay');
+            const overexposeOverlay = document.getElementById('sim-vf-overexpose-overlay');
+            
+            if (deviation < -0.2) {
+                underexposeOverlay.style.opacity = Math.min(0.85, Math.abs(deviation) / 3);
+                overexposeOverlay.style.opacity = 0;
+            } else if (deviation > 0.2) {
+                overexposeOverlay.style.opacity = Math.min(0.85, deviation / 3);
+                underexposeOverlay.style.opacity = 0;
+            } else {
+                underexposeOverlay.style.opacity = 0;
+                overexposeOverlay.style.opacity = 0;
+            }
+
+            // HUD metadata updates
+            document.getElementById('hud-shutter-val').textContent = state.shutter;
+            document.getElementById('hud-ap-val').textContent = state.aperture;
+            document.getElementById('hud-comp-val').textContent = state.evComp >= 0 ? "+" + state.evComp.toFixed(1) : state.evComp.toFixed(1);
+            document.getElementById('hud-iso-val').textContent = "ISO " + state.iso;
+            document.getElementById('sim-aperture-oled').textContent = state.aperture;
+
+            // Zebra triggers above +1.8
+            const zebraLayer = document.getElementById('sim-zebra-layer');
+            if (viewZebraActive && deviation >= 1.8) {
+                zebraLayer.style.opacity = "1";
+            } else {
+                zebraLayer.style.opacity = "0";
+            }
+
+            // 50Hz LED light flicker lines warning when shutter is mismatched in indoor scenes
+            const flickerLayer = document.getElementById('sim-flicker-layer');
+            const flickerScens = ["scen-cafe", "scen-night-indoor"];
+            const currentScenarioIsIndoor = matchingScen && flickerScens.includes(Object.keys(simulatorScenarios).find(key => simulatorScenarios[key] === matchingScen));
+            
+            const shutterHzVal = parseFloat(shutterFrac[1] || 50);
+            const matches50HzGrid = shutterHzVal === 50 || shutterHzVal === 100;
+            
+            if (currentScenarioIsIndoor && !matches50HzGrid) {
+                flickerLayer.style.opacity = "1";
+            } else {
+                flickerLayer.style.opacity = "0";
+            }
+
+            // Red focus peaking outline filter
+            const peakLayer = document.getElementById('sim-peak-layer');
+            if (viewPeakActive) {
+                peakLayer.className = "absolute top-[28%] left-[34%] w-[33%] h-[50%] rounded-full focus-peaking-glow border border-retro-red/80 z-10 animate-pulse";
+            } else {
+                peakLayer.className = "absolute top-[28%] left-[34%] w-[33%] h-[50%] rounded-full z-10 pointer-events-none";
+            }
+
             renderWaveform();
-            
-            // Re-render lucide inside dynamic components
-            lucide.createIcons();
         }
 
-        // Helper: Snaps dial rotations physically for premium look
-        function rotateDial(id, value) {
+        function rotateChassisDial(id, value) {
             const dial = document.getElementById(id);
             const valLabel = document.getElementById(id + '-val');
             if (!dial || !valLabel) return;
 
             let deg = 0;
-            // Map common values to arbitrary visual rotation angles
-            if (id === 'iso-dial') {
-                const valMap = { "100": 0, "200": 30, "400": 60, "800": 90, "1600": 120, "3200": 150, "6400": 180, "Auto": 210 };
+            if (id === 'sim-iso-dial') {
+                const valMap = { "100": 0, "200": 30, "400": 60, "800": 90, "1600": 120, "3200": 150, "6400": 180, "12800": 210, "Auto": 240 };
                 deg = valMap[value] !== undefined ? valMap[value] : 0;
                 valLabel.textContent = value;
                 
-                const sub = document.getElementById('iso-dial-sub');
-                sub.textContent = value === '800' || value === '1600' ? 'Log Base' : 'Base SDR';
-            } else if (id === 'shutter-dial') {
-                const valMap = { "1/50": 0, "1/60": 30, "1/100": 60, "1/125": 90, "1/200": 120, "1/250": 150, "1/500": 180, "1/1000": 210 };
+                const sub = document.getElementById('sim-iso-sub');
+                sub.textContent = value === "800" ? "N-Log Base" : "Base ISO 100";
+            } else if (id === 'sim-shutter-dial') {
+                const valMap = { "1/30": 0, "1/50": 30, "1/60": 60, "1/100": 90, "1/125": 120, "1/200": 150, "1/250": 180, "1/500": 210, "1/1000": 240, "1/2000": 270, "1/4000": 300 };
                 deg = valMap[value] !== undefined ? valMap[value] : 0;
                 valLabel.textContent = value;
 
-                const sub = document.getElementById('shutter-dial-sub');
-                sub.textContent = value === '1/50' ? '180° Rule' : 'High Shutter';
+                const sub = document.getElementById('sim-shutter-sub');
+                sub.textContent = value === "1/50" ? "180° Cine standard" : "High Shutter";
+            } else if (id === 'sim-ev-dial') {
+                const numVal = parseFloat(value);
+                deg = numVal * 30;
+                valLabel.textContent = numVal >= 0 ? "+" + value : value;
             }
 
             dial.style.transform = `rotate(${deg}deg)`;
         }
 
-        function highlightApertureLed(aperture) {
-            // Reset all
-            const leds = ["f2", "f2_8", "f4", "f5_6", "f8", "f11", "f16"];
-            leds.forEach(led => {
-                const el = document.getElementById("ap-led-" + led);
-                if (el) el.className = "w-1.5 h-3 bg-zinc-800 rounded-full transition-all";
-            });
-
-            // Map aperture string to led ID suffix
-            const cleanAp = aperture.replace('.', '_').replace('/', '');
-            const target = document.getElementById("ap-led-" + cleanAp);
-            if (target) {
-                target.className = "w-1.5 h-3 bg-cyan-400 rounded-full shadow-gold-glow scale-125 transition-all";
-            }
-        }
-
-        // ================= TONE MODE SELECTION =================
-        function setToneMode(mode, syncScenario = true) {
-            activeToneMode = mode;
-            const btnSdr = document.getElementById('tone-btn-SDR');
-            const btnLog = document.getElementById('tone-btn-N-Log');
-            const sub = document.getElementById('tone-sub-info');
-            const hudTone = document.getElementById('hud-tone');
-
-            if (mode === 'SDR') {
-                btnSdr.className = "w-full py-1 text-xs font-mono font-bold rounded bg-zf-gold text-black transition-all";
-                btnLog.className = "w-full py-1 text-xs font-mono font-bold rounded text-gray-400 hover:text-white transition-all";
-                sub.textContent = "Base ISO 100";
-                hudTone.textContent = "SDR FLAT";
-                hudTone.className = "bg-black/30 px-1 rounded text-cyan-400 font-bold";
-            } else {
-                btnLog.className = "w-full py-1 text-xs font-mono font-bold rounded bg-zf-gold text-black transition-all";
-                btnSdr.className = "w-full py-1 text-xs font-mono font-bold rounded text-gray-400 hover:text-white transition-all";
-                sub.textContent = "Base ISO 800";
-                hudTone.textContent = "N-LOG";
-                hudTone.className = "bg-black/30 px-1 rounded text-zf-gold font-bold";
-            }
-
-            if (syncScenario) {
-                // Shift dial base ISO on console
-                rotateDial('iso-dial', mode === 'SDR' ? "100" : "800");
-                document.getElementById('hud-iso').textContent = "ISO " + (mode === 'SDR' ? "100" : "800");
-            }
-        }
-
-        // ================= VIEWFINDER OVERLAY SWITCHES =================
-        function toggleViewfinderOverlay(type) {
+        function toggleVfAid(type) {
             if (type === 'grid') {
-                isOverlayGrid = !isOverlayGrid;
-                document.getElementById('grid-layer').style.display = isOverlayGrid ? 'grid' : 'none';
-                document.getElementById('btn-overlay-grid').className = isOverlayGrid ? 
-                    'bg-zinc-800 border border-zf-gold py-1.5 rounded transition text-zf-gold flex items-center justify-center gap-1 font-bold' : 
-                    'bg-zinc-800 border border-zinc-700 py-1.5 rounded transition text-white flex items-center justify-center gap-1';
+                viewGridActive = !viewGridActive;
+                document.getElementById('sim-grid-layer').style.display = viewGridActive ? 'grid' : 'none';
+                document.getElementById('btn-vf-grid').className = viewGridActive ? 
+                    'bg-zinc-200 border border-retro-brass py-1.5 rounded-lg text-retro-brass transition-all flex items-center justify-center gap-1.5 font-bold' : 
+                    'bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 py-1.5 rounded-lg text-zinc-500 flex items-center justify-center gap-1.5';
             } else if (type === 'waveform') {
-                isOverlayWaveform = !isOverlayWaveform;
-                document.getElementById('waveform-box').style.display = isOverlayWaveform ? 'block' : 'none';
-                document.getElementById('btn-overlay-waveform').className = isOverlayWaveform ? 
-                    'bg-zinc-800 border border-zf-gold py-1.5 rounded transition text-zf-gold flex items-center justify-center gap-1 font-bold' : 
-                    'bg-zinc-800 border border-zinc-700 py-1.5 rounded transition text-white flex items-center justify-center gap-1';
+                viewWaveActive = !viewWaveActive;
+                document.getElementById('sim-waveform-container').style.display = viewWaveActive ? 'block' : 'none';
+                document.getElementById('btn-vf-wave').className = viewWaveActive ? 
+                    'bg-zinc-200 border border-retro-brass py-1.5 rounded-lg text-retro-brass transition-all flex items-center justify-center gap-1.5 font-bold' : 
+                    'bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 py-1.5 rounded-lg text-zinc-500 flex items-center justify-center gap-1.5';
             } else if (type === 'zebra') {
-                isOverlayZebra = !isOverlayZebra;
-                const scen = scenarios.find(s => s.id === activeScenarioId);
-                const zebraOverlay = document.getElementById('zebra-overlay');
-                if (isOverlayZebra && scen && scen.bgBrightness >= 200) {
-                    zebraOverlay.className = "absolute inset-0 pointer-events-none zebra-stripes opacity-100 transition-opacity duration-300";
-                } else {
-                    zebraOverlay.className = "absolute inset-0 pointer-events-none zebra-stripes opacity-0 transition-opacity duration-300";
-                }
-                document.getElementById('btn-overlay-zebra').className = isOverlayZebra ? 
-                    'bg-zinc-800 border border-zf-gold py-1.5 rounded transition text-zf-gold flex items-center justify-center gap-1 font-bold' : 
-                    'bg-zinc-800 border border-zinc-700 py-1.5 rounded transition text-white flex items-center justify-center gap-1';
+                viewZebraActive = !viewZebraActive;
+                recalculateOpticsExposure();
+                document.getElementById('btn-vf-zebra').className = viewZebraActive ? 
+                    'bg-zinc-200 border border-retro-brass py-1.5 rounded-lg text-retro-brass transition-all flex items-center justify-center gap-1.5 font-bold' : 
+                    'bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 py-1.5 rounded-lg text-zinc-500 flex items-center justify-center gap-1.5';
             } else if (type === 'peaking') {
-                isOverlayPeaking = !isOverlayPeaking;
-                const peakOutline = document.getElementById('focus-peak-outline');
-                if (isOverlayPeaking) {
-                    peakOutline.className = "absolute top-[30%] left-[32%] w-[33%] h-[50%] rounded-full border border-red-500/70 pointer-events-none focus-peak";
-                } else {
-                    peakOutline.className = "absolute top-[30%] left-[32%] w-[33%] h-[50%] rounded-full pointer-events-none";
-                }
-                document.getElementById('btn-overlay-peaking').className = isOverlayPeaking ? 
-                    'bg-zinc-800 border border-zf-gold py-1.5 rounded transition text-zf-gold flex items-center justify-center gap-1 font-bold' : 
-                    'bg-zinc-800 border border-zinc-700 py-1.5 rounded transition text-white flex items-center justify-center gap-1';
+                viewPeakActive = !viewPeakActive;
+                recalculateOpticsExposure();
+                document.getElementById('btn-vf-peak').className = viewPeakActive ? 
+                    'bg-zinc-200 border border-retro-brass py-1.5 rounded-lg text-retro-brass transition-all flex items-center justify-center gap-1.5 font-bold' : 
+                    'bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 py-1.5 rounded-lg text-zinc-500 flex items-center justify-center gap-1.5';
             }
         }
 
-        // ================= DIRECT SUN EXPOSURE LADDER =================
-        const ladderValues = {
-            1: { aperture: "f/2.8", shutter: "1/3200", stars: "★★★★★", status: "Staccato judder (tripod only)", diff: "None (Razor sharp)", desc: "Extreme bokeh blur. Shutter climbs to 1/3200, creating severe staccato frame judder. Forbid hand moves entirely.", color: "text-red-400" },
-            2: { aperture: "f/4.0", shutter: "1/1600", stars: "★★★★☆", status: "Crisp staccato motion", diff: "None (Razor sharp)", desc: "Excellent separation look. Motion signature is quite sharp; keep pans slow to prevent jumpy eyes.", color: "text-amber-500" },
-            3: { aperture: "f/5.6", shutter: "1/1000", stars: "★★★☆☆", status: "Balanced daylight look", diff: "None (Razor sharp)", desc: "A safe, beautiful default for outdoor b-roll. Keeps background details soft while maintaining detail.", color: "text-emerald-500" },
-            4: { aperture: "f/8.0", shutter: "1/500", stars: "★★★☆☆", status: "Best overall daylight compromise", diff: "None (Razor sharp)", desc: "The ultimate direct-sun sweet spot. Provides balanced contrast with highly manageable background textures.", color: "text-green-400" },
-            5: { aperture: "f/11.0", shutter: "1/250", stars: "★★☆☆☆", status: "Nearly fluid motion", diff: "Slight diffraction risk", desc: "Shutter drops to 1/250. Deep focus across landscape elements. Minor diffraction begins softening pixels.", color: "text-yellow-500" },
-            6: { aperture: "f/16.0", shutter: "1/125", stars: "★☆☆☆☆", status: "Closest to 180° fluid blur", diff: "Moderate diffraction softness", desc: "Hard limits of exposure control. Shutter is closest to natural motion, but lens elements diffuse light details.", color: "text-red-500" }
-        };
-
-        function updateLadderFromSlider(val) {
-            const data = ladderValues[val];
+        // ================= SCENARIO CHALLENGE GAME CODE =================
+        function loadChallenge(id) {
+            currentActiveChallengeId = id;
+            const data = gameChallenges[id];
             if (!data) return;
 
-            document.getElementById('ladder-aperture-display').textContent = data.aperture;
-            document.getElementById('ladder-shutter-val').textContent = data.shutter;
-            document.getElementById('ladder-shutter-status').textContent = data.status;
-            document.getElementById('ladder-motion-title').textContent = data.status.split(' ')[0] + " Motion";
-            document.getElementById('ladder-blur-stars').textContent = data.stars;
-            document.getElementById('ladder-diffraction-val').textContent = data.diff;
-            document.getElementById('ladder-rule-text').textContent = data.desc;
-
-            // Animate judder ball representing staccato frame lag
-            const ball = document.getElementById('judder-ball');
-            ball.className = "w-3.5 h-3.5 rounded-full bg-zf-red absolute";
-            
-            // Adjust vibration speed according to shutter staccato
-            if (val <= 2) {
-                ball.style.animation = "peakPulse 0.1s infinite";
-            } else if (val <= 4) {
-                ball.style.animation = "peakPulse 0.4s infinite";
-            } else {
-                ball.style.animation = "peakPulse 1s infinite";
+            document.querySelectorAll('.challenge-select-btn').forEach(btn => {
+                btn.className = "challenge-select-btn p-4 rounded-xl border border-zinc-200 bg-retro-card text-left hover:border-retro-brass transition shadow-sm space-y-1";
+            });
+            const activeBtn = document.getElementById('btn-' + id);
+            if (activeBtn) {
+                activeBtn.className = "challenge-select-btn p-4 rounded-xl border border-retro-brass bg-[#FAF7F0] text-left hover:border-retro-brass transition shadow-sm space-y-1";
             }
+
+            document.getElementById('chall-workspace-badge').textContent = data.badge;
+            document.getElementById('chall-workspace-title').textContent = data.title;
+            document.getElementById('chall-workspace-desc').textContent = data.desc;
+
+            const objContainer = document.getElementById('chall-objectives');
+            objContainer.innerHTML = "";
+            data.objectives.forEach(obj => {
+                const row = document.createElement('div');
+                row.className = "flex items-start gap-2 text-[11px]";
+                row.innerHTML = `
+                    <i data-lucide="circle" class="w-3.5 h-3.5 text-zinc-400 mt-0.5 flex-shrink-0"></i>
+                    <span>${obj}</span>
+                `;
+                objContainer.appendChild(row);
+            });
+
+            document.getElementById('game-readout-iso').textContent = activeSimulatorState.iso;
+            document.getElementById('game-readout-shutter').textContent = activeSimulatorState.shutter;
+            document.getElementById('game-readout-aperture').textContent = activeSimulatorState.aperture;
+
+            const resultBox = document.getElementById('game-result-box');
+            resultBox.classList.add('hidden');
+
+            lucide.createIcons();
         }
 
-        // ================= DEPTH OF FIELD MATH =================
-        function calculateDof() {
-            const distSlider = document.getElementById('dof-dist-slider');
-            const apSlider = document.getElementById('dof-ap-slider');
-            
-            const distance = parseFloat(distSlider.value);
-            const apertureIndex = parseInt(apSlider.value);
-            
-            // Map slider index to actual apertures
-            const apertures = [2.0, 2.8, 4.0, 5.6, 8.0, 11.0, 16.0];
-            const apertureNum = apertures[apertureIndex - 1];
-            
-            document.getElementById('dof-dist-display').textContent = distance.toFixed(2) + " m";
-            document.getElementById('dof-aperture-display').textContent = "f/" + apertureNum.toFixed(1);
+        function submitChallengeSolution() {
+            const data = gameChallenges[currentActiveChallengeId];
+            if (!data) return;
 
-            // Optical Math parameters
-            let f = isDofCropDx ? 0.060 : 0.040; // 40mm FX or 60mm DX (equivalent)
-            let c = isDofCropDx ? 0.020 / 1000 : 0.030 / 1000; // Circle of confusion in meters
+            document.getElementById('game-readout-iso').textContent = activeSimulatorState.iso;
+            document.getElementById('game-readout-shutter').textContent = activeSimulatorState.shutter;
+            document.getElementById('game-readout-aperture').textContent = activeSimulatorState.aperture;
 
-            // Hyperfocal distance: H = (f^2 / (N * c)) + f
-            let H = (Math.pow(f, 2) / (apertureNum * c)) + f;
-            
-            // Near limit: Dn = (s * (H - f)) / (H + s - 2f)
-            let Dn = (distance * (H - f)) / (H + distance - (2 * f));
-            
-            // Far limit: Df = (s * (H - f)) / (H - s)
-            let Df = 0;
-            if (distance >= H) {
-                Df = Infinity;
+            const outcome = data.validate(activeSimulatorState);
+            const resultBox = document.getElementById('game-result-box');
+            resultBox.classList.remove('hidden');
+
+            if (outcome.success) {
+                resultBox.className = "p-4 rounded-xl border border-retro-green bg-green-50 text-retro-green text-xs leading-relaxed space-y-1";
+                resultBox.innerHTML = `
+                    <div class="flex items-center gap-1.5 font-bold text-sm">
+                        <i data-lucide="check-circle-2" class="w-4.5 h-4.5"></i> Challenge Cleared!
+                    </div>
+                    <p class="mt-1">${outcome.msg}</p>
+                `;
             } else {
-                Df = (distance * (H - f)) / (H - distance);
+                resultBox.className = "p-4 rounded-xl border border-red-350 bg-red-50 text-red-700 text-xs leading-relaxed space-y-1";
+                resultBox.innerHTML = `
+                    <div class="flex items-center gap-1.5 font-bold text-sm">
+                        <i data-lucide="x-circle" class="w-4.5 h-4.5"></i> Settings Rejected on Set
+                    </div>
+                    <p class="mt-1">${outcome.msg}</p>
+                    <span class="text-[10px] text-zinc-500 block mt-2 font-mono">Tip: Hop over to the "Zf Simulator" tab, dial in the proper settings, then come back here to submit.</span>
+                `;
             }
 
-            let totalDofText = "";
-            let nearText = Dn.toFixed(2) + " m";
-            let farText = Df === Infinity ? "Infinity (∞)" : Df.toFixed(2) + " m";
-
-            if (Df === Infinity) {
-                totalDofText = "Infinite Focus Depth";
-            } else {
-                let diffCm = (Df - Dn) * 100;
-                if (diffCm < 100) {
-                    totalDofText = "~ " + Math.round(diffCm) + " cm";
-                } else {
-                    totalDofText = "~ " + (diffCm / 100).toFixed(2) + " m";
-                }
-            }
-
-            document.getElementById('dof-near').textContent = nearText;
-            document.getElementById('dof-far').textContent = farText;
-            document.getElementById('dof-total').textContent = totalDofText;
-            document.getElementById('dof-hyper').textContent = H.toFixed(2) + " m";
-
-            // Update Advisory card details
-            updateDofAdvisory(distance, apertureNum, Df - Dn);
-
-            // Update focus 2D visual lane
-            updateDofVisualMap(distance, Dn, Df, H);
+            lucide.createIcons();
         }
 
-        function toggleDofCrop() {
-            isDofCropDx = !isDofCropDx;
-            const btn = document.getElementById('dof-crop-btn');
-            const dot = document.getElementById('dof-crop-dot');
-
-            if (isDofCropDx) {
-                btn.innerHTML = `<span class="w-2 h-2 rounded-full bg-zf-amber" id="dof-crop-dot"></span> 1.5x DX Crop (60mm Equiv)`;
-                btn.className = "text-xs font-mono bg-zinc-900 border border-zf-amber text-zf-amber px-2 py-0.5 rounded flex items-center gap-1 hover:border-zf-gold transition";
-            } else {
-                btn.innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500" id="dof-crop-dot"></span> FX Full Frame (40mm)`;
-                btn.className = "text-xs font-mono bg-zf-carbon border border-zf-steel text-white px-2 py-0.5 rounded flex items-center gap-1 hover:border-zf-gold transition";
-            }
-
-            calculateDof();
-        }
-
-        function updateDofAdvisory(distance, aperture, totalDof) {
-            const title = document.getElementById('dof-advisory-title');
-            const text = document.getElementById('dof-advisory-text');
-
-            if (aperture <= 2.0) {
-                title.textContent = "Brutal focus depth! Static positions strictly";
-                title.className = "font-mono text-red-400 font-bold block";
-                text.textContent = `At f/2.0, focus boundary is extremely razor thin (~${Math.round(totalDof * 100)}cm). Actively lock AF-C target grids onto eyes. Avoid handheld drift or leaning.`;
-            } else if (aperture <= 4.0) {
-                title.textContent = "Cinematic Sweet Spot";
-                title.className = "font-mono text-zf-gold font-bold block";
-                text.textContent = `Excellent bokeh blur with a comfortable focus lane. Perfect balance for interviews, standard tracking, and product profiles. Use slow camera moves.`;
-            } else {
-                title.textContent = "Forgiving Focus Depth (Daylight Workhorse)";
-                title.className = "font-mono text-green-400 font-bold block";
-                text.textContent = `Focal lane stretches past 1 meter. Offers extreme tracking safety for quick run-and-gun actions, deep landscape compositions, or walking street b-roll.`;
-            }
-        }
-
-        function updateDofVisualMap(dist, near, far, hyper) {
-            const subjectPin = document.getElementById('visual-subject-pin');
-            const focusZone = document.getElementById('visual-focus-zone');
-            const oofLeft = document.getElementById('visual-oof-left');
-
-            // Map distances (0.29 to 6.0m) to percentage slider ranges (0% to 100%)
-            const minD = 0.29;
-            const maxD = 6.0;
-
-            function getPercent(d) {
-                if (d > maxD) return 95;
-                let p = ((d - minD) / (maxD - minD)) * 80 + 10; // clamp visual bounds
-                return Math.max(5, Math.min(95, p));
-            }
-
-            const subPercent = getPercent(dist);
-            const nearPercent = getPercent(near);
-            const farPercent = far === Infinity ? 100 : getPercent(far);
-
-            subjectPin.style.left = subPercent + "%";
-            focusZone.style.left = nearPercent + "%";
-            focusZone.style.width = (farPercent - nearPercent) + "%";
-            oofLeft.style.width = nearPercent + "%";
-        }
-
-        // ================= INTERACTIVE CHECKLIST =================
-        function initChecklist() {
-            const container = document.getElementById('checklist-items-container');
+        // ================= CHEAT SHEET TABLE CODE =================
+        function initCheatSheet() {
+            const container = document.getElementById('sheet-container');
             container.innerHTML = "";
 
-            // Load completion values from LocalStorage if they exist
-            const stored = JSON.parse(localStorage.getItem('zf_checklist_v1')) || {};
-
-            checklistItems.forEach(item => {
-                const isChecked = stored[item.id] ? "checked" : "";
+            listConfigs.forEach(item => {
                 const row = document.createElement('div');
-                row.className = `grid grid-cols-1 md:grid-cols-12 p-3.5 items-start gap-2.5 transition duration-200 [content-visibility:auto] ${isChecked ? 'bg-zinc-950/20 opacity-80' : 'bg-black/10'}`;
-                row.id = "row-" + item.id;
+                row.className = `grid grid-cols-1 md:grid-cols-12 p-4 items-start gap-2 md:gap-4 transition duration-200 bg-retro-card [content-visibility:auto] sheet-row`;
+                row.setAttribute('data-category', item.category);
+                row.setAttribute('data-search', (item.title + " " + item.setting + " " + item.why).toLowerCase());
 
                 row.innerHTML = `
-                    <div class="col-span-1 flex justify-center md:pt-0.5">
-                        <input type="checkbox" id="${item.id}" onchange="toggleChecklistItem('${item.id}')" ${isChecked}
-                               class="w-4.5 h-4.5 text-zf-gold bg-zinc-900 border-zinc-700 rounded focus:ring-zf-gold accent-zf-gold cursor-pointer transition">
+                    <div class="col-span-12 md:col-span-3">
+                        <span class="text-xs uppercase font-mono tracking-wider font-bold text-zinc-400 block">${item.category.toUpperCase()}</span>
+                        <strong class="font-serif font-bold text-retro-ink text-sm md:text-base">${item.title}</strong>
                     </div>
-                    <div class="col-span-11 md:col-span-3">
-                        <label for="${item.id}" class="font-mono text-xs font-bold text-white hover:text-zf-gold cursor-pointer flex items-center gap-1.5">
-                            <span class="md:hidden block w-1.5 h-1.5 rounded-full bg-zf-gold"></span>
-                            ${item.title}
-                        </label>
+                    <div class="col-span-12 md:col-span-3 pt-1 md:pt-0">
+                        <span class="bg-zinc-100 border border-zinc-200 text-retro-brass font-mono text-[10.5px] font-bold px-2.5 py-1 rounded">${item.setting}</span>
                     </div>
-                    <div class="col-span-11 md:col-span-3 ml-4 md:ml-0">
-                        <span class="bg-zinc-900 text-zf-gold font-mono text-[10.5px] px-2 py-0.5 rounded border border-zinc-800 font-bold">${item.setting}</span>
-                    </div>
-                    <div class="col-span-11 md:col-span-5 ml-4 md:ml-0 text-[11px] text-gray-400">
+                    <div class="col-span-12 md:col-span-6 pt-1 md:pt-0 text-xs text-zinc-500 leading-relaxed font-mono">
                         ${item.why}
                     </div>
                 `;
                 container.appendChild(row);
             });
-
-            updateProgressTracker();
         }
 
-        function toggleChecklistItem(id) {
-            const el = document.getElementById(id);
-            const row = document.getElementById("row-" + id);
-            if (!el || !row) return;
+        function filterSheet(category) {
+            document.querySelectorAll('.sheet-f').forEach(btn => {
+                btn.className = "sheet-f bg-zinc-200/60 text-zinc-600 hover:text-retro-ink px-3 py-1.5 rounded-lg transition-all";
+            });
+            document.getElementById('sheet-f-' + category).className = "sheet-f bg-retro-brass text-white font-bold px-3 py-1.5 rounded-lg transition-all shadow-sm";
 
-            if (el.checked) {
-                row.classList.add('bg-zinc-950/20', 'opacity-80');
-            } else {
-                row.classList.remove('bg-zinc-950/20', 'opacity-80');
-            }
-
-            // Save state
-            const stored = JSON.parse(localStorage.getItem('zf_checklist_v1')) || {};
-            stored[id] = el.checked;
-            localStorage.setItem('zf_checklist_v1', JSON.stringify(stored));
-
-            updateProgressTracker();
+            document.querySelectorAll('.sheet-row').forEach(row => {
+                const cat = row.getAttribute('data-category');
+                if (category === 'all' || cat === category) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
         }
 
-        function updateProgressTracker() {
-            const checkboxes = checklistItems.map(item => document.getElementById(item.id)).filter(el => el);
-            const total = checkboxes.length;
-            const checked = checkboxes.filter(el => el.checked).length;
-
-            const ratio = total > 0 ? (checked / total) : 0;
-            const pct = Math.round(ratio * 100);
-
-            document.getElementById('completion-ratio').textContent = `${checked}/${total} Completed (${pct}%)`;
-            document.getElementById('completion-bar').style.width = pct + "%";
+        function searchCheatSheet() {
+            const query = document.getElementById('sheet-search').value.toLowerCase();
+            document.querySelectorAll('.sheet-row').forEach(row => {
+                const content = row.getAttribute('data-search');
+                if (content.includes(query)) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
         }
 
-        function resetChecklist() {
-            if (confirm("Reset all setup configurations back to unchecked?")) {
-                localStorage.removeItem('zf_checklist_v1');
-                checklistItems.forEach(item => {
-                    const el = document.getElementById(item.id);
-                    if (el) el.checked = false;
-                    const row = document.getElementById("row-" + item.id);
-                    if (row) row.classList.remove('bg-zinc-950/20', 'opacity-80');
-                });
-                updateProgressTracker();
-            }
-        }
-
-        // ================= CINE & FLICKER SOLVER TOOL =================
-        function calculateToolCine() {
-            const fpsVal = parseInt(document.getElementById('tool-fps').value);
-            const freqVal = parseInt(document.getElementById('tool-freq').value);
-            
-            // Ideal Shutter speed
-            let shutterText = "";
-            let cropText = "1x (Normal Speed)";
-            let adviceHtml = "";
-
-            if (fpsVal === 24) { shutterText = "1/50"; }
-            else if (fpsVal === 25) { shutterText = "1/50"; }
-            else if (fpsVal === 30) { shutterText = "1/60"; }
-            else if (fpsVal === 50) { 
-                shutterText = "1/100"; 
-                cropText = "1.5x DX Crop forced in 4K!"; 
-            }
-            else if (fpsVal === 60) { 
-                shutterText = "1/125"; 
-                cropText = "1.5x DX Crop forced in 4K!"; 
-            }
-            else if (fpsVal === 100) { 
-                shutterText = "1/200"; 
-                cropText = "1080p Crop limit"; 
-            }
-            else if (fpsVal === 120) { 
-                shutterText = "1/250"; 
-                cropText = "1080p Crop limit"; 
-            }
-
-            document.getElementById('tool-ideal-shutter').textContent = shutterText;
-            document.getElementById('tool-crop').textContent = cropText;
-
-            // Generate warnings
-            const advBox = document.getElementById('tool-safety-warning');
-            
-            // Flicker check
-            const flickerHertzMatch = (1 / parseFloat(shutterText.split('/')[1])) / (1 / (freqVal * 2));
-            const isFlickerSafe = Number.isInteger(flickerHertzMatch) || (flickerHertzMatch % 1 === 0);
-
-            if (fpsVal === 25 && freqVal === 50) {
-                advBox.innerHTML = `
-                    <i data-lucide="shield-check" class="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5"></i>
-                    <span><strong>Flicker-Free Match!</strong> 25p is ideal for Indian mains grids. Shutter 1/50 eliminates LED/tube rolling noise completely.</span>
-                `;
-            } else if (fpsVal === 30 && freqVal === 50) {
-                advBox.innerHTML = `
-                    <i data-lucide="alert-triangle" class="w-4 h-4 text-zf-amber flex-shrink-0 mt-0.5"></i>
-                    <span><strong>High Flicker Hazard!</strong> 30p digital frequency slips against 50Hz lighting power. Severe rolling dark bands expected. Use 25p or lock shutter to exactly 1/50 or 1/100.</span>
-                `;
-            } else if (fpsVal >= 50 && cropText.includes('DX')) {
-                advBox.innerHTML = `
-                    <i data-lucide="info" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                    <span><strong>DX Crop Active:</strong> Frame rate forces 1.5x sensor crop. Put your camera back a meter to maintain equivalent frame.</span>
-                `;
-            } else {
-                advBox.innerHTML = `
-                    <i data-lucide="shield-check" class="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5"></i>
-                    <span>Shutter speed conforms properly to standard cinema 180-degree motion curves.</span>
-                `;
-            }
-            lucide.createIcons();
-        }
-
-        // ================= AUDIO INTENSITIES GAUGE MOCK =================
-        let isAudioManual = true;
-        let audioTimer = null;
-
-        function setAudioMode(mode) {
-            isAudioManual = mode === 'manual';
-            const btnAuto = document.getElementById('audio-btn-auto');
-            const btnManual = document.getElementById('audio-btn-manual');
-            const adv = document.getElementById('tool-audio-advice');
-
-            if (isAudioManual) {
-                btnManual.className = "px-2 py-0.5 rounded text-[10px] bg-zf-gold text-black font-bold transition";
-                btnAuto.className = "px-2 py-0.5 rounded text-[10px] bg-zinc-800 text-zinc-400 font-bold hover:text-white transition";
-                adv.innerHTML = `
-                    <i data-lucide="volume-2" class="w-4 h-4 text-zf-gold flex-shrink-0 mt-0.5"></i>
-                    <span>In manual gain, the camera floor noise drops dramatically. Target voices peaks cleanly near <strong>−12 dB</strong> to avoid clipping.</span>
-                `;
-            } else {
-                btnAuto.className = "px-2 py-0.5 rounded text-[10px] bg-zf-gold text-black font-bold transition";
-                btnManual.className = "px-2 py-0.5 rounded text-[10px] bg-zinc-800 text-zinc-400 font-bold hover:text-white transition";
-                adv.innerHTML = `
-                    <i data-lucide="alert-triangle" class="w-4 h-4 text-zf-amber flex-shrink-0 mt-0.5"></i>
-                    <span><strong>Auto-Gain Alert:</strong> Levels will peak erratically, pushing the floor noise up into loud hiss and motor hums when silent. Avoid!</span>
-                `;
-            }
-            lucide.createIcons();
-        }
-
-        function startAudioMeterAnimation() {
-            setInterval(() => {
-                const bar1 = document.getElementById('audio-bar-1');
-                const bar2 = document.getElementById('audio-bar-2');
-                const toolBar = document.getElementById('tool-audio-bar');
-                
-                // Random natural sound fluctuations
-                let rand1 = Math.random() * 30 + 45; // peak around 60-75%
-                let rand2 = rand1 - (Math.random() * 10);
-                
-                // Auto gain peaks much higher and erratically
-                let toolRand = isAudioManual ? Math.random() * 20 + 55 : Math.random() * 30 + 70;
-
-                if (bar1) bar1.style.width = rand1 + "%";
-                if (bar2) bar2.style.width = rand2 + "%";
-                if (toolBar) toolBar.style.width = toolRand + "%";
-            }, 120);
-        }
-
-        // ================= WAVEFORM CANVAS GRAPHICS =================
+        // ================= BACKGROUND WAVEFORM MONITOR =================
         function renderWaveform() {
-            const canvas = document.getElementById('waveform-canvas');
+            const canvas = document.getElementById('sim-waveform-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             if (!ctx) return;
 
-            // Clear
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Fetch current scenario brightness
-            const scen = scenarios.find(s => s.id === activeScenarioId);
-            const baseBr = scen ? scen.bgBrightness : 120; // 0 to 255
+            const state = activeSimulatorState;
+            const shutterFrac = state.shutter.split('/');
+            const shutterVal = parseFloat(shutterFrac[1] ? 1 / parseFloat(shutterFrac[1]) : parseFloat(shutterFrac[0]));
+            const evFactor = Math.log2((state.apertureNum * state.apertureNum) / shutterVal);
+            
+            const iso = state.iso === "Auto" ? 100 : parseFloat(state.iso);
+            const isoFactor = Math.log2(iso / 100);
+            
+            let baseBrightness = 120;
+            const matchingScen = Object.values(simulatorScenarios).find(s => s.iso === state.iso && s.shutter === state.shutter && s.apertureNum === state.apertureNum);
+            if (matchingScen) {
+                baseBrightness = matchingScen.brightness;
+            }
+            const lvFactor = isoFactor + (baseBrightness / 35);
+            let deviation = (lvFactor - evFactor) + state.evComp;
+            deviation = Math.max(-3.0, Math.min(3.0, deviation));
 
-            ctx.strokeStyle = "rgba(34, 197, 94, 0.75)"; // beautiful green waveform line
-            ctx.lineWidth = 1.2;
+            const meanY = canvas.height / 2 - (deviation * 8);
+
+            ctx.strokeStyle = "rgba(34, 197, 94, 0.85)";
+            ctx.lineWidth = 1;
             ctx.beginPath();
 
-            // Render a stylized wave matching image brightness
             const steps = canvas.width;
             for (let x = 0; x < steps; x++) {
-                // Generate a waveform signal centered around the brightness of the selected scene
-                // Standard noise formula
-                let offset = Math.sin(x * 0.15) * 5 + Math.cos(x * 0.05) * 8;
-                let noise = Math.random() * 12 - 6;
+                let wave1 = Math.sin(x * 0.15) * 6;
+                let wave2 = Math.cos(x * 0.05) * 3;
+                let noise = Math.random() * 8 - 4;
                 
-                // Scale brightness to match canvas height (bottom is 0 brightness, top is max)
-                // 255 brightness mapping to near top (Y = 5), 50 mapping to bottom (Y = height - 5)
-                let targetY = canvas.height - ((baseBr / 255) * (canvas.height - 10)) - 5;
-                let finalY = Math.max(2, Math.min(canvas.height - 2, targetY + offset + noise));
+                let finalY = Math.max(2, Math.min(canvas.height - 2, meanY + wave1 + wave2 + noise));
 
                 if (x === 0) {
                     ctx.moveTo(x, finalY);
@@ -1969,18 +1187,52 @@
             }
             ctx.stroke();
 
-            // Draw faint reference lines (e.g. 50 IRE, 100 IRE)
             ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
             ctx.lineWidth = 0.5;
-            
             ctx.beginPath();
-            ctx.moveTo(0, canvas.height * 0.2); // near 80 IRE
+            ctx.moveTo(0, canvas.height * 0.2);
             ctx.lineTo(canvas.width, canvas.height * 0.2);
-            ctx.moveTo(0, canvas.height * 0.5); // near 50 IRE
+            ctx.moveTo(0, canvas.height * 0.5);
             ctx.lineTo(canvas.width, canvas.height * 0.5);
-            ctx.moveTo(0, canvas.height * 0.8); // near 20 IRE
+            ctx.moveTo(0, canvas.height * 0.8);
             ctx.lineTo(canvas.width, canvas.height * 0.8);
             ctx.stroke();
+        }
+
+        // ================= AUTOMATIC GAUGE AND TIMECODE ANIMATOR =================
+        function startHUDAnimations() {
+            setInterval(() => {
+                const aud1 = document.getElementById('sim-audio-meter-1');
+                if (aud1) {
+                    let level = Math.random() * 25 + 40;
+                    aud1.style.width = level + "%";
+                }
+            }, 150);
+
+            let frames = 0, seconds = 14, minutes = 18, hours = 2;
+            setInterval(() => {
+                frames++;
+                if (frames >= 25) {
+                    frames = 0;
+                    seconds++;
+                    if (seconds >= 60) {
+                        seconds = 0;
+                        minutes++;
+                        if (minutes >= 60) {
+                            minutes = 0;
+                            hours++;
+                        }
+                    }
+                }
+                const fStr = frames.toString().padStart(2, '0');
+                const sStr = seconds.toString().padStart(2, '0');
+                const mStr = minutes.toString().padStart(2, '0');
+                const hStr = hours.toString().padStart(2, '0');
+                
+                const timeStr = `${hStr}:${mStr}:${sStr}:${fStr}`;
+                const tEl = document.getElementById('sim-timecode');
+                if (tEl) tEl.textContent = timeStr;
+            }, 40);
         }
     </script>
 </body>
