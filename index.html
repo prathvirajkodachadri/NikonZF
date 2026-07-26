@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikon Zf Camera Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Classic Black Theme */
+            --body-primary: #1a1a1a;
+            --body-secondary: #2d2d2d;
+            --body-accent: #3a3a3a;
+            --body-highlight: #4a4a4a;
+            --leather-texture: #0d0d0d;
+            --silver-chrome: #8a8a8a;
+            --silver-bright: #b8b8b8;
+            --text-gold: #c9a962;
+            --dial-text: #e8e8e8;
+            --lcd-bg: #1a2f1a;
+            --lcd-text: #4ade80;
+            --button-glow: #22c55e;
+            --background: #1a1a1a;
+            --bg-gradient-1: #2a2a2a;
+            --bg-gradient-2: #0f0f0f;
+            --card-bg: #252525;
+        }
+
+        [data-theme="heritage-silver"] {
+            --body-primary: #4a4a4a;
+            --body-secondary: #5a5a5a;
+            --body-accent: #6a6a6a;
+            --body-highlight: #8a8a8a;
+            --leather-texture: #3a3a3a;
+            --silver-chrome: #c0c0c0;
+            --silver-bright: #e0e0e0;
+            --text-gold: #d4af37;
+            --dial-text: #1a1a1a;
+            --lcd-bg: #2a3f2a;
+            --lcd-text: #7fff7f;
+            --background: #3a3a3a;
+            --bg-gradient-1: #4a4a4a;
+            --bg-gradient-2: #2a2a2a;
+            --card-bg: #3a3a3a;
+        }
+
+        [data-theme="vintage-sepia"] {
+            --body-primary: #8b4513;
+            --body-secondary: #a0522d;
+            --body-accent: #b8860b;
+            --body-highlight: #cd853f;
+            --leather-texture: #654321;
+            --silver-chrome: #d4a574;
+            --silver-bright: #e8c99b;
+            --text-gold: #f4e4bc;
+            --dial-text: #2a1a0a;
+            --lcd-bg: #3f2a1f;
+            --lcd-text: #f0d9b5;
+            --background: #3f2415;
+            --bg-gradient-1: #5a3a25;
+            --bg-gradient-2: #2a1a0f;
+            --card-bg: #4a2a15;
+        }
+
+        [data-theme="modern-white"] {
+            --body-primary: #f5f5f5;
+            --body-secondary: #e8e8e8;
+            --body-accent: #d0d0d0;
+            --body-highlight: #ffffff;
+            --leather-texture: #e0e0e0;
+            --silver-chrome: #a0a0a0;
+            --silver-bright: #c8c8c8;
+            --text-gold: #1a1a1a;
+            --dial-text: #1a1a1a;
+            --lcd-bg: #2a2a2a;
+            --lcd-text: #00ff88;
+            --background: #f0f0f0;
+            --bg-gradient-1: #e8e8e8;
+            --bg-gradient-2: #d8d8d8;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="desert-tan"] {
+            --body-primary: #c4a574;
+            --body-secondary: #d4b584;
+            --body-accent: #e4c594;
+            --body-highlight: #f0d5a4;
+            --leather-texture: #a08050;
+            --silver-chrome: #8a7a5a;
+            --silver-bright: #b4a47a;
+            --text-gold: #4a3a2a;
+            --dial-text: #2a1a0a;
+            --lcd-bg: #3f3020;
+            --lcd-text: #e8c090;
+            --background: #b89860;
+            --bg-gradient-1: #c8a870;
+            --bg-gradient-2: #a88850;
+            --card-bg: #c4a070;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            min-height: 100vh;
+            color: var(--dial-text);
+            transition: all 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        /* Retro grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 8px;
+            color: var(--text-gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: var(--silver-chrome);
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            max-width: 200px;
+            justify-content: flex-end;
+        }
+
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--silver-chrome);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .theme-btn.active {
+            border-color: var(--text-gold);
+            box-shadow: 0 0 15px var(--text-gold);
+        }
+
+        .theme-btn[data-theme="classic-black"] {
+            background: linear-gradient(135deg, #1a1a1a 50%, #2d2d2d 50%);
+        }
+
+        .theme-btn[data-theme="heritage-silver"] {
+            background: linear-gradient(135deg, #5a5a5a 50%, #b0b0b0 50%);
+        }
+
+        .theme-btn[data-theme="vintage-sepia"] {
+            background: linear-gradient(135deg, #8b4513 50%, #d4a574 50%);
+        }
+
+        .theme-btn[data-theme="modern-white"] {
+            background: linear-gradient(135deg, #e8e8e8 50%, #ffffff 50%);
+        }
+
+        .theme-btn[data-theme="desert-tan"] {
+            background: linear-gradient(135deg, #a08050 50%, #e4c594 50%);
+        }
+
+        /* Camera Container */
+        .camera-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            perspective: 1500px;
+        }
+
+        .camera {
+            position: relative;
+            width: 580px;
+            height: 420px;
+            transform-style: preserve-3d;
+            transform: rotateX(2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .camera:hover {
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+
+        /* Camera Body */
+        .camera-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, var(--body-highlight) 0%, var(--body-primary) 50%, var(--body-secondary) 100%);
+            border-radius: 25px 25px 20px 20px;
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.4),
+                0 10px 20px rgba(0,0,0,0.3),
+                inset 0 2px 3px rgba(255,255,255,0.1),
+                inset 0 -2px 3px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* Leather texture pattern */
+        .camera-body::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            right: 30px;
+            bottom: 40px;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 2px,
+                    var(--leather-texture) 2px,
+                    var(--leather-texture) 4px
+                );
+            opacity: 0.3;
+            border-radius: 10px;
+        }
+
+        /* Top Plate */
+        .top-plate {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 85px;
+            background: linear-gradient(180deg, var(--body-highlight) 0%, var(--body-secondary) 100%);
+            border-radius: 25px 25px 0 0;
+            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Hot Shoe */
+        .hot-shoe {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 18px;
+            background: var(--body-accent);
+            border-radius: 3px;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.2);
+        }
+
+        .hot-shoe::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 12px;
+            background: linear-gradient(180deg, var(--body-highlight) 0%, var(--silver-chrome) 50%, var(--body-highlight) 100%);
+            border-radius: 2px;
+        }
+
+        /* Nikon Badge */
+        .nikon-badge {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--silver-bright);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Mode Dial */
+        .mode-dial {
+            position: absolute;
+            top: 25px;
+            left: 85px;
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle at 30% 30%, var(--body-highlight), var(--body-primary));
+            border-radius: 50%;
+            box-shadow: 
+                0 4px 10px rgba(0,0,0,0.4),
+                inset 0 2px 3px rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-dial:hover {
+            transform: scale(1.05);
+        }
+
+        .mode-dial::before {
+            content: 'A';
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dial-text);
+        }
+
+        .mode-dial::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            width: 3px;
+            height: 10px;
+            background: var(--text-gold);
+            border-radius: 1px;
+        }
+
+        /* Shutter Speed Dial */
+        .shutter-dial {
+            position: absolute;
+            top: 20px;
+            left: 165px;
+            width: 65px;
+            height: 65px;
+            background: radial-gradient(circle at 30% 30%, var(--body-highlight), var(--body-primary));
+            border-radius: 50%;
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.4),
+                inset 0 2px 3px rgba(255,255,255,0.1);
+            cursor: grab;
+            transition: transform 0.2s ease;
+            user-select: none;
+        }
+
+        .shutter-dial:hover {
+            box-shadow: 
+                0 5px 20px rgba(0,0,0,0.5),
+                inset 0 2px 3px rgba(255,255,255,0.1),
+                0 0 20px rgba(201, 169, 98, 0.2);
+        }
+
+        .shutter-dial:active {
+            cursor: grabbing;
+        }
+
+        .shutter-dial-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, var(--body-accent), var(--body-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--dial-text);
+        }
+
+        .shutter-dial::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 12px;
+            background: var(--text-gold);
+            border-radius: 2px;
+        }
+
+        /* ISO Dial */
+        .iso-dial {
+            position: absolute;
+            top: 22px;
+            right: 90px;
+            width: 58px;
+            height: 58px;
+            background: radial-gradient(circle at 30% 30%, var(--body-highlight), var(--body-primary));
+            border-radius: 50%;
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.4),
+                inset 0 2px 3px rgba(255,255,255,0.1);
+            cursor: grab;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .iso-dial:hover {
+            box-shadow: 
+                0 5px 20px rgba(0,0,0,0.5),
+                inset 0 2px 3px rgba(255,255,255,0.1),
+                0 0 20px rgba(201, 169, 98, 0.2);
+        }
+
+        .iso-dial-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(145deg, var(--body-accent), var(--body-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dial-text);
+        }
+
+        .iso-dial::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 10px;
+            background: var(--text-gold);
+            border-radius: 1.5px;
+        }
+
+        /* Exposure Compensation Dial */
+        .exposure-dial {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, var(--body-highlight), var(--body-primary));
+            border-radius: 50%;
+            box-shadow: 
+                0 4px 12px rgba(0,0,0,0.4),
+                inset 0 2px 3px rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--dial-text);
+        }
+
+        .exposure-dial:hover {
+            transform: scale(1.05);
+        }
+
+        .exposure-dial::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 8px;
+            background: var(--text-gold);
+            border-radius: 1.5px;
+        }
+
+        /* Shutter Button */
+        .shutter-button {
+            position: absolute;
+            top: 18px;
+            left: 280px;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, var(--silver-bright), var(--silver-chrome));
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.4),
+                inset 0 2px 4px rgba(255,255,255,0.4),
+                inset 0 -2px 4px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+        }
+
+        .shutter-button:hover {
+            background: radial-gradient(circle at 30% 30%, #ffffff, var(--silver-bright));
+        }
+
+        .shutter-button:active {
+            transform: scale(0.95);
+            box-shadow: 
+                0 2px 8px rgba(0,0,0,0.4),
+                inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .shutter-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--silver-bright), var(--silver-chrome));
+            border-radius: 50%;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Front Elements */
+        .front-dial {
+            position: absolute;
+            top: 130px;
+            left: 45px;
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle at 30% 30%, var(--body-highlight), var(--body-primary));
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .front-dial::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 8px;
+            background: var(--silver-bright);
+            border-radius: 1px;
+        }
+
+        .fn-button {
+            position: absolute;
+            top: 145px;
+            left: 100px;
+            width: 22px;
+            height: 22px;
+            background: var(--body-accent);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fn-button:hover {
+            background: var(--silver-chrome);
+        }
+
+        /* Lens Mount */
+        .lens-mount {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, #0a0a0a 0%, #1a1a1a 70%, #2a2a2a 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 0 5px 20px rgba(0,0,0,0.8),
+                0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .lens-mount::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #050505 0%, #0f0f0f 100%);
+            border-radius: 50%;
+            border: 3px solid var(--body-accent);
+            box-shadow: inset 0 3px 10px rgba(0,0,0,0.9);
+        }
+
+        /* Lens Mount Indicators */
+        .lens-indicator {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--text-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--text-gold);
+        }
+
+        .lens-indicator:nth-child(1) { top: calc(50% - 70px); left: 50%; transform: translateX(-50%); }
+        .lens-indicator:nth-child(2) { top: calc(50% - 70px); right: calc(50% - 50px); }
+        .lens-indicator:nth-child(3) { top: calc(50% - 70px); left: calc(50% - 50px); }
+
+        /* Viewfinder */
+        .viewfinder {
+            position: absolute;
+            top: 85px;
+            right: 50px;
+            width: 45px;
+            height: 30px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 5px 5px 3px 3px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .viewfinder::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            background: linear-gradient(180deg, #2a3a4a 0%, #1a2a3a 100%);
+            border-radius: 3px;
+        }
+
+        /* Flash/Auto Indicator */
+        .auto-flash-indicator {
+            position: absolute;
+            top: 95px;
+            left: 50px;
+            width: 15px;
+            height: 15px;
+            background: var(--button-glow);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--button-glow);
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Back Panel */
+        .back-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--body-secondary) 0%, var(--body-primary) 100%);
+            border-radius: 0 25px 20px 0;
+        }
+
+        /* LCD Screen */
+        .lcd-screen {
+            position: absolute;
+            top: 95px;
+            right: 25px;
+            width: 150px;
+            height: 100px;
+            background: var(--lcd-bg);
+            border-radius: 8px;
+            box-shadow: 
+                inset 0 3px 10px rgba(0,0,0,0.8),
+                0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid var(--body-accent);
+        }
+
+        .lcd-text {
+            font-family: 'Noto Sans', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--lcd-text);
+            text-shadow: 0 0 5px var(--lcd-text);
+        }
+
+        .lcd-secondary {
+            font-size: 10px;
+            color: var(--lcd-text);
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* Live View Display */
+        .live-view {
+            position: absolute;
+            top: 210px;
+            right: 20px;
+            width: 165px;
+            height: 95px;
+            background: linear-gradient(135deg, #1a2a3a 0%, #0f1a2a 100%);
+            border-radius: 5px;
+            border: 2px solid var(--body-accent);
+            overflow: hidden;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        .live-view::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 3px 3px;
+        }
+
+        .live-view-overlay {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 8px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Control Buttons */
+        .control-pad {
+            position: absolute;
+            top: 320px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+        }
+
+        .control-btn {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: var(--body-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--silver-chrome);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .control-btn.up { top: 0; left: 50%; transform: translateX(-50%); }
+        .control-btn.down { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .control-btn.left { left: 0; top: 50%; transform: translateY(-50%); }
+        .control-btn.right { right: 0; top: 50%; transform: translateY(-50%); }
+
+        .control-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: var(--body-highlight);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Play & Delete Buttons */
+        .play-btn {
+            position: absolute;
+            bottom: 50px;
+            left: 25px;
+            width: 35px;
+            height: 20px;
+            background: var(--body-accent);
+            border-radius: 3px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .play-btn::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 8px;
+            border: 6px solid transparent;
+            border-left: 10px solid var(--silver-bright);
+        }
+
+        .menu-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            width: 25px;
+            height: 25px;
+            background: var(--body-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--silver-bright);
+        }
+
+        /* Bottom Panel */
+        .bottom-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(180deg, var(--body-secondary) 0%, var(--body-primary) 100%);
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* Brand Badge */
+        .brand-badge {
+            position: absolute;
+            bottom: 15px;
+            left: 30px;
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: var(--silver-chrome);
+            text-transform: uppercase;
+        }
+
+        /* Model Badge */
+        .model-badge {
+            position: absolute;
+            bottom: 15px;
+            left: 120px;
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--silver-bright);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .info-panel h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text-gold);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .info-panel p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--dial-text);
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .spec-item {
+            background: var(--body-secondary);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .spec-label {
+            font-size: 0.75rem;
+            color: var(--silver-chrome);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-gold);
+        }
+
+        /* Controls Section */
+        .controls-section {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            padding: 20px 25px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .controls-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text-gold);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--body-accent);
+        }
+
+        .control-row:last-child {
+            border-bottom: none;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
+            color: var(--dial-text);
+        }
+
+        .control-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--silver-bright);
+            background: var(--body-secondary);
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        /* Shutter Animation */
+        .shutter-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transition: opacity 0.05s ease;
+        }
+
+        .shutter-flash.active {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .camera {
+                transform: scale(0.7);
+            }
+            
+            .theme-switcher {
+                position: static;
+                justify-content: center;
+                margin: 15px auto;
+                max-width: none;
+            }
+
+            .info-panel, .controls-section {
+                margin: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="classic-black">
+    <div class="shutter-flash" id="shutterFlash"></div>
+
+    <header class="header">
+        <h1 class="logo">NIKON</h1>
+        <p class="subtitle">Zf Camera Simulator</p>
+    </header>
+
+    <div class="theme-switcher">
+        <button class="theme-btn active" data-theme="classic-black" title="Classic Black"></button>
+        <button class="theme-btn" data-theme="heritage-silver" title="Heritage Silver"></button>
+        <button class="theme-btn" data-theme="vintage-sepia" title="Vintage Sepia"></button>
+        <button class="theme-btn" data-theme="modern-white" title="Modern White"></button>
+        <button class="theme-btn" data-theme="desert-tan" title="Desert Tan"></button>
+    </div>
+
+    <div class="camera-container">
+        <div class="camera">
+            <div class="camera-body">
+                <!-- Top Plate -->
+                <div class="top-plate">
+                    <div class="hot-shoe"></div>
+                    <div class="nikon-badge">NIKON</div>
+                    
+                    <!-- Mode Dial -->
+                    <div class="mode-dial" title="拍摄模式"></div>
+                    
+                    <!-- Shutter Speed Dial -->
+                    <div class="shutter-dial" id="shutterDial" title="快门速度">
+                        <div class="shutter-dial-inner" id="shutterValue">1/125</div>
+                    </div>
+                    
+                    <!-- Shutter Button -->
+                    <button class="shutter-button" id="shutterBtn" title="快门"></button>
+                    
+                    <!-- ISO Dial -->
+                    <div class="iso-dial" id="isoDial" title="ISO感光度">
+                        <div class="iso-dial-inner" id="isoValue">6400</div>
+                    </div>
+                    
+                    <!-- Exposure Compensation -->
+                    <div class="exposure-dial" id="exposureDial" title="曝光补偿">±0</div>
+                </div>
+
+                <!-- Front Elements -->
+                <div class="front-dial" title="前拨轮"></div>
+                <div class="fn-button" title="Fn按钮"></div>
+                <div class="auto-flash-indicator" title="自动对焦指示灯"></div>
+
+                <!-- Lens Mount -->
+                <div class="lens-mount">
+                    <div class="lens-indicator"></div>
+                    <div class="lens-indicator"></div>
+                    <div class="lens-indicator"></div>
+                </div>
+
+                <!-- Viewfinder -->
+                <div class="viewfinder"></div>
+
+                <!-- Back Panel -->
+                <div class="back-panel">
+                    <div class="lcd-screen">
+                        <div class="lcd-text" id="lcdMain">1/125</div>
+                        <div class="lcd-text" id="lcdIso">ISO 6400</div>
+                        <div class="lcd-secondary" id="lcdAperture">f/1.8</div>
+                    </div>
+
+                    <div class="live-view">
+                        <div class="live-view-overlay">
+                            <div>AF-S</div>
+                            <div>✓</div>
+                        </div>
+                    </div>
+
+                    <div class="control-pad">
+                        <div class="control-btn up"></div>
+                        <div class="control-btn down"></div>
+                        <div class="control-btn left"></div>
+                        <div class="control-btn right"></div>
+                        <div class="control-center"></div>
+                    </div>
+
+                    <div class="play-btn" title="播放"></div>
+                    <div class="menu-btn" title="菜单">☰</div>
+                </div>
+
+                <!-- Bottom Panel -->
+                <div class="bottom-panel">
+                    <span class="brand-badge">Nikon</span>
+                    <span class="model-badge">Z f</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls-section">
+        <h3>📷 当前设置</h3>
+        <div class="control-row">
+            <span class="control-label">快门速度</span>
+            <span class="control-value" id="controlShutter">1/125s</span>
+        </div>
+        <div class="control-row">
+            <span class="control-label">ISO感光度</span>
+            <span class="control-value" id="controlIso">ISO 6400</span>
+        </div>
+        <div class="control-row">
+            <span class="control-label">曝光补偿</span>
+            <span class="control-value" id="controlExposure">±0 EV</span>
+        </div>
+        <div class="control-row">
+            <span class="control-label">光圈</span>
+            <span class="control-value">f/1.8</span>
+        </div>
+        <div class="control-row">
+            <span class="control-label">拍摄模式</span>
+            <span class="control-value">A (光圈优先)</span>
+        </div>
+    </div>
+
+    <div class="info-panel">
+        <h2>✨ Nikon Zf 模拟器</h2>
+        <p>
+            体验尼康 Zf 的经典复古设计，这是一款融合了传统胶片相机美学与现代无反光镜技术的全画幅微单相机。
+            通过旋转顶部拨盘来调整设置，点击快门按钮感受拍摄体验。
+        </p>
+        <p>
+            <strong>🎮 交互提示：</strong><br>
+            • 拖动快门速度拨盘旋转调整快门速度<br>
+            • 拖动 ISO 拨盘调整感光度<br>
+            • 点击曝光补偿拨盘切换曝光值<br>
+            • 点击快门按钮模拟拍摄
+        </p>
+        
+        <div class="specs-grid">
+            <div class="spec-item">
+                <div class="spec-label">传感器</div>
+                <div class="spec-value">FX Full-Frame</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-label">有效像素</div>
+                <div class="spec-value">24.5 MP</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-label">连拍速度</div>
+                <div class="spec-value">14 fps</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-label">视频</div>
+                <div class="spec-value">4K 60p</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-label">ISO范围</div>
+                <div class="spec-value">100-64000</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-label">重量</div>
+                <div class="spec-value">710g</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Camera state
+        const state = {
+            shutterSpeeds: ['30"', '15"', '8"', '4"', '2"', '1"', '1/2', '1/4', '1/8', '1/15', '1/30', '1/60', '1/125', '1/250', '1/500', '1/1000', '1/2000', '1/4000', '1/8000'],
+            isoValues: [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600, 51200, 102400],
+            exposureValues: ['-3', '-2', '-1', '±0', '+1', '+2', '+3'],
+            currentShutter: 12,  // 1/125
+            currentIso: 6,      // 6400
+            currentExposure: 3, // ±0
+        };
+
+        // DOM Elements
+        const shutterDial = document.getElementById('shutterDial');
+        const isoDial = document.getElementById('isoDial');
+        const exposureDial = document.getElementById('exposureDial');
+        const shutterBtn = document.getElementById('shutterBtn');
+        const shutterFlash = document.getElementById('shutterFlash');
+        const shutterValue = document.getElementById('shutterValue');
+        const isoValue = document.getElementById('isoValue');
+        const lcdMain = document.getElementById('lcdMain');
+        const lcdIso = document.getElementById('lcdIso');
+        const lcdAperture = document.getElementById('lcdAperture');
+        const controlShutter = document.getElementById('controlShutter');
+        const controlIso = document.getElementById('controlIso');
+        const controlExposure = document.getElementById('controlExposure');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+
+        // Rotate dial with mouse drag
+        function setupRotaryDial(element, stateKey, values, displayFn, updateFn) {
+            let isDragging = false;
+            let startY = 0;
+            let startIndex = 0;
+
+            const updateDisplay = (index) => {
+                const value = values[index];
+                displayFn(value, index);
+                updateFn(value, index);
+            };
+
+            element.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startY = e.clientY;
+                startIndex = state[stateKey];
+                element.style.cursor = 'grabbing';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const deltaY = startY - e.clientY;
+                const step = Math.round(deltaY / 30);
+                let newIndex = startIndex + step;
+                newIndex = Math.max(0, Math.min(values.length - 1, newIndex));
+                state[stateKey] = newIndex;
+                updateDisplay(newIndex);
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                element.style.cursor = 'grab';
+            });
+
+            // Touch support
+            element.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startY = e.touches[0].clientY;
+                startIndex = state[stateKey];
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const deltaY = startY - e.touches[0].clientY;
+                const step = Math.round(deltaY / 30);
+                let newIndex = startIndex + step;
+                newIndex = Math.max(0, Math.min(values.length - 1, newIndex));
+                state[stateKey] = newIndex;
+                updateDisplay(newIndex);
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            // Click to cycle
+            element.addEventListener('click', () => {
+                state[stateKey] = (state[stateKey] + 1) % values.length;
+                updateDisplay(state[stateKey]);
+            });
+        }
+
+        // Shutter Speed Dial
+        setupRotaryDial(
+            shutterDial,
+            'currentShutter',
+            state.shutterSpeeds,
+            (value) => {
+                const rotation = state.currentShutter * 18;
+                shutterDial.style.transform = `rotate(${-rotation}deg)`;
+                shutterValue.textContent = value;
+                lcdMain.textContent = value;
+                controlShutter.textContent = value + 's';
+            },
+            () => {}
+        );
+
+        // ISO Dial
+        setupRotaryDial(
+            isoDial,
+            'currentIso',
+            state.isoValues,
+            (value) => {
+                const rotation = (state.currentIso - 5) * 15;
+                isoDial.style.transform = `rotate(${rotation}deg)`;
+                isoValue.textContent = value;
+                lcdIso.textContent = 'ISO ' + value;
+                controlIso.textContent = 'ISO ' + value;
+            },
+            () => {}
+        );
+
+        // Exposure Dial (click to cycle)
+        exposureDial.addEventListener('click', () => {
+            state.currentExposure = (state.currentExposure + 1) % state.exposureValues.length;
+            exposureDial.textContent = state.exposureValues[state.currentExposure];
+            controlExposure.textContent = state.exposureValues[state.currentExposure] + ' EV';
+        });
+
+        // Shutter Button
+        shutterBtn.addEventListener('click', () => {
+            // Flash effect
+            shutterFlash.classList.add('active');
+            setTimeout(() => {
+                shutterFlash.classList.remove('active');
+            }, 100);
+
+            // Slight camera shake animation
+            const camera = document.querySelector('.camera');
+            camera.style.transform = 'rotateX(2deg) translateY(2px)';
+            setTimeout(() => {
+                camera.style.transform = 'rotateX(2deg)';
+            }, 100);
+
+            // Update aperture randomly for effect
+            const apertures = ['f/1.4', 'f/1.8', 'f/2.0', 'f/2.8', 'f/4.0'];
+            lcdAperture.textContent = apertures[Math.floor(Math.random() * apertures.length)];
+        });
+
+        // Theme Switcher
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                themeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.body.setAttribute('data-theme', btn.dataset.theme);
+            });
+        });
+
+        // Initialize display
+        shutterValue.textContent = state.shutterSpeeds[state.currentShutter];
+        isoValue.textContent = state.isoValues[state.currentIso];
+        exposureDial.textContent = state.exposureValues[state.currentExposure];
+        lcdMain.textContent = state.shutterSpeeds[state.currentShutter];
+        lcdIso.textContent = 'ISO ' + state.isoValues[state.currentIso];
+        controlShutter.textContent = state.shutterSpeeds[state.currentShutter] + 's';
+        controlIso.textContent = 'ISO ' + state.isoValues[state.currentIso];
+        controlExposure.textContent = state.exposureValues[state.currentExposure] + ' EV';
+
+        // 3D tilt effect on camera hover
+        const camera = document.querySelector('.camera');
+        camera.addEventListener('mousemove', (e) => {
+            const rect = camera.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / centerY * 3;
+            const rotateY = (centerX - x) / centerX * 5;
+            camera.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        camera.addEventListener('mouseleave', () => {
+            camera.style.transform = 'rotateX(2deg)';
+        });
+    </script>
+</body>
+</html>
