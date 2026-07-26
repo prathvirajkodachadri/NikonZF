@@ -348,6 +348,15 @@ function updateSimulator(changed = "") {
   $("#isoDial").textContent = settings.iso;
   $("#shutterDial").textContent = settings.shutter;
   $("#apertureDial").textContent = settings.aperture;
+
+  ["iso", "shutter", "aperture"].forEach(key => {
+    const dial = $(`.dial-unit[data-setting="${key}"] .dial-button`);
+    if (!dial) return;
+    const index = dialValues[key].findIndex(value => String(value) === String(settings[key]));
+    dial.setAttribute("aria-valuenow", String(index + 1));
+    dial.setAttribute("aria-valuetext", key === "iso" ? `ISO ${settings.iso}` : String(settings[key]));
+    dial.style.setProperty("--dial-index", String(Math.max(0, index)));
+  });
   $("#previewShutter").textContent = settings.shutter;
   $("#previewAperture").textContent = settings.aperture;
   $("#previewIso").textContent = `ISO ${settings.iso}`;
@@ -486,6 +495,96 @@ function stepSetting(key, direction) {
   updateSimulator(key);
 }
 
+function setSettingIndex(key, index) {
+  const values = dialValues[key];
+  const clamped = Math.min(values.length - 1, Math.max(0, index));
+  if (String(settings[key]) === String(values[clamped])) return false;
+  settings[key] = values[clamped];
+  updateSimulator(key);
+  return true;
+}
+
+function currentIndex(key) {
+  const index = dialValues[key].findIndex(value => String(value) === String(settings[key]));
+  return index === -1 ? 0 : index;
+}
+
+/* Rotary drag / swipe handling so the dials are usable with a thumb on a phone. */
+function initDialGestures() {
+  $$(".dial-button").forEach(button => {
+    const unit = button.closest("[data-setting]");
+    if (!unit) return;
+    const key = unit.dataset.setting;
+    let pointerId = null;
+    let startIndex = 0;
+    let lastAngle = 0;
+    let accumulated = 0;
+    let travel = 0;
+    let dragged = false;
+
+    const angleAt = event => {
+      const rect = button.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      return Math.atan2(event.clientY - cy, event.clientX - cx) * (180 / Math.PI);
+    };
+
+    button.addEventListener("pointerdown", event => {
+      if (pointerId !== null) return;
+      pointerId = event.pointerId;
+      startIndex = currentIndex(key);
+      lastAngle = angleAt(event);
+      accumulated = 0;
+      travel = 0;
+      dragged = false;
+      button.setPointerCapture(pointerId);
+      button.classList.add("dragging");
+    });
+
+    button.addEventListener("pointermove", event => {
+      if (event.pointerId !== pointerId) return;
+      const angle = angleAt(event);
+      let delta = angle - lastAngle;
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+      lastAngle = angle;
+      accumulated += delta;
+      travel += Math.abs(delta);
+      /* One detent every 24° of rotation — comfortable for a thumb. */
+      if (travel > 8) dragged = true;
+      const steps = Math.trunc(accumulated / 24);
+      if (steps !== 0) {
+        accumulated -= steps * 24;
+        if (setSettingIndex(key, currentIndex(key) + steps) && navigator.vibrate) navigator.vibrate(8);
+      }
+      if (dragged) {
+        button.style.setProperty("--dial-turn", `${(currentIndex(key) - startIndex) * 24 + accumulated}deg`);
+        event.preventDefault();
+      }
+    });
+
+    const end = event => {
+      if (event.pointerId !== pointerId) return;
+      if (button.hasPointerCapture(pointerId)) button.releasePointerCapture(pointerId);
+      pointerId = null;
+      button.classList.remove("dragging");
+      button.style.removeProperty("--dial-turn");
+      /* A clean tap (no rotation) still advances one step, as before. */
+      if (!dragged) stepSetting(key, 1);
+    };
+    button.addEventListener("pointerup", end);
+    button.addEventListener("pointercancel", end);
+
+    button.addEventListener("keydown", event => {
+      const down = ["ArrowDown", "ArrowLeft", "PageDown"].includes(event.key);
+      const up = ["ArrowUp", "ArrowRight", "PageUp"].includes(event.key);
+      if (!down && !up) return;
+      event.preventDefault();
+      stepSetting(key, up ? 1 : -1);
+    });
+  });
+}
+
 function toast(message) {
   const element = $("#toast");
   element.textContent = message;
@@ -507,10 +606,13 @@ function initEvents() {
   $$("[data-step]").forEach(button => button.addEventListener("click", () => {
     stepSetting(button.dataset.step, button.dataset.direction);
   }));
-  $$(".dial-button").forEach(button => button.addEventListener("click", () => {
+  /* Pointer gestures own tap/drag; only synthetic (keyboard) clicks are handled here. */
+  $$(".dial-button").forEach(button => button.addEventListener("click", event => {
+    if (event.detail !== 0) return;
     const unit = button.closest("[data-setting]");
     if (unit) stepSetting(unit.dataset.setting, 1);
   }));
+  initDialGestures();
   $$("select[data-setting]").forEach(select => select.addEventListener("change", event => {
     settings[event.target.dataset.setting] = event.target.value;
     updateSimulator(event.target.dataset.setting);
@@ -538,6 +640,130 @@ function initEvents() {
   $$(".reference-tabs [role='tab']").forEach(tab => tab.addEventListener("click", () => activateTab(tab.dataset.tab)));
 }
 
+/* ── Live exposure triangle (responsive, simulator-style) ───────────── */
+const triangleState = { aperture: 1, shutter: 1, iso: 0 };
+
+const triangleNotes = {
+  aperture: [
+    "f/2 — <b>the blurriest background</b> and the most light. Great at night.",
+    "Wide open — <b>background melts away</b>, lots of light.",
+    "f/4 — soft background but a <b>safer focus margin</b> for moving subjects.",
+    "f/5.6 — a balanced everyday look, <b>sharp subject</b>, gentle separation.",
+    "f/8 — <b>most of the scene is sharp</b>. The classic daylight choice.",
+    "f/11 — deep focus, but you're now <b>losing a lot of light</b>.",
+    "f/16 — everything sharp, but <b>diffraction softens fine detail</b>."
+  ],
+  shutter: [
+    "1/25 — very slow. <b>Lots of motion blur</b>, bright, easy to smear.",
+    "1/50 at 25p is the <b>180° rule</b> — natural cinematic motion.",
+    "1/100 — <b>crisper motion</b>, correct for 50p. Safe under 50 Hz lights.",
+    "1/125 — motion starts to look <b>slightly stepped</b> in video.",
+    "1/200 — noticeably <b>staccato motion</b>; fine for stills, less for video.",
+    "1/250 — action-freezing. In video this reads as a <b>gritty look</b>.",
+    "1/500 — the no-ND daylight rescue. <b>Motion looks sharp/jittery</b>.",
+    "1/1000 — <b>frozen action</b>, and you've lost a lot of light.",
+    "1/1600 — extreme. Only in <b>very harsh sun</b>.",
+    "1/3200 — <b>maximum freeze</b>, minimum light. Rarely needed."
+  ],
+  iso: [
+    "Base ISO 100 — <b>cleanest possible image</b>.",
+    "ISO 200 — still essentially clean.",
+    "ISO 400 — clean; <b>a very usable indoor base</b>.",
+    "ISO 800 — the <b>N-Log floor</b> and a fine low-light base on the Zf.",
+    "ISO 1600 — mild grain, easy to grade. <b>Perfectly usable</b>.",
+    "ISO 3200 — <b>visible grain</b>, still good for night street work.",
+    "ISO 6400 — grainy; <b>protect the face, let blacks fall</b>.",
+    "ISO 12800 — heavy noise. <b>Only when there's no other option</b>."
+  ]
+};
+
+function triangleValues() {
+  return {
+    aperture: dialValues.aperture[triangleState.aperture],
+    shutter: dialValues.shutter[triangleState.shutter],
+    iso: dialValues.iso[triangleState.iso]
+  };
+}
+
+function updateTriangleSim() {
+  if (!$("#triangleSim")) return;
+  const values = triangleValues();
+  const apNum = Number(values.aperture.replace("f/", ""));
+  const shutterDen = Number(values.shutter.split("/")[1]);
+  const isoNum = Number(values.iso);
+
+  $("#triApertureOut").textContent = values.aperture;
+  $("#triShutterOut").textContent = values.shutter;
+  $("#triIsoOut").textContent = values.iso;
+  $("#triReadA").textContent = values.aperture;
+  $("#triReadS").textContent = values.shutter;
+  $("#triReadI").textContent = `ISO ${values.iso}`;
+  $("#triApertureNote").innerHTML = triangleNotes.aperture[triangleState.aperture];
+  $("#triShutterNote").innerHTML = triangleNotes.shutter[triangleState.shutter];
+  $("#triIsoNote").innerHTML = triangleNotes.iso[triangleState.iso];
+
+  ["aperture", "shutter", "iso"].forEach(key => {
+    const input = $(`#tri${key[0].toUpperCase()}${key.slice(1)}`);
+    if (input) input.value = String(triangleState[key]);
+  });
+
+  /* Stops relative to the reference exposure: f/2.8 · 1/50 · ISO 100 */
+  const stops = 2 * Math.log2(2.8 / apNum) + Math.log2(50 / shutterDen) + Math.log2(isoNum / 100);
+
+  const preview = $("#triPreview");
+  const img = $("#triPreviewImg");
+  const brightness = Math.min(2.4, Math.max(0.28, Math.pow(2, stops * 0.42)));
+  img.style.filter = `brightness(${brightness.toFixed(2)})`;
+
+  /* Depth of field: wide apertures blur an overlaid copy of the frame. */
+  const blurPx = Math.max(0, (5.6 - apNum) * 1.5);
+  const blurLayer = $("#triPreviewBlur");
+  blurLayer.style.backgroundImage = `url("${img.getAttribute("src")}")`;
+  blurLayer.style.filter = `blur(${blurPx.toFixed(1)}px) brightness(${brightness.toFixed(2)})`;
+  preview.style.setProperty("--tri-blur-mix", (Math.min(1, blurPx / 5.4) * 0.85).toFixed(2));
+
+  /* Motion: slower shutters smear the motion streak. */
+  const motionBlur = Math.max(0, Math.min(9, Math.log2(200 / shutterDen) * 3));
+  preview.style.setProperty("--tri-motion", (Math.min(1, motionBlur / 5) * 0.7).toFixed(2));
+  preview.style.setProperty("--tri-motion-blur", motionBlur.toFixed(1));
+
+  /* Grain from ISO. */
+  preview.style.setProperty("--tri-grain", Math.min(0.34, 0.03 + Math.log2(isoNum / 100) * 0.042).toFixed(3));
+
+  $("#triStops").textContent = `${stops > 0 ? "+" : ""}${stops.toFixed(1)} EV`;
+  $("#triNeedle").parentElement.style.setProperty("--tri-ev-pos", `${Math.min(98, Math.max(2, 50 + stops * 11))}%`);
+
+  const verdict = $("#triVerdict");
+  let state = "good";
+  let message = "<b>Balanced.</b> A good starting exposure.";
+  if (stops >= 2) { state = "alert"; message = "<b>Overexposed.</b> Close the aperture, speed up the shutter, or lower ISO."; }
+  else if (stops >= 1) { state = "warning"; message = "<b>A little bright.</b> Highlights may start to clip."; }
+  else if (stops <= -2) { state = "alert"; message = "<b>Underexposed.</b> Open up, slow the shutter, or raise ISO."; }
+  else if (stops <= -1) { state = "warning"; message = "<b>A little dark.</b> Lift it before the shadows get noisy."; }
+  else if (isoNum >= 6400) { state = "warning"; message = "<b>Exposure is fine, but noisy.</b> Trade ISO for a wider aperture."; }
+  else if (shutterDen >= 500) { state = "warning"; message = "<b>Exposure is fine, but motion is jittery.</b> 1/50 looks more cinematic."; }
+  verdict.dataset.state = state;
+  verdict.lastElementChild.innerHTML = message;
+}
+
+function initTriangleSim() {
+  if (!$("#triangleSim")) return;
+  [["#triAperture", "aperture"], ["#triShutter", "shutter"], ["#triIso", "iso"]].forEach(([selector, key]) => {
+    const input = $(selector);
+    if (!input) return;
+    input.max = String(dialValues[key].length - 1);
+    input.addEventListener("input", () => {
+      triangleState[key] = Number(input.value);
+      updateTriangleSim();
+    });
+  });
+  $("#triangleReset").addEventListener("click", () => {
+    triangleState.aperture = 1; triangleState.shutter = 1; triangleState.iso = 0;
+    updateTriangleSim();
+  });
+  updateTriangleSim();
+}
+
 function activateTab(tabName) {
   $$(".reference-tabs [role='tab']").forEach(tab => {
     const active = tab.dataset.tab === tabName;
@@ -561,6 +787,7 @@ function init() {
   renderReferenceRows();
   updateSimulator("preset");
   initEvents();
+  initTriangleSim();
 }
 
 document.addEventListener("DOMContentLoaded", init);

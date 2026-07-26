@@ -88,22 +88,23 @@
 
           <div class="top-plate" aria-label="Camera settings dials">
             <div class="dial-unit" data-setting="iso">
-              <button class="dial-button" type="button" aria-label="Change ISO"><span class="dial-face"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="dial-value" id="isoDial">100</span></button>
+              <button class="dial-button" type="button" role="slider" tabindex="0" aria-label="ISO" aria-valuetext="ISO 100" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"><span class="dial-face"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="dial-grip" aria-hidden="true"></span><span class="dial-value" id="isoDial">100</span></button>
               <span class="dial-label">ISO</span>
               <div class="dial-stepper"><button type="button" data-step="iso" data-direction="-1" aria-label="Lower ISO">−</button><button type="button" data-step="iso" data-direction="1" aria-label="Raise ISO">+</button></div>
             </div>
             <div class="dial-unit primary-dial" data-setting="shutter">
-              <button class="dial-button" type="button" aria-label="Change shutter speed"><span class="dial-face"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="dial-value" id="shutterDial">1/50</span></button>
+              <button class="dial-button" type="button" role="slider" tabindex="0" aria-label="Shutter speed" aria-valuetext="1/50" aria-valuemin="1" aria-valuemax="10" aria-valuenow="2"><span class="dial-face"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="dial-grip" aria-hidden="true"></span><span class="dial-value" id="shutterDial">1/50</span></button>
               <span class="dial-label">SHUTTER</span>
               <div class="dial-stepper"><button type="button" data-step="shutter" data-direction="-1" aria-label="Slower shutter">−</button><button type="button" data-step="shutter" data-direction="1" aria-label="Faster shutter">+</button></div>
             </div>
             <div class="dial-unit" data-setting="aperture">
-              <button class="dial-button lens-dial" type="button" aria-label="Change aperture"><span class="dial-face"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="dial-value" id="apertureDial">f/2.8</span></button>
+              <button class="dial-button lens-dial" type="button" role="slider" tabindex="0" aria-label="Aperture" aria-valuetext="f/2.8" aria-valuemin="1" aria-valuemax="7" aria-valuenow="2"><span class="dial-face"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="dial-grip" aria-hidden="true"></span><span class="dial-value" id="apertureDial">f/2.8</span></button>
               <span class="dial-label">APERTURE</span>
               <div class="dial-stepper"><button type="button" data-step="aperture" data-direction="-1" aria-label="Widen aperture">−</button><button type="button" data-step="aperture" data-direction="1" aria-label="Narrow aperture">+</button></div>
             </div>
             <div class="record-cluster"><span class="record-dot"></span><b>REC</b><small>VIDEO MODE</small></div>
           </div>
+          <p class="dial-hint"><span aria-hidden="true">↻</span> Drag a dial to turn it, or tap <b>−</b> / <b>+</b>.</p>
 
           <div class="preview-panel" id="previewPanel" data-scene="Golden Hour">
             <img class="preview-photo" id="previewImage" src="assets/scenes/golden.jpg" alt="Live scene preview showing the effect of your camera settings" />
@@ -246,6 +247,51 @@
         <p class="eyebrow"><span></span> QUICK REMINDER</p>
         <h2 id="bottom-triangle-title">Exposure triangle<br><em>made simple.</em></h2>
         <p class="section-intro bottom-triangle-intro">Exposure means how bright your photo or video looks. These three settings work like a team: change one, and you may need to balance another.</p>
+      </div>
+
+      <div class="triangle-sim" id="triangleSim">
+        <div class="triangle-sim-head">
+          <span>TRY IT</span>
+          <b>Live exposure triangle</b>
+          <small>Move a slider and watch the picture — and the meter — respond.</small>
+          <button type="button" class="triangle-sim-reset" id="triangleReset">Reset</button>
+        </div>
+        <div class="triangle-sim-body">
+          <div class="triangle-sliders">
+            <label class="tri-slider">
+              <span class="tri-slider-top"><b>APERTURE</b><em>depth of field</em><output id="triApertureOut">f/2.8</output></span>
+              <input type="range" id="triAperture" min="0" max="6" step="1" value="1" aria-label="Aperture" />
+              <span class="tri-slider-scale"><span>f/2 blurry</span><span>f/16 sharp</span></span>
+              <p class="tri-effect" id="triApertureNote">Wide open — <b>background melts away</b>, lots of light.</p>
+            </label>
+            <label class="tri-slider">
+              <span class="tri-slider-top"><b>SHUTTER</b><em>motion</em><output id="triShutterOut">1/50</output></span>
+              <input type="range" id="triShutter" min="0" max="9" step="1" value="1" aria-label="Shutter speed" />
+              <span class="tri-slider-scale"><span>1/25 blurred</span><span>1/3200 frozen</span></span>
+              <p class="tri-effect" id="triShutterNote">1/50 at 25p is the <b>180° rule</b> — natural cinematic motion.</p>
+            </label>
+            <label class="tri-slider">
+              <span class="tri-slider-top"><b>ISO</b><em>brightness boost</em><output id="triIsoOut">100</output></span>
+              <input type="range" id="triIso" min="0" max="7" step="1" value="0" aria-label="ISO" />
+              <span class="tri-slider-scale"><span>100 clean</span><span>12800 grainy</span></span>
+              <p class="tri-effect" id="triIsoNote">Base ISO 100 — <b>cleanest possible image</b>.</p>
+            </label>
+          </div>
+          <div class="triangle-sim-visual">
+            <div class="tri-preview" id="triPreview">
+              <img class="tri-preview-img" id="triPreviewImg" src="assets/scenes/golden.jpg" alt="Preview of how aperture, shutter and ISO change the image" />
+              <div class="tri-preview-blur" id="triPreviewBlur" aria-hidden="true"></div>
+              <div class="tri-preview-motion" aria-hidden="true"></div>
+              <div class="tri-preview-grain" aria-hidden="true"></div>
+              <div class="tri-preview-readout"><span id="triReadA">f/2.8</span><span id="triReadS">1/50</span><span id="triReadI">ISO 100</span></div>
+            </div>
+            <div class="tri-meter">
+              <span class="tri-meter-label">EXPOSURE METER <b id="triStops">0.0 EV</b></span>
+              <div class="tri-meter-bar"><i id="triNeedle"></i></div>
+              <p class="tri-verdict" id="triVerdict" data-state="good"><i></i><span><b>Balanced.</b> A good starting exposure.</span></p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="simple-triangle-wrap">
