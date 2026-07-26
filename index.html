@@ -106,16 +106,15 @@
           </div>
 
           <div class="preview-panel" id="previewPanel" data-scene="Golden Hour">
-            <div class="preview-sky"></div>
-            <div class="preview-sun"></div>
-            <div class="preview-hills hill-back"></div><div class="preview-hills hill-front"></div>
-            <div class="preview-city"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="preview-person"><span class="person-head"></span><span class="person-body"></span></div>
+            <img class="preview-photo" id="previewImage" src="assets/scenes/golden.jpg" alt="Live scene preview showing the effect of your camera settings" />
+            <div class="preview-wb"></div>
             <div class="preview-grain"></div>
             <div class="preview-topline"><span class="rec-indicator"><i></i> REC</span><span id="previewMode">FLAT SDR</span><span id="previewFps">4K 25p</span></div>
             <div class="preview-frame"><span class="focus-box"></span><span class="rule-grid"></span></div>
+            <span class="crop-badge" id="cropBadge" hidden></span>
+            <span class="special-badge" id="specialBadge" hidden></span>
             <div class="preview-bottomline"><span id="previewShutter">1/50</span><span id="previewAperture">f/2.8</span><span id="previewIso">ISO 100</span><span id="previewWB">5600K</span><span id="previewEV">±0.0</span></div>
-            <div class="preview-scene" id="previewScene">GOLDEN HOUR PORTRAIT</div>
+            <div class="preview-scene" id="previewScene">#03 · GOLDEN HOUR PORTRAIT</div>
           </div>
 
           <div class="sim-readout">
@@ -127,8 +126,8 @@
         <section class="control-board" aria-label="Fine tune controls">
           <div class="board-heading"><span>02</span><b>Fine tune</b><button type="button" class="reset-button" id="resetCamera">Reset scene</button></div>
           <div class="control-grid">
-            <label class="select-control"><span>FRAME RATE</span><select id="frameRate" data-setting="frameRate"><option value="25p">25p — cinematic</option><option value="50p">50p — 2× slow motion</option><option value="100p">100p — hero slow motion</option></select></label>
-            <label class="select-control"><span>WHITE BALANCE</span><select id="whiteBalance" data-setting="whiteBalance"><option value="2800">2800K — candle</option><option value="3200">3200K — tungsten</option><option value="3400">3400K — warm streetlamp</option><option value="3600">3600K — neon</option><option value="3800">3800K — night street</option><option value="4200">4200K — blue hour</option><option value="4500">4500K — city dusk</option><option value="5000">5000K — product</option><option value="5600">5600K — sun</option><option value="6500">6500K — shade</option><option value="7000">7000K — golden</option></select></label>
+            <label class="select-control"><span>FRAME RATE</span><select id="frameRate" data-setting="frameRate"><option value="25p">25p — cinematic default</option><option value="50p">50p — 2× slow-mo (DX 1.5× crop)</option><option value="100p">100p — 1080 hero slow-mo</option></select></label>
+            <label class="select-control"><span>WHITE BALANCE</span><select id="whiteBalance" data-setting="whiteBalance"><option value="2800">2800K — candle / diya</option><option value="3200">3200K — tungsten</option><option value="3400">3400K — warm streetlamp</option><option value="3600">3600K — neon</option><option value="3800">3800K — night street</option><option value="4000">4000K — mixed window</option><option value="4200">4200K — blue hour</option><option value="4300">4300K — office LED</option><option value="4500">4500K — city dusk</option><option value="5000">5000K — product</option><option value="5600">5600K — sun</option><option value="6000">6000K — monsoon</option><option value="6500">6500K — shade</option><option value="7000">7000K — golden</option></select></label>
             <label class="select-control"><span>FOCUS MODE</span><select id="focusMode" data-setting="focusMode"><option value="AF-C · People">AF-C · People</option><option value="AF-C · Tracking">AF-C · Tracking</option><option value="AF-C · Auto-area">AF-C · Auto-area</option><option value="MF + peaking">MF + peaking</option><option value="MF locked">MF locked</option></select></label>
             <label class="select-control"><span>METERING</span><select id="metering" data-setting="metering"><option value="Matrix">Matrix</option><option value="Highlight-weighted">Highlight-weighted</option><option value="Center-weighted">Center-weighted</option><option value="Spot">Spot</option></select></label>
             <label class="select-control"><span>TONE MODE</span><select id="toneMode" data-setting="toneMode"><option value="Flat SDR">Flat SDR</option><option value="N-Log">N-Log</option><option value="Monochrome">Monochrome</option></select></label>
@@ -145,10 +144,12 @@
 
     <section class="section playbook-section" id="playbook" aria-labelledby="playbook-title">
       <div class="section-heading">
-        <p class="eyebrow"><span></span> READY-TO-SHOOT RECIPES</p>
+        <p class="eyebrow"><span></span> ALL 35 SCENARIOS · READY-TO-SHOOT RECIPES</p>
         <h2 id="playbook-title">Your scene.<br><em>Your starting point.</em></h2>
-        <p class="section-intro">Tap a card to load a beginner-safe setup into the simulator. Settings come from the Zf 40mm no-ND master guide.</p>
+        <p class="section-intro">Every one of the 35 scenarios from the Zf 40mm no-ND master guide. Tap a card to load its full recipe into the simulator.</p>
       </div>
+      <div class="quick-pick-bar"><span class="quick-pick-label">NEW? START WITH:</span><div class="quick-picks" id="quickPicks"></div></div>
+      <div class="scene-filters" id="sceneFilters" role="group" aria-label="Filter scenarios by category"></div>
       <div class="scene-cards" id="sceneCards"></div>
     </section>
 
@@ -208,7 +209,7 @@
     <section class="section reference-section" id="reference" aria-labelledby="reference-title">
       <div class="section-heading split-heading">
         <div><p class="eyebrow"><span></span> LOOK IT UP ON SET</p><h2 id="reference-title">The pocket<br><em>reference desk.</em></h2></div>
-        <div class="search-wrap"><label for="tableSearch">Find a scenario or setting</label><div><span aria-hidden="true">⌕</span><input id="tableSearch" type="search" placeholder="Try “night”, “interview”, “food”…" autocomplete="off" /></div><small id="resultCount">Showing all field notes</small></div>
+        <div class="search-wrap"><label for="tableSearch">Find a scenario or setting</label><div><span aria-hidden="true">⌕</span><input id="tableSearch" type="search" placeholder="Try “night”, “interview”, “diwali”…" autocomplete="off" /></div><small id="resultCount">Showing all 35 scenarios</small></div>
       </div>
       <div class="reference-tabs" role="tablist" aria-label="Reference sections">
         <button type="button" class="active" id="tab-scenarios" role="tab" aria-selected="true" aria-controls="panel-scenarios" data-tab="scenarios">Scene recipes</button>
@@ -216,7 +217,7 @@
         <button type="button" id="tab-focus" role="tab" aria-selected="false" aria-controls="panel-focus" data-tab="focus">Focus &amp; stability</button>
       </div>
       <div id="panel-scenarios" class="tab-panel active" role="tabpanel" aria-labelledby="tab-scenarios">
-        <div class="table-wrap"><table class="reference-table"><thead><tr><th>Scene</th><th>Frame / shutter</th><th>Lens / ISO</th><th>White balance</th><th>Starting note</th></tr></thead><tbody id="scenarioTableBody"></tbody></table></div>
+        <div class="table-wrap"><table class="reference-table"><thead><tr><th>Scene</th><th>Frame / shutter</th><th>Aperture / ISO</th><th>WB / tone</th><th>Field note</th></tr></thead><tbody id="scenarioTableBody"></tbody></table></div>
       </div>
       <div id="panel-quick" class="tab-panel" role="tabpanel" aria-labelledby="tab-quick" hidden>
         <div class="quick-grid">
