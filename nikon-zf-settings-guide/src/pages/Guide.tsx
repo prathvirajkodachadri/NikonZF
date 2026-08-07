@@ -306,7 +306,7 @@ export default function Guide(){
       {/* ===== CAM MAP BAND ===== */}
       <section id="map" className="relative z-10 scroll-mt-24 border-y-[1.5px] border-[#2F3133] bg-[#F3EDE1]">
         <div className="mx-auto max-w-[1280px] 2xl:max-w-[1440px] px-4 sm:px-6 md:px-10 py-10 md:py-16">
-          <SectionHead num="B" title="Camera Control Map" sub="TOP VIEW · FOUR MAIN DIALS" tone="char" />
+          <SectionHead num="B" title="Camera Control Map" sub="NIKON ZF · TOP VIEW · FOUR MAIN DIALS" tone="char" />
           <div data-reveal><ZfDiagram /></div>
 
           <div data-reveal className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
