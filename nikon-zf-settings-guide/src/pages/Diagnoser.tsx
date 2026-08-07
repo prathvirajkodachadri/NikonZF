@@ -71,7 +71,7 @@ function requiredFor(scene: string, lens: Lens, time: Time, env: Env, mode: Mode
     aperture: prime ? 'f/2 to f/2.5' : 'f/4 wide open', shutter: '1/320 to 1/500',
     iso: '3200 to 12800', focal: prime ? '40mm close' : '70 to 120mm',
     focus: 'Eye AF • low light', drive: 'Continuous',
-    note: 'Stage lights blink → use 1/100 or 1/125.' });
+    note: 'Stage lights blink → use 1/100 (India/Europe) or 1/125 (US/Japan).' });
   else if (s.includes('event') || s.includes('party')) set({
     aperture: prime ? 'f/2 to f/2.8' : 'f/4', shutter: night ? '1/200' : '1/320',
     focus: 'Auto Area • People', drive: 'Continuous',
@@ -237,8 +237,8 @@ function diagnose(ids: string[], req: Req, lens: Lens, mode: Mode, time: Time, m
   if (has('banding')) out.push({
     title:'Lights are flickering', tone:'orange',
     cause:'Indoor lights blink fast. A wrong shutter shows dark bands.',
-    fix:['Use 1/100 (most of Asia and Europe).','Use 1/125 (US and Japan).','Turn on anti-flicker in the menu.','Do not use very fast shutter indoors.'],
-    dial:'Shutter → 1/100 or 1/125'
+    fix:['Use 1/100 (India, Europe, Asia — 50Hz).','Use 1/125 (US, Japan — 60Hz).','Turn on anti-flicker in the menu.','Do not use very fast shutter indoors.'],
+    dial:'Shutter → 1/100 (India)'
   });
   if (has('stutter')) out.push({
     title:'Video shutter is wrong', tone:'navy',
