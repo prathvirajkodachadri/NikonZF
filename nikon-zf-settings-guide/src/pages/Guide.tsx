@@ -93,7 +93,7 @@ export default function Guide(){
               <div className="h-5 w-[70%] rounded-full bg-[#D7BB83] border border-[#2F3133]"></div>
             </div>
             <div className="relative flex items-center justify-center p-6 md:p-8">
-              <img src="/images/hero-camera-70s.jpg" alt="1970s retro camera illustration" className="relative z-10 w-[88%] max-w-[420px] object-contain rounded-[12px] border-[1.5px] border-[#2F3133] bg-white shadow-[3px_3px_0px_#2F3133]" />
+              <img src="images/hero-camera-70s.jpg" alt="1970s retro camera illustration" className="relative z-10 w-[88%] max-w-[420px] object-contain rounded-[12px] border-[1.5px] border-[#2F3133] bg-white shadow-[3px_3px_0px_#2F3133]" />
             </div>
           </>
         }
@@ -111,8 +111,8 @@ export default function Guide(){
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  {id:'24-120', name:'24-120mm f/4 S', img:'/images/24-120-lens.jpg', color:'#00365A'},
-                  {id:'40mm', name:'40mm f/2', img:'/images/40mm-lens.jpg', color:'#C64F0E'},
+                  {id:'24-120', name:'24-120mm f/4 S', img:'images/24-120-lens.jpg', color:'#00365A'},
+                  {id:'40mm', name:'40mm f/2', img:'images/40mm-lens.jpg', color:'#C64F0E'},
                 ].map(l=>(
                   <button key={l.id} onClick={()=>setLens(l.id as Lens)} className={`group text-left rounded-[12px] border-[1.5px] border-[#2F3133] overflow-hidden transition-all ${lens===l.id? 'shadow-[3px_3px_0px_#2F3133] -translate-y-0.5' : 'shadow-[1.5px_1.5px_0px_#2F3133] hover:shadow-[2px_2px_0px_#2F3133] hover:-translate-y-[1px]'} bg-[#FAF8F3]`}>
                     <div className="relative h-28 w-full overflow-hidden bg-white border-b-[1.5px] border-[#2F3133]">
@@ -198,7 +198,7 @@ export default function Guide(){
                 </div>
                 <div className="display text-[clamp(24px,3.6vw,34px)] leading-[0.9] text-[#2F3133]">Choose lens,<br/>mode and scene.<br/><span className="text-[#00365A]">Get only</span> <span className="bg-[#F4B23C] border border-[#2F3133] px-2 rounded-[8px]">what matters.</span></div>
                 <div className="mt-6 rounded-[12px] border-[1.5px] border-[#2F3133] overflow-hidden">
-                  <img src="/images/zf-body.jpg" alt="Retro camera body" loading="lazy" decoding="async" className="w-full h-64 object-cover" />
+                  <img src="images/zf-body.jpg" alt="Retro camera body" loading="lazy" decoding="async" className="w-full h-64 object-cover" />
                   <div className="h-2 w-full flex"><div className="flex-1 bg-[#00365A]"></div><div className="flex-1 bg-[#C64F0E]"></div><div className="flex-1 bg-[#F4B23C]"></div><div className="flex-1 bg-[#D7BB83]"></div></div>
                 </div>
               </div>
