@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%" aria-label="Dynamic-area AF (S)" role="img">
+  <rect width="48" height="48" fill="none"/>
+  <path d="M13 16 L13 11 L18 11" stroke="#2F3133" stroke-width="2.2" stroke-linecap="square" fill="none"/>
+  <path d="M30 11 L35 11 L35 16" stroke="#2F3133" stroke-width="2.2" stroke-linecap="square" fill="none"/>
+  <path d="M35 28 L35 33 L30 33" stroke="#2F3133" stroke-width="2.2" stroke-linecap="square" fill="none"/>
+  <path d="M18 33 L13 33 L13 28" stroke="#2F3133" stroke-width="2.2" stroke-linecap="square" fill="none"/>
+  <rect x="20.0" y="18.0" width="8" height="8" fill="#2F3133"/>
+  <g stroke="#2F3133" stroke-width="1.6" fill="none">
+    <rect x="21.5" y="12" width="5" height="5"/>
+    <rect x="21.5" y="31" width="5" height="5"/>
+    <rect x="12" y="21.5" width="5" height="5"/>
+    <rect x="31" y="21.5" width="5" height="5"/>
+  </g>
+  <text x="45" y="44" text-anchor="end" font-size="10" font-weight="700" fill="#2F3133" font-family="'Space Grotesk',sans-serif">S</text>
+</svg>
