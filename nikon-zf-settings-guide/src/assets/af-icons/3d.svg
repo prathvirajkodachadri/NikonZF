@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%" aria-label="3D-tracking" role="img">
+  <rect width="48" height="48" fill="none"/>
+  <path d="M16 17 L16 12 L21 12" stroke="#2F3133" stroke-width="2.4" stroke-linecap="square" fill="none"/>
+  <path d="M27 12 L32 12 L32 17" stroke="#2F3133" stroke-width="2.4" stroke-linecap="square" fill="none"/>
+  <path d="M32 23 L32 28 L27 28" stroke="#2F3133" stroke-width="2.4" stroke-linecap="square" fill="none"/>
+  <path d="M21 28 L16 28 L16 23" stroke="#2F3133" stroke-width="2.4" stroke-linecap="square" fill="none"/>
+  <text x="24" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#2F3133" font-family="'Space Grotesk',sans-serif">3D</text>
+</svg>

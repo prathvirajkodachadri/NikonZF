@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%" aria-label="Pinpoint AF" role="img">
+  <rect width="48" height="48" fill="none"/>
+  <path d="M19 20 L19 17 L22 17" stroke="#2F3133" stroke-width="2" stroke-linecap="square" fill="none"/>
+  <path d="M26 17 L29 17 L29 20" stroke="#2F3133" stroke-width="2" stroke-linecap="square" fill="none"/>
+  <path d="M29 24 L29 27 L26 27" stroke="#2F3133" stroke-width="2" stroke-linecap="square" fill="none"/>
+  <path d="M22 27 L19 27 L19 24" stroke="#2F3133" stroke-width="2" stroke-linecap="square" fill="none"/>
+  <rect x="23.5" y="21.5" width="3" height="3" fill="#2F3133"/>
+</svg>
