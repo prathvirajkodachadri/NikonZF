@@ -268,7 +268,7 @@ export function getBase(sceneRaw: string): BasePreset {
     focalZoom: "70 to 120mm", focalPrime: "40mm close",
     focus: "Eye AF Low Light", wb: "Auto",
     videoRes: "4K", videoFps: "30p or 60p",
-    tip: "Lights flicker → use 1/100 or 1/125 to stop bands."
+    tip: "Lights flicker → use 1/100 (India/Europe) or 1/125 (US/Japan) to stop bands."
   };
   if (s.includes('event') || s.includes('party')) return { ...d,
     aperturePrime: "f/2 to f/2.8", apertureZoom: "f/4 constant",

@@ -312,7 +312,7 @@ export default function Guide(){
           <div data-reveal className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {t:'01 · ISO DIAL', c:'#F4B23C', w:false, d:'How much light the camera picks up.', pts:['Low ISO → clean photo.','High ISO → grainy photo.','Set this last.','C = camera picks it.']},
-              {t:'02 · SHUTTER SPEED DIAL', c:'#00365A', w:true, d:'How long the camera stays open.', pts:['Fast (1/500 → 1/8000) → freezes movement.','Slow (1/30 → 30 sec) → blurs movement.','Walking 1/250 • Running 1/500 • Sports 1/1000.','By hand → 1/60 or faster.','B and T → very long shots.']},
+              {t:'02 · SHUTTER SPEED DIAL', c:'#00365A', w:true, d:'How long the camera stays open.', pts:['Fast (1/500 → 1/8000) → freezes movement.','Slow (1/30 → 900 sec) → blurs movement.','Walking 1/250 • Running 1/500 • Sports 1/1000.','By hand → 1/60 or faster.','B and T → very long shots (up to 15 min).']},
               {t:'03 · APERTURE DIAL', c:'#F4B23C', w:false, d:'How blurry the background is.', pts:['f/2 → blurry background.','f/8 → most things sharp.','Front dial sets it.','Shown on the top screen.']},
               {t:'04 · EXPOSURE COMP DIAL', c:'#C64F0E', w:true, d:'Makes the photo brighter or darker.', pts:['+ → brighter.','− → darker.','Snow or sand → use +.','Bright lights → use −.']},
             ].map(x=>(
